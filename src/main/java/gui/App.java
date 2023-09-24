@@ -20,6 +20,7 @@ public class App extends Application {
         final double MAX_FONT_SIZE = 30.0; // define max font size you need
         Font text_graphics = new Font(STYLESHEET_CASPIAN, MAX_FONT_SIZE);
         score_graphics.setFont(text_graphics);
+        score_graphics.setTextFill(javafx.scene.paint.Color.WHITE);
         root.getChildren().add(score_graphics);
         var gameScene = new Scene(root);
         var pacmanController = new PacmanController();
