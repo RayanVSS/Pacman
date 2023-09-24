@@ -3,15 +3,24 @@ package gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import config.MazeConfig;
 import model.MazeState;
 
 public class App extends Application {
+
+    public static Label score_graphics = new Label("Score : " + MazeState.score);
+
     @Override
     public void start(Stage primaryStage) {
         var root = new Pane();
+        final double MAX_FONT_SIZE = 30.0; // define max font size you need
+        Font text_graphics = new Font(STYLESHEET_CASPIAN, MAX_FONT_SIZE);
+        score_graphics.setFont(text_graphics);
+        root.getChildren().add(score_graphics);
         var gameScene = new Scene(root);
         var pacmanController = new PacmanController();
         gameScene.setOnKeyPressed(pacmanController::keyPressedHandler);

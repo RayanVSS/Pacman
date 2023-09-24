@@ -4,12 +4,15 @@ import config.MazeConfig;
 import geometry.IntCoordinates;
 import geometry.RealCoordinates;
 
+import gui.App;
+
 import java.util.List;
 import java.util.Map;
 
 import static model.Ghost.*;
 
 public final class MazeState {
+
     private final MazeConfig config;
     private final int height;
     private final int width;
@@ -17,7 +20,7 @@ public final class MazeState {
     private final boolean[][] gridState;
 
     private final List<Critter> critters;
-    private int score;
+    public static int score;
 
     private final Map<Critter, RealCoordinates> initialPos;
     private int lives = 3;
@@ -114,11 +117,11 @@ public final class MazeState {
 
     private void addScore(int increment) {
         score += increment;
+        App.score_graphics.setText("Score : " + score);
         displayScore();
     }
 
     private void displayScore() {
-        // FIXME: this should be displayed in the JavaFX view, not in the console
         System.out.println("Score: " + score);
     }
 
