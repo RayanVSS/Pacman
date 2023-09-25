@@ -116,8 +116,8 @@ public final class MazeState {
     }
 
     private void addScore(int increment) {
-        score += increment;
-        App.score_graphics.setText(String.format("%09d",score));
+        score += increment * 10;
+        App.score_graphics.setText("" + score);
         displayScore();
     }
 
