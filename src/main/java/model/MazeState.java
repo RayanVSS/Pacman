@@ -20,7 +20,7 @@ public final class MazeState {
     private final boolean[][] gridState;
 
     private final List<Critter> critters;
-    public static int score;
+    private static int score;
 
     private final Map<Critter, RealCoordinates> initialPos;
     private int lives = 3;
@@ -117,7 +117,7 @@ public final class MazeState {
 
     private void addScore(int increment) {
         score += increment;
-        App.score_graphics.setText("Score : " + score);
+        App.score_graphics.setText(String.format("%09d",score));
         displayScore();
     }
 
@@ -151,5 +151,9 @@ public final class MazeState {
 
     public boolean getGridState(IntCoordinates pos) {
         return gridState[pos.y()][pos.x()];
+    }
+
+    public static int getScore(){
+        return score;
     }
 }
