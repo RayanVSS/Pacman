@@ -13,7 +13,7 @@ import model.MazeState;
 
 public class App extends Application {
 
-    public static Label score_graphics = new Label(String.format("%09d",0));
+    public static Label score_graphics = new Label("" + 0);
 
     @Override
     public void start(Stage primaryStage) {
