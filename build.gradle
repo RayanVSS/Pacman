@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '5.10.0'
+    implementation 'org.json:json:20230618'
 }
 
 javafx {
