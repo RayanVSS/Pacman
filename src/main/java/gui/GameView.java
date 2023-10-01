@@ -3,6 +3,7 @@ package gui;
 import geometry.IntCoordinates;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import model.MazeState;
 
 import java.util.ArrayList;
@@ -30,7 +31,9 @@ public class GameView {
         this.gameRoot = root;
         // pixels per cell
         root.setMinWidth(maze.getWidth() * scale);
+        root.setMaxWidth(Screen.getPrimary().getBounds().getWidth()); // La fonction permet d'initialiser une largeur minimum. L'argument permet d'obtenir la largeur de l'ecran principal.
         root.setMinHeight(maze.getHeight() * scale);
+        root.setMaxHeight(Screen.getPrimary().getBounds().getHeight()); // La fonction permet d'initialiser une hauteur minimum. L'argument permet d'obtenir la hauteur de l'écran principal.
         root.setStyle("-fx-background-color: #000000");
         var critterFactory = new CritterGraphicsFactory(scale);
         var cellFactory = new CellGraphicsFactory(scale);
