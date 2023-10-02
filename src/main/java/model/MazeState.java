@@ -3,8 +3,7 @@ package model;
 import config.MazeConfig;
 import geometry.IntCoordinates;
 import geometry.RealCoordinates;
-
-import gui.App;
+import gui.AppStateMachine.PlayingState;
 
 import java.util.List;
 import java.util.Map;
@@ -117,7 +116,7 @@ public final class MazeState {
 
     private void addScore(int increment) {
         score += increment * 10;
-        App.score_graphics.setText("" + score);
+        PlayingState.score_graphics.setText("" + score);
         displayScore();
     }
 

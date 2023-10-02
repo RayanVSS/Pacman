@@ -1,38 +1,49 @@
 package gui;
 
-
+import gui.AppStateMachine.AppState;
+import gui.AppStateMachine.HomeScreenState;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import config.MazeConfig;
-import model.MazeState;
 
 public class App extends Application {
 
-    public static Label score_graphics = new Label("" + 0);
+    public static Stage pStage;
+
+    // Variables pour le calcul de delta t
+    private long lastTime = System.nanoTime();
+    private static long deltaTime = 0;
+
+    public static AppState app_state = AppState.HOME_SCREEN;
+    //Définit les paramètres du texte de l'application
+    static final double MAX_FONT_SIZE = 20.0; //Définit la taille du texte pour le score
+    public static Font text_graphics = new Font(STYLESHEET_CASPIAN, MAX_FONT_SIZE); // TODO : modifier la police d'écriture
+
+    public static double getDeltaTime(){
+        return deltaTime;
+    }
 
     @Override
     public void start(Stage primaryStage) {
-        var root = new Pane();
-        score_graphics.setTextAlignment(TextAlignment.LEFT);
-        final double MAX_FONT_SIZE = 20.0; // definis la taille du texte pour le score
-        Font text_graphics = new Font(STYLESHEET_CASPIAN, MAX_FONT_SIZE); // TODO : modifier la police d'écriture
-        score_graphics.setFont(text_graphics);
-        score_graphics.setTextFill(javafx.scene.paint.Color.WHITE);
-        root.getChildren().add(score_graphics);
-        var gameScene = new Scene(root);
-        var pacmanController = new PacmanController();
-        gameScene.setOnKeyPressed(pacmanController::keyPressedHandler);
-        gameScene.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        var maze = new MazeState(MazeConfig.makeExample1());
-        var gameView = new GameView(maze, root, 100.0);
-        primaryStage.setScene(gameScene);
-        primaryStage.show();
-        gameView.animate();
-        score_graphics.toFront(); //mets le score par dessus le reste des éléments
+        pStage = primaryStage;
+        System.out.println(app_state.showState());
+        
+        //Etat intitial de l'application
+        app_state.changeState(HomeScreenState.getInstance());
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long currentTime) {
+                // Calcule delta t
+                deltaTime = (long) ((currentTime - lastTime) / 1e9); // en secondes
+                lastTime = currentTime;
+
+                // Code à exécuter à chaque frame
+                app_state.process(deltaTime);
+            }
+        };
+        
+        timer.start();
     }
 }
