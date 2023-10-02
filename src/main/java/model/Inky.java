@@ -81,7 +81,6 @@ public class Inky implements Critter {
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
-    // Méthode utilitaire pour convertir une direction en coordonnées
     private RealCoordinates DirectionToRealCoordinates(Direction dir) {
         switch (dir) {
             case NORTH:
