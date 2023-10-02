@@ -2,6 +2,7 @@ package config;
 
 public record Cell(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, Cell.Content initialContent) {
     public enum Content { NOTHING, DOT, ENERGIZER}
+
     // FIXME: all these factories are convenient, but it is not very "economic" to have so many methods!
     public static Cell open(Content c) { return new Cell(false, false, false, false, c); }
     public static Cell closed(Content c) { return new Cell(true, true, false, false, c); }
@@ -24,4 +25,7 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
     public static Cell sTee(Content c) { return new Cell(false, false, true, false, c); }
     public static Cell wTee(Content c) { return new Cell(false, false, false, true, c); }
 
+    public static Cell createCell(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, Cell.Content initialContent){
+        return new Cell(northWall, eastWall, southWall, westWall, initialContent);
+    }
 }
