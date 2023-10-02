@@ -50,7 +50,7 @@ public class PlayingState implements State {
     }
 
     public void process(long deltaT) {
-       
+       System.out.println(deltaT);
     }
 
     public void exit() {
