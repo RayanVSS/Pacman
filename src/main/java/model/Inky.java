@@ -11,6 +11,7 @@ public class Inky implements Critter {
     private MazeState mazeState;
 
     public Inky(RealCoordinates initialPos, double initialSpeed, MazeState mazeState) {
+        //Cette methode initialise Inky
         pos = initialPos;
         direction = Direction.NONE;
         speed = initialSpeed;
@@ -44,6 +45,7 @@ public class Inky implements Critter {
 
     @Override
     public RealCoordinates nextPos(long deltaTNanoSeconds) {
+        //Cette methode permet de donner la prochaine position de Inky
         RealCoordinates PacManPos = PacMan.INSTANCE.getPos();
         Direction newDirection = bestDirection(PacManPos);
         setDirection(newDirection);
@@ -52,6 +54,8 @@ public class Inky implements Critter {
     }
 
     private Direction bestDirection(RealCoordinates pacManPos) {
+        //Cette méthode permet de donne une direction d'une manière intelligente (méthode du backtracking)
+        // Elle comparera tous les chemins possible pour que Inky accede le plus rapidement à l'endroit ou ce trouve le pacman
         RealCoordinates inkyPos = getPos();
         List<Direction> possibleDirections = List.of(
                 Direction.NORTH,
@@ -76,12 +80,15 @@ public class Inky implements Critter {
     }
 
     public static double distance(RealCoordinates point1, RealCoordinates point2) {
+        //Cette méthode permet de donner la distance entre deux coordonnées
         double deltaX = point1.x() - point2.x();
         double deltaY = point1.y() - point2.y();
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
+    
 
     private RealCoordinates DirectionToRealCoordinates(Direction dir) {
+        //Cette méthode permet de transformer une direction en coordonnées
         switch (dir) {
             case NORTH:
                 return RealCoordinates.NORTH_UNIT;
