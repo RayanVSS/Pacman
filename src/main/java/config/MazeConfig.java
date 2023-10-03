@@ -5,6 +5,7 @@ import geometry.IntCoordinates;
 import static config.Cell.Content.DOT;
 import static config.Cell.*;
 import static config.Cell.Content.NOTHING;
+import static config.Cell.createCell;
 
 public class MazeConfig {
     public MazeConfig(Cell[][] grid, IntCoordinates pacManPos, IntCoordinates blinkyPos, IntCoordinates pinkyPos,

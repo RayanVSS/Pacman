@@ -1,4 +1,4 @@
-package gui;
+package gui.Controller;
 
 import model.Direction;
 import model.PacMan;

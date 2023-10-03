@@ -2,7 +2,7 @@ package model;
 
 import geometry.RealCoordinates;
 
-public sealed interface Critter permits Ghost, PacMan, Blinky {
+public sealed interface Critter permits Ghost, PacMan, Blinky , Inky {
     RealCoordinates getPos();
 
     Direction getDirection();
