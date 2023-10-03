@@ -2,11 +2,6 @@ package config;
 
 import geometry.IntCoordinates;
 
-import static config.Cell.Content.DOT;
-import static config.Cell.*;
-import static config.Cell.Content.NOTHING;
-import static config.Cell.createCell;
-
 public class MazeConfig {
     public MazeConfig(Cell[][] grid, IntCoordinates pacManPos, IntCoordinates blinkyPos, IntCoordinates pinkyPos,
                       IntCoordinates inkyPos, IntCoordinates clydePos) {
@@ -58,7 +53,6 @@ public class MazeConfig {
 
 
     // simple example with a square shape
-    // TODO: mazes should be loaded from a text file
     public static MazeConfig makeExample1() {
         return new MazeConfig(MazeLoad.make(),
                 new IntCoordinates(3, 0),
