@@ -120,6 +120,9 @@ public final class MazeState {
         displayScore();
     }
 
+
+
+
     private void displayScore() {
         System.out.println("Score: " + score);
     }
@@ -127,6 +130,7 @@ public final class MazeState {
     private void playerLost() {
         // FIXME: this should be displayed in the JavaFX view, not in the console. A game over screen would be nice too.
         lives--;
+        PlayingState.life_graphics.setText("" + lives);
         if (lives == 0) {
             System.out.println("Game over!");
             System.exit(0);
