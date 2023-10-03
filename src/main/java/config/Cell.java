@@ -25,7 +25,32 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
     public static Cell sTee(Content c) { return new Cell(false, false, true, false, c); }
     public static Cell wTee(Content c) { return new Cell(false, false, false, true, c); }
 
-    public static Cell createCell(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, Cell.Content initialContent){
-        return new Cell(northWall, eastWall, southWall, westWall, initialContent);
+    public static Cell withContent(String type, String value) {
+        Content content = switch (value) {
+            case "." -> Content.DOT;
+            case "ENERGIZER" -> Content.ENERGIZER;
+            default -> Content.NOTHING;
+        };
+
+        return switch (type) {
+            case "open" -> open(content);
+            case "closed" -> closed(content);
+            case "hPipe" -> hPipe(content);
+            case "vPipe" -> vPipe(content);
+            case "swVee" -> swVee(content);
+            case "nwVee" -> nwVee(content);
+            case "neVee" -> neVee(content);
+            case "seVee" -> seVee(content);
+            case "nU" -> nU(content);
+            case "eU" -> eU(content);
+            case "sU" -> sU(content);
+            case "wU" -> wU(content);
+            case "nTee" -> nTee(content);
+            case "eTee" -> eTee(content);
+            case "sTee" -> sTee(content);
+            case "wTee" -> wTee(content);
+            default -> throw new IllegalStateException("Valeur non trouvée: " + value);
+        };
     }
+
 }
