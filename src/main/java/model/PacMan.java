@@ -1,5 +1,7 @@
 package model;
 
+import lib.Vector2D;
+
 import geometry.RealCoordinates;
 
 /**
@@ -7,6 +9,7 @@ import geometry.RealCoordinates;
  */
 public final class PacMan implements Critter {
     private Direction direction = Direction.NONE;
+    private Vector2D velocity = new Vector2D(0,0);
     private RealCoordinates pos;
     private boolean energized;
 
@@ -51,5 +54,15 @@ public final class PacMan implements Critter {
 
     public void setEnergized(boolean energized) {
         this.energized = energized;
+    }
+
+    public void setVelocity(){
+        switch (direction){
+            case NONE : velocity.set(0, 0);
+            case NORTH : velocity.set(0,getSpeed());
+            case SOUTH : velocity.set(0, - getSpeed());
+            case WEST : velocity.set(- getSpeed(), 0);
+            case EAST : velocity.set(getSpeed(), 0);
+        }
     }
 }
