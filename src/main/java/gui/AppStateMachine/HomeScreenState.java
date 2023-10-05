@@ -2,7 +2,6 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.HomeScreenController;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,8 +11,8 @@ import lib.State;
 public class HomeScreenState implements State {
     private String state_name = "Home Screen State";
     private static final HomeScreenState instance = new HomeScreenState();
-    StackPane pane = new StackPane(); // Utilise StackPane pour centrer l'image
-    Scene start_menu = new Scene(pane);
+   
+    StackPane start_menu = new StackPane(); // Utilise StackPane pour centrer l'image
 
     private HomeScreenState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -38,17 +37,19 @@ public class HomeScreenState implements State {
         view.setPreserveRatio(true);
         start_button.setGraphic(view);
 
-        pane.setPrefSize(400, 300);
-        pane.setStyle("-fx-background-color: black;"); // Définir la couleur de fond du StackPane
+        start_menu.setPrefSize(400, 300);
+        start_menu.setStyle("-fx-background-color: black;"); // Définir la couleur de fond du StackPane
 
         // Ajoute le label avec l'image au StackPane
-        pane.getChildren().add(start_button);
+        start_menu.getChildren().add(start_button);
 
         var homeScreenController = new HomeScreenController();
         start_menu.setOnKeyPressed(homeScreenController::keyPressedHandler);
 
-        App.pStage.setScene(start_menu);
-        App.pStage.setFullScreen(true);
+        App.screen.setRoot(start_menu);
+
+        start_menu.requestFocus();
+
         App.pStage.show();
     }
 

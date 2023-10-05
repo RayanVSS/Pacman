@@ -1,6 +1,5 @@
 package gui.AppStateMachine;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
@@ -16,6 +15,9 @@ import lib.State;
 
 public class PlayingState extends App implements State {
     private String state_name = "Playing State";
+
+    Pane game_screen = new Pane();
+    
     public static Label score_graphics = new Label("" + 0);
 
     public static Label life_graphics = new Label("" + 3);
@@ -37,7 +39,6 @@ public class PlayingState extends App implements State {
     }
 
     public void enter() {
-        var root = new Pane();
 
         score_graphics.setTextAlignment(TextAlignment.LEFT);
         score_graphics.setFont(App.text_graphics);
@@ -56,23 +57,24 @@ public class PlayingState extends App implements State {
         life_graphics.setTranslateX(532);
         life_graphics.setTranslateY(-1);
 
-        root.getChildren().add(score_graphics);
-        root.getChildren().add(life_graphics);
+        game_screen.getChildren().add(score_graphics);
+        game_screen.getChildren().add(life_graphics);
 
-        var gameScene = new Scene(root);
+        App.screen.setRoot(game_screen);
+
         var pacmanController = new PacmanController();
-        gameScene.setOnKeyPressed(pacmanController::keyPressedHandler);
-        gameScene.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        var gameView = new GameView(maze, root, 100.0);
-        App.pStage.setScene(gameScene);
-        App.pStage.show();
-        gameView.animate();
+        App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
+        App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
+        var gameView = new GameView(maze, game_screen, 50.0);
+
         score_graphics.toFront(); //Met le score par dessus le reste des éléments
         life_graphics.toFront();
+
+        gameView.animate();
     }
 
     public void process(long deltaT) {
-       System.out.println(deltaT);
+       
     }
 
     public void exit() {
