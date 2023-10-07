@@ -54,7 +54,7 @@ public class HomeScreenState implements State {
     }
 
     public void process(long deltaT) {
-        System.out.println("Dans le HomeScreen");
+        
     }
 
     public void exit() {
