@@ -23,11 +23,8 @@ public class PacmanController {
         }
         System.out.println("3 : " + PacMan.INSTANCE.getDirection());
         System.out.println(config.canMoveInDirection(currentDirection, PacMan.INSTANCE.getPos().round()));
-        // if(config.canMoveInDirection(currentDirection, PacMan.INSTANCE.getPos().round())){
-        //    PacMan.INSTANCE.setDirection(newDirection);
-        //    currentDirection = newDirection;
-        // }
     }
+    
     public void keyReleasedHandler(KeyEvent event) {
         // Nothing to do?
     }
