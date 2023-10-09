@@ -39,6 +39,10 @@ public record RealCoordinates(double x, double y) {
         return new IntCoordinates((int) Math.round(x), (int) Math.round(y));
     }
 
+    public IntCoordinates floor(){
+        return new IntCoordinates((int) Math.floor(x), (int) Math.floor(y));
+    }
+
     public RealCoordinates floorX() {
         return new RealCoordinates((int) Math.floor(x), y);
     }
