@@ -1,12 +1,12 @@
 {
     "maze": [
       [
-        {"type": "nTee", "value": "."},
+        {"type": "seVee", "value": "."},
         {"type": "hPipe", "value": "."},
         {"type": "hPipe", "value": "."},
         {"type": "hPipe", "value": "."},
         {"type": "hPipe", "value": "."},
-        {"type": "nTee", "value": "."}
+        {"type": "swVee", "value": "."}
       ],
       [
         {"type": "vPipe", "value": "."},

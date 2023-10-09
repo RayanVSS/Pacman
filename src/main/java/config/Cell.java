@@ -1,4 +1,5 @@
 package config;
+import model.Direction;
 
 public record Cell(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, Cell.Content initialContent) {
     public enum Content { NOTHING, DOT, ENERGIZER}
@@ -53,4 +54,31 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
         };
     }
 
+    public boolean canMoveInDirection(Direction newDirection){
+        switch(newDirection){
+            case NORTH -> {
+                if(northWall) return false;
+                return true;
+            }
+
+            case SOUTH -> {
+                if(southWall) return false;
+                return true;
+            }
+
+            case EAST -> {
+                if(eastWall) return false;
+                return true;
+            }
+            
+            case WEST -> {
+                if(westWall) return false;
+                return true;
+            }
+
+            default -> {
+                return false;
+            }
+        }
+    }
 }

@@ -52,6 +52,11 @@ public final class MazeState {
         return height;
     }
 
+    public boolean canMoveInDirection(Direction direction, IntCoordinates pos){
+        if(config.getCell(pos).canMoveInDirection(direction)) return true;
+        return false;
+    }
+
     public void update(long deltaTns) {
         // FIXME: too many things in this method. Maybe some responsibilities can be delegated to other methods or classes?
         for  (var critter: critters) {
