@@ -57,21 +57,11 @@ public class PlayingState extends App implements State {
         App.screen.setRoot(game_screen);
     
         var pacmanController = new PacmanController();
-<<<<<<< src/main/java/gui/AppStateMachine/PlayingState.java
-        gameScene.setOnKeyPressed(pacmanController::keyPressedHandler);
-        gameScene.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        var gameView = new GameView(maze, root, 45.0);
-        App.pStage.setScene(gameScene);
-        App.pStage.show();
-        gameView.animate();
-        score_graphics.toFront(); //Met le score par dessus le reste des éléments
-=======
         App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
         App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        var gameView = new GameView(maze, game_screen, 45.0);
+        var gameView = new GameView(maze, game_screen, 100.0);
     
         score_graphics.toFront(); // Met le score par-dessus le reste des éléments
->>>>>>> src/main/java/gui/AppStateMachine/PlayingState.java
         life_graphics.toFront();
     
         // Life_graphics dans la partie inférieure du BorderPane
