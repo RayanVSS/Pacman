@@ -56,7 +56,7 @@ public final class MazeState {
         // FIXME: too many things in this method. Maybe some responsibilities can be delegated to other methods or classes?
         for  (var critter: critters) {
             var curPos = critter.getPos();
-            var nextPos = critter.nextPos(deltaTns);
+            var nextPos = critter.nextPos(deltaTns,config);
             var curNeighbours = curPos.intNeighbours();
             var nextNeighbours = nextPos.intNeighbours();
             if (!curNeighbours.containsAll(nextNeighbours)) { // the critter would overlap new cells. Do we allow it?
