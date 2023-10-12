@@ -53,7 +53,7 @@ public enum Ghost implements Critter {
 
     @Override
     public double getSpeed() {
-        if (this == INKY) {
+        if (this == PINKY) {
             return 3E-2;
         }
         return 0;
