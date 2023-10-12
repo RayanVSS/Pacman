@@ -42,7 +42,7 @@ public final class Blinky implements Critter {
 
     // Méthode pour mettre à jour la position de Blinky
     @Override
-    public RealCoordinates nextPos(long deltaTNanoSeconds) {
+    public RealCoordinates nextPos(long deltaTNanoSeconds,MazeConfig config) {
         return getPos().plus((switch (getDirection()) {
             case NONE -> RealCoordinates.ZERO;
             case NORTH -> RealCoordinates.NORTH_UNIT;
