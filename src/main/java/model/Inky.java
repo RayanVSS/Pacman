@@ -1,79 +1,60 @@
 package model;
 
+import config.MazeConfig;
 import geometry.RealCoordinates;
-import java.util.List;
 
-public final class Inky implements Critter {
+public class Inky {
 
-    private RealCoordinates pos;
-    private Direction direction;
-    private double speed;
-    private MazeState mazeState;
-
-    public Inky(RealCoordinates initialPos, double initialSpeed, MazeState mazeState) {
-        pos = initialPos;
-        direction = Direction.NONE;
-        speed = initialSpeed;
-        this.mazeState = mazeState;
-    }
-
-    @Override
-    public RealCoordinates getPos() {
-        return pos;
-    }
-
-    @Override
-    public void setPos(RealCoordinates newPos) {
-        pos = newPos;
-    }
-
-    @Override
-    public void setDirection(Direction newDirection) {
-        direction = newDirection;
-    }
-
-    @Override
-    public Direction getDirection() {
-        return direction;
-    }
-
-    @Override
-    public double getSpeed() {
-        return speed;
-    }
-
-    @Override
-    public RealCoordinates nextPos(long deltaTNanoSeconds) {
-        RealCoordinates PacManPos = PacMan.INSTANCE.getPos();
-        Direction newDirection = bestDirection(PacManPos);
-        setDirection(newDirection);
-        RealCoordinates nextPos = getPos().plus(DirectionToRealCoordinates(newDirection))
-                .times(getSpeed() * deltaTNanoSeconds * 1E-9);
-        return nextPos;
-    }
-
-    private Direction bestDirection(RealCoordinates pacManPos) {
-        RealCoordinates inkyPos = getPos();
-        List<Direction> possibleDirections = List.of(
+    public static Direction nexDirectionInky(Ghost INKY, Critter PacMan, MazeConfig config) {
+        RealCoordinates PacManPos = PacMan.getPos();
+        RealCoordinates inkyPos = INKY.getPos();
+        Direction[] possibleDirections = {
                 Direction.NORTH,
                 Direction.EAST,
                 Direction.SOUTH,
-                Direction.WEST);
-        Direction mDirection = Direction.NONE;
-        double minDistance = Double.MAX_VALUE;
-
+                Direction.WEST };
+        double[] tabDistance = new double[4];
+        int i = 0;
         for (Direction dir : possibleDirections) {
-            RealCoordinates newPos = inkyPos.plus(DirectionToRealCoordinates(mDirection).times(getSpeed() * 1E-9));
+            RealCoordinates newPos = inkyPos
+                    .plus(DirectionToRealCoordinates(dir).times(INKY.getSpeed()))
+                    .warp(config.getWidth(), config.getHeight());
 
-            double distance = distance(newPos, pacManPos);
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                mDirection = dir;
-            }
+            double distance = distance(newPos, PacManPos);
+            tabDistance[i] = distance;
+            i += 1;
         }
+        return tri(possibleDirections, tabDistance)[0];
+    }
 
-        return mDirection;
+    public static Direction mDirection(Direction[] tab, MazeConfig config, Ghost INKY) {
+        for (Direction dir : tab) {
+            RealCoordinates newPos = INKY.getPos()
+                    .plus(DirectionToRealCoordinates(dir).times(INKY.getSpeed()))
+                    .warp(config.getWidth(), config.getHeight());
+
+        }
+        return Direction.NONE;
+    }
+
+    public static Direction[] tri(Direction[] directions, double[] distances) {
+        int n = distances.length;
+        Direction[] tab = new Direction[n];
+        for (int i = 1; i < n; i++) {
+            Direction currentDirection = directions[i];
+            double currentDistance = distances[i];
+            int j = i - 1;
+
+            while (j >= 0 && distances[j] > currentDistance) {
+                directions[j + 1] = directions[j];
+                distances[j + 1] = distances[j];
+                j--;
+            }
+
+            directions[j + 1] = currentDirection;
+            distances[j + 1] = currentDistance;
+        }
+        return directions;
     }
 
     public static double distance(RealCoordinates point1, RealCoordinates point2) {
@@ -83,7 +64,7 @@ public final class Inky implements Critter {
     }
 
     // Méthode utilitaire pour convertir une direction en coordonnées
-    private RealCoordinates DirectionToRealCoordinates(Direction dir) {
+    public static RealCoordinates DirectionToRealCoordinates(Direction dir) {
         switch (dir) {
             case NORTH:
                 return RealCoordinates.NORTH_UNIT;
