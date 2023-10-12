@@ -1,5 +1,6 @@
 package model;
 
+import config.MazeConfig;
 import geometry.RealCoordinates;
 
 
