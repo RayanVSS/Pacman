@@ -17,7 +17,7 @@ public final class CritterGraphicsFactory {
 
     public GraphicsUpdater makeGraphics(Critter critter) {
         var size = 0.7;
-        var url = (critter instanceof PacMan) ? "pacman.png" :
+        var url = (critter instanceof PacMan) ? "pac-man-fortnite.gif" :
                 switch ((Ghost) critter) {
                     case BLINKY -> "ghost_blinky.png";
                     case CLYDE -> "ghost_clyde.png";
