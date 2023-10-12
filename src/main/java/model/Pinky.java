@@ -5,7 +5,7 @@ import geometry.RealCoordinates;
 
 public class Pinky {
 
-    public static Direction nexDirectionInky(Ghost PINKY, Critter PacMan, MazeConfig config) {
+    public static Direction nexDirectionPinky(Ghost PINKY, Critter PacMan, MazeConfig config) {
         RealCoordinates PacManPos = PacMan.getPos();
         RealCoordinates pinkyPos = PINKY.getPos();
         Direction[] possibleDirections = {
