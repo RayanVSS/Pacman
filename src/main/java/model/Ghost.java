@@ -27,7 +27,7 @@ public enum Ghost implements Critter {
     @Override
     public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
         if (this == PINKY) {
-            Direction d = Pinky.nexDirectionInky(PINKY, PacMan.INSTANCE, config);
+            Direction d = Pinky.nexDirectionPinky(PINKY, PacMan.INSTANCE, config);
             setDirection(d);
             setPos(getPos().plus(Pinky.DirectionToRealCoordinates(d).times(getSpeed())));
             return pos;
