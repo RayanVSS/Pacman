@@ -59,7 +59,7 @@ public class PlayingState extends App implements State {
         var pacmanController = new PacmanController();
         App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
         App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        var gameView = new GameView(maze, game_screen, 100.0);
+        var gameView = new GameView(maze, game_screen, 40);
     
         score_graphics.toFront(); // Met le score par-dessus le reste des éléments
         life_graphics.toFront();

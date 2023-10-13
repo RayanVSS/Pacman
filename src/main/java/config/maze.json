@@ -1,52 +1,36 @@
 {
-    "maze": [
-      [
-        {"type": "nTee", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "nTee", "value": "."}
-      ],
-      [
-        {"type": "vPipe", "value": "."},
-        {"type": "seVee", "value": " "},
-        {"type": "nTee", "value": " "},
-        {"type": "nTee", "value": " "},
-        {"type": "swVee", "value": " "},
-        {"type": "vPipe", "value": "."}
-      ],
-      [
-        {"type": "vPipe", "value": "."},
-        {"type": "wTee", "value": " "},
-        {"type": "open", "value": " "},
-        {"type": "open", "value": " "},
-        {"type": "eTee", "value": " "},
-        {"type": "vPipe", "value": "."}
-      ],
-      [
-        {"type": "vPipe", "value": "."},
-        {"type": "wTee", "value": " "},
-        {"type": "open", "value": " "},
-        {"type": "open", "value": " "},
-        {"type": "eTee", "value": " "},
-        {"type": "vPipe", "value": "."}
-      ],
-      [
-        {"type": "vPipe", "value": "."},
-        {"type": "neVee", "value": " "},
-        {"type": "sTee", "value": " "},
-        {"type": "sTee", "value": " "},
-        {"type": "nwVee", "value": " "},
-        {"type": "vPipe", "value": "."}
-      ],
-      [
-        {"type": "neVee", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "hPipe", "value": "."},
-        {"type": "nwVee", "value": "."}
-      ]
+    "maze": [[
+      ["hPipe", "hPipe", "open", "hPipe", "hPipe", "hPipe", "hPipe", "hPipe", "hPipe", "hPipe", "hPipe", "hPipe", "hPipe", "closed"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "wTee", "vPipe", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "hPipe", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"]
+    ],
+    [
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]
+    ]
+      
     ]
   }
