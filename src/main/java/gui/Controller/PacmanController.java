@@ -7,7 +7,7 @@ import gui.AppStateMachine.PlayingState;
 import javafx.scene.input.KeyEvent;
 
 public class PacmanController {
-    private Direction currentDirection;
+    public static Direction currentDirection = Direction.NONE;
     public static Direction nextDirection = Direction.NONE;
     private MazeState config = PlayingState.maze;
 

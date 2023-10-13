@@ -71,6 +71,7 @@ public final class MazeState {
                         for (var n: curNeighbours) if (config.getCell(n).northWall()) {
                             nextPos = curPos.floorY();
                             critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
                             PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
@@ -79,6 +80,7 @@ public final class MazeState {
                         for (var n: curNeighbours) if (config.getCell(n).eastWall()) {
                             nextPos = curPos.ceilX();
                             critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
                             PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
@@ -87,6 +89,7 @@ public final class MazeState {
                         for (var n: curNeighbours) if (config.getCell(n).southWall()) {
                             nextPos = curPos.ceilY();
                             critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
                             PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
@@ -95,6 +98,7 @@ public final class MazeState {
                         for (var n: curNeighbours) if (config.getCell(n).westWall()) {
                             nextPos = curPos.floorX();
                             critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
                             PacmanController.nextDirection = Direction.NONE;
                             break;
                         }

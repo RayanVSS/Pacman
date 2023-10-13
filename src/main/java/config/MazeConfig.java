@@ -56,10 +56,10 @@ public class MazeConfig {
     public static MazeConfig makeExample1() {
         return new MazeConfig(MazeLoad.make(),
                 new IntCoordinates(3, 0),
-                new IntCoordinates(0, 3),
-                new IntCoordinates(3, 5),
-                new IntCoordinates(5, 5),
-                new IntCoordinates(5, 1)
+                new IntCoordinates(0, 0),
+                new IntCoordinates(0, 0),
+                new IntCoordinates(0, 0),
+                new IntCoordinates(0, 0)
         );
     }
 }
