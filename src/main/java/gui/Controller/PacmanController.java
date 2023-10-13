@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 
 public class PacmanController {
     private Direction currentDirection;
+    public static Direction nextDirection = Direction.NONE;
     private MazeState config = PlayingState.maze;
 
     public void keyPressedHandler(KeyEvent event) {
@@ -20,6 +21,7 @@ public class PacmanController {
         }
         else{
             PacMan.INSTANCE.setDirection(currentDirection);
+            nextDirection = newDirection;
         }
         System.out.println("3 : " + PacMan.INSTANCE.getDirection());
         System.out.println(config.canMoveInDirection(currentDirection, PacMan.INSTANCE.getPos().round()));

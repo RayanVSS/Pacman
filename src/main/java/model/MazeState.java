@@ -4,6 +4,7 @@ import config.MazeConfig;
 import geometry.IntCoordinates;
 import geometry.RealCoordinates;
 import gui.AppStateMachine.PlayingState;
+import gui.Controller.PacmanController;
 
 import java.util.List;
 import java.util.Map;
@@ -69,28 +70,32 @@ public final class MazeState {
                     case NORTH -> {
                         for (var n: curNeighbours) if (config.getCell(n).northWall()) {
                             nextPos = curPos.floorY();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
                     case EAST -> {
                         for (var n: curNeighbours) if (config.getCell(n).eastWall()) {
                             nextPos = curPos.ceilX();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
                     case SOUTH -> {
                         for (var n: curNeighbours) if (config.getCell(n).southWall()) {
                             nextPos = curPos.ceilY();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
                     case WEST -> {
                         for (var n: curNeighbours) if (config.getCell(n).westWall()) {
                             nextPos = curPos.floorX();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
