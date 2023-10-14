@@ -69,37 +69,56 @@ public final class MazeState {
                 switch (critter.getDirection()) {
                     case NORTH -> {
                         for (var n: curNeighbours) if (config.getCell(n).northWall()) {
+                            if(critter instanceof PacMan) System.out.println("mur du nord");
                             nextPos = curPos.floorY();
-                            critter.setDirection(PacmanController.nextDirection);
-                            PacmanController.currentDirection = PacmanController.nextDirection;
-                            PacmanController.nextDirection = Direction.NONE;
+                            if(critter instanceof PacMan){
+                                critter.setDirection(PacmanController.nextDirection);
+                                PacmanController.currentDirection = PacmanController.nextDirection;
+                                PacmanController.nextDirection = Direction.NONE;
+                            }
+                            else critter.setDirection(Direction.NONE);
                             break;
                         }
                     }
                     case EAST -> {
                         for (var n: curNeighbours) if (config.getCell(n).eastWall()) {
+                            if(critter instanceof PacMan){
+                                System.out.println("mur de l'est");
+                                System.out.println(PacmanController.nextDirection);
+                            }
                             nextPos = curPos.ceilX();
-                            critter.setDirection(PacmanController.nextDirection);
-                            PacmanController.currentDirection = PacmanController.nextDirection;
-                            PacmanController.nextDirection = Direction.NONE;
+                            if(critter instanceof PacMan){
+                                critter.setDirection(PacmanController.nextDirection);
+                                PacmanController.currentDirection = PacmanController.nextDirection;
+                                PacmanController.nextDirection = Direction.NONE;
+                            }
+                            else critter.setDirection(Direction.NONE);
                             break;
                         }
                     }
                     case SOUTH -> {
                         for (var n: curNeighbours) if (config.getCell(n).southWall()) {
+                            if(critter instanceof PacMan) System.out.println("mur du sud");
                             nextPos = curPos.ceilY();
-                            critter.setDirection(PacmanController.nextDirection);
-                            PacmanController.currentDirection = PacmanController.nextDirection;
-                            PacmanController.nextDirection = Direction.NONE;
+                            if(critter instanceof PacMan){
+                                critter.setDirection(PacmanController.nextDirection);
+                                PacmanController.currentDirection = PacmanController.nextDirection;
+                                PacmanController.nextDirection = Direction.NONE;
+                            }
+                            else critter.setDirection(Direction.NONE);
                             break;
                         }
                     }
                     case WEST -> {
                         for (var n: curNeighbours) if (config.getCell(n).westWall()) {
+                            if(critter instanceof PacMan) System.out.println("mur de l'ouest");
                             nextPos = curPos.floorX();
-                            critter.setDirection(PacmanController.nextDirection);
-                            PacmanController.currentDirection = PacmanController.nextDirection;
-                            PacmanController.nextDirection = Direction.NONE;
+                            if(critter instanceof PacMan){
+                                critter.setDirection(PacmanController.nextDirection);
+                                PacmanController.currentDirection = PacmanController.nextDirection;
+                                PacmanController.nextDirection = Direction.NONE;
+                            }
+                            else critter.setDirection(Direction.NONE);
                             break;
                         }
                     }

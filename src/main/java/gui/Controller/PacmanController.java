@@ -24,6 +24,7 @@ public class PacmanController {
             nextDirection = newDirection;
         }
         System.out.println("3 : " + PacMan.INSTANCE.getDirection());
+        System.out.println("4 : " + nextDirection);
         System.out.println(config.canMoveInDirection(currentDirection, PacMan.INSTANCE.getPos().round()));
     }
     
