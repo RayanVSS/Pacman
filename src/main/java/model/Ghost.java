@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 import config.MazeConfig;
 import geometry.RealCoordinates;
 
@@ -27,18 +25,30 @@ public enum Ghost implements Critter {
     @Override
     public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
         if (this == PINKY) {
-            Direction d = Pinky.nexDirectionPinky(PINKY, PacMan.INSTANCE, config);
+            Direction d = Pinky.nextDirection(PINKY, PacMan.INSTANCE, config);
             setDirection(d);
-            setPos(getPos().plus(Pinky.DirectionToRealCoordinates(d).times(getSpeed())));
+            setPos(getPos().plus(outilghost.DirectionToRealCoordinates(d).times(getSpeed())));
             return pos;
+        } else if (this == CLYDE) {
+            Direction d = Clyde.nextDirection(config, CLYDE, PacMan.INSTANCE);
+            setDirection(d);
+            setPos(getPos().plus(outilghost.DirectionToRealCoordinates(d).times(getSpeed())));
+            return pos;
+        } else if (this == INKY) {
+            Direction d = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE, config);
+            setDirection(d);
+            setPos(getPos().plus(outilghost.DirectionToRealCoordinates(d).times(getSpeed())));
+            return pos;
+        } else {
+            /*
+             * Direction d = Blinky.nextDirection(BLINKY, PacMan.INSTANCE, config);
+             * setDirection(d);
+             * setPos(getPos().plus(outilghost.DirectionToRealCoordinates(d).times(getSpeed(
+             * ))));
+             * return pos;
+             */
         }
-        return getPos().plus((switch (getDirection()) {
-            case NONE -> RealCoordinates.ZERO;
-            case NORTH -> RealCoordinates.NORTH_UNIT;
-            case EAST -> RealCoordinates.EAST_UNIT;
-            case SOUTH -> RealCoordinates.SOUTH_UNIT;
-            case WEST -> RealCoordinates.WEST_UNIT;
-        }).times(getSpeed() * deltaTNanoSeconds * 1E-9));
+        return pos;
     }
 
     @Override
@@ -55,6 +65,9 @@ public enum Ghost implements Critter {
     public double getSpeed() {
         if (this == PINKY) {
             return 3E-2;
+        }
+        if (this == CLYDE) {
+            return 2E-2;
         }
         return 0;
 
