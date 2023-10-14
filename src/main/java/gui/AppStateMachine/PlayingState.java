@@ -24,7 +24,7 @@ public class PlayingState extends App implements State {
 
     private static final PlayingState instance = new PlayingState();
 
-    MazeState maze = new MazeState(MazeConfig.makeExample1());
+    public static MazeState maze = new MazeState(MazeConfig.makeExample1());
 
     private PlayingState() {
         // Constructeur privé pour empêcher la création d'autres instances

@@ -4,6 +4,7 @@ import config.MazeConfig;
 import geometry.IntCoordinates;
 import geometry.RealCoordinates;
 import gui.AppStateMachine.PlayingState;
+import gui.Controller.PacmanController;
 
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,11 @@ public final class MazeState {
         return height;
     }
 
+    public boolean canMoveInDirection(Direction direction, IntCoordinates pos){
+        if(config.getCell(pos).canMoveInDirection(direction)) return true;
+        return false;
+    }
+
     public void update(long deltaTns) {
         // FIXME: too many things in this method. Maybe some responsibilities can be delegated to other methods or classes?
         for  (var critter: critters) {
@@ -64,28 +70,36 @@ public final class MazeState {
                     case NORTH -> {
                         for (var n: curNeighbours) if (config.getCell(n).northWall()) {
                             nextPos = curPos.floorY();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
                     case EAST -> {
                         for (var n: curNeighbours) if (config.getCell(n).eastWall()) {
                             nextPos = curPos.ceilX();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
                     case SOUTH -> {
                         for (var n: curNeighbours) if (config.getCell(n).southWall()) {
                             nextPos = curPos.ceilY();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
                     case WEST -> {
                         for (var n: curNeighbours) if (config.getCell(n).westWall()) {
                             nextPos = curPos.floorX();
-                            critter.setDirection(Direction.NONE);
+                            critter.setDirection(PacmanController.nextDirection);
+                            PacmanController.currentDirection = PacmanController.nextDirection;
+                            PacmanController.nextDirection = Direction.NONE;
                             break;
                         }
                     }
