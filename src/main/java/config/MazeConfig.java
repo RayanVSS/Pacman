@@ -55,11 +55,11 @@ public class MazeConfig {
     // simple example with a square shape
     public static MazeConfig makeExample1() {
         return new MazeConfig(MazeLoad.make(),
-                new IntCoordinates(3, 0),
-                new IntCoordinates(0, 3),
-                new IntCoordinates(3, 5),
-                new IntCoordinates(5, 5),
-                new IntCoordinates(5, 1)
+                new IntCoordinates(3, 10),
+                new IntCoordinates(6, 6),
+                new IntCoordinates(8, 5),
+                new IntCoordinates(6, 5),
+                new IntCoordinates(8, 6)
         );
     }
 }
