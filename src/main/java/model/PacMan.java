@@ -65,4 +65,30 @@ public final class PacMan implements Critter {
             case EAST : velocity.set(getSpeed(), 0);
         }
     }
+
+    public void handlePacManPoints(MazeState maze) {
+        if (!maze.getGridState(pos.round())) {
+            maze.addScore(1);
+            maze.setGridState(true, pos.round().y(), pos.round().x());
+        }
+    }
+
+    public void handleCollisionsWithGhosts(MazeState maze) {
+        var pacPos = PacMan.INSTANCE.getPos().round();
+        for (var critter : maze.getCritters()) {
+            if (critter instanceof Ghost && critter.getPos().round().equals(pacPos)) {
+                handleGhostCollision(maze, (Ghost) critter);
+            }
+        }
+    }
+
+    private void handleGhostCollision(MazeState maze, Ghost ghost) {
+        if (isEnergized()) {
+            maze.addScore(10);
+            maze.resetCritter(ghost);
+        } else {
+            maze.playerLost();
+        }
+    }
+
 }
