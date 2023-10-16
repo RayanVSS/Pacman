@@ -3,8 +3,10 @@ package model;
 import config.MazeConfig;
 import geometry.IntCoordinates;
 import geometry.RealCoordinates;
+import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
+import gui.AppStateMachine.GameOverState;
 
 import java.util.List;
 import java.util.Map;
@@ -159,7 +161,7 @@ public final class MazeState {
         PlayingState.life_graphics.setText("" + lives);
         if (lives == 0) {
             System.out.println("Game over!");
-            System.exit(0);
+            App.app_state.changeState(GameOverState.getInstance());
         }
         System.out.println("Lives: " + lives);
         resetCritters();
