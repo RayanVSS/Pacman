@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import lib.State;
+import model.MazeState;
 
 public class GameOverState implements State {
     private String state_name = "Game Over";

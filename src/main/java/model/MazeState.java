@@ -155,8 +155,6 @@ public final class MazeState {
     }
 
     public void playerLost() {
-        // FIXME: this should be displayed in the JavaFX view, not in the console. A
-        // game over screen would be nice too.
         lives--;
         PlayingState.life_graphics.setText("" + lives);
         if (lives == 0) {
@@ -191,5 +189,18 @@ public final class MazeState {
 
     public void setGridState(boolean b, int y, int x) {
         gridState[y][x] = b;
+    }
+
+    public int getLives(){
+        return lives;
+    }
+
+    public void setLives(int l){
+        lives = l;
+        PlayingState.life_graphics.setText("" + lives);
+    }
+
+    public static void resetScore(){
+        score = 0;
     }
 }

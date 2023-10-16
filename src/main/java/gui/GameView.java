@@ -15,6 +15,8 @@ public class GameView {
 
     private final List<GraphicsUpdater> graphicsUpdaters;
 
+    private AnimationTimer animationTimer;
+
     private void addGraphics(GraphicsUpdater updater) {
         gameRoot.getChildren().add(updater.getNode());
         graphicsUpdaters.add(updater);
@@ -42,7 +44,7 @@ public class GameView {
     }
 
     public void animate() {
-        new AnimationTimer() {
+        animationTimer = new AnimationTimer() {
             long last = 0;
 
             @Override
@@ -58,6 +60,11 @@ public class GameView {
                 }
                 last = now;
             }
-        }.start();
+        };
+        animationTimer.start();
+    }
+
+    public void stop(){
+        animationTimer.stop();
     }
 }
