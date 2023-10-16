@@ -67,7 +67,7 @@ public class PlayingState extends App implements State {
         gameView = new GameView(maze, game_screen, 40);
     
         score_graphics.toFront(); // Met le score par-dessus le reste des éléments
-        life_graphics.toFront();
+        life_graphics.toFront(); // Met l'affichage des vies par-dessus le reste des éléments
     
         // Life_graphics dans la partie inférieure du BorderPane
         game_screen.setBottom(life_graphics);

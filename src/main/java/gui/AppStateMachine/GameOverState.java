@@ -5,14 +5,15 @@ import gui.Controller.GameOverController;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import lib.State;
 import model.MazeState;
+import javafx.scene.text.TextAlignment;;
 
 public class GameOverState implements State {
     private String state_name = "Game Over";
     private static final GameOverState instance = new GameOverState();
-    StackPane restart_menu = new StackPane();
+    BorderPane restart_menu = new BorderPane();
 
     private GameOverState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -35,15 +36,16 @@ public class GameOverState implements State {
 
         restart_button.setFont(App.text_graphics);
         restart_button.setTextFill(javafx.scene.paint.Color.WHITE);
+        restart_button.setTextAlignment(TextAlignment.LEFT);
 
         view.setPreserveRatio(true);
         restart_button.setGraphic(view);
 
-        restart_menu.setPrefSize(400, 300);
-        restart_menu.setStyle("-fx-background-color: black;"); // Définir la couleur de fond du StackPane
+        restart_menu.setPrefSize(300, 300);
+        restart_menu.setStyle("-fx-background-color: black;"); // Définir la couleur de fond du BorderPane
 
-        // Ajoute le label avec l'image au StackPane
-        restart_menu.getChildren().add(restart_button);
+        // Ajoute le label avec l'image au BorderPane
+        restart_menu.setCenter(restart_button);
 
         var GameOverController = new GameOverController();
         restart_menu.setOnKeyPressed(GameOverController::keyPressedHandler);
