@@ -21,12 +21,12 @@ public class MazeLoad {
             JSONArray type_list = maze.getJSONArray(0);
             JSONArray value_list = maze.getJSONArray(1);
 
-            //if the list are not a cube, throw an exception
+            // if the list are not a cube, throw an exception
             // for (int i = 0; i < type_list.length(); i++) {
             //     System.out.println(type_list.getJSONArray(i).length());
             //     System.out.println(value_list.getJSONArray(i).length());
             //     if (type_list.getJSONArray(i).length() != value_list.getJSONArray(i).length()) {
-            //         throw new IllegalStateException("Les listes ne sont pas des cubes");
+            //         throw new IllegalStateException("Les listes ne sont pas des carrés");
             //     }
             // }
 
