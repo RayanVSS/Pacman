@@ -3,8 +3,10 @@ package model;
 import config.MazeConfig;
 import geometry.IntCoordinates;
 import geometry.RealCoordinates;
+import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
+import gui.AppStateMachine.GameOverState;
 
 import java.util.List;
 import java.util.Map;
@@ -153,13 +155,11 @@ public final class MazeState {
     }
 
     public void playerLost() {
-        // FIXME: this should be displayed in the JavaFX view, not in the console. A
-        // game over screen would be nice too.
         lives--;
         PlayingState.life_graphics.setText("" + lives);
         if (lives == 0) {
             System.out.println("Game over!");
-            System.exit(0);
+            App.app_state.changeState(GameOverState.getInstance());
         }
         System.out.println("Lives: " + lives);
         resetCritters();
@@ -189,5 +189,18 @@ public final class MazeState {
 
     public void setGridState(boolean b, int y, int x) {
         gridState[y][x] = b;
+    }
+
+    public int getLives(){
+        return lives;
+    }
+
+    public void setLives(int l){
+        lives = l;
+        PlayingState.life_graphics.setText("" + lives);
+    }
+
+    public static void resetScore(){
+        score = 0;
     }
 }

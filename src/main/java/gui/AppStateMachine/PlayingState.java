@@ -24,7 +24,8 @@ public class PlayingState extends App implements State {
 
     private static final PlayingState instance = new PlayingState();
 
-    public static MazeState maze = new MazeState(MazeConfig.makeExample1());
+    public static MazeState maze;
+    public static GameView gameView;
 
     private PlayingState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -39,6 +40,10 @@ public class PlayingState extends App implements State {
     }
 
     public void enter() {
+
+        maze = new MazeState(MazeConfig.makeExample1());
+        MazeState.resetScore();
+        maze.setLives(3);
         score_graphics.setTextAlignment(TextAlignment.LEFT);
         score_graphics.setFont(App.text_graphics);
         score_graphics.setTextFill(javafx.scene.paint.Color.WHITE);
@@ -59,10 +64,10 @@ public class PlayingState extends App implements State {
         var pacmanController = new PacmanController();
         App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
         App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        var gameView = new GameView(maze, game_screen, 40);
+        gameView = new GameView(maze, game_screen, 40);
     
         score_graphics.toFront(); // Met le score par-dessus le reste des éléments
-        life_graphics.toFront();
+        life_graphics.toFront(); // Met l'affichage des vies par-dessus le reste des éléments
     
         // Life_graphics dans la partie inférieure du BorderPane
         game_screen.setBottom(life_graphics);
@@ -79,5 +84,7 @@ public class PlayingState extends App implements State {
 
     public void exit() {
 
+        gameView.stop();
+        game_screen.getChildren().clear();
     }
 }
