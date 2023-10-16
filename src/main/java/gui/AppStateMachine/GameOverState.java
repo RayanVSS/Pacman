@@ -31,8 +31,8 @@ public class GameOverState implements State {
         Label restart_button = new Label("Appuyer sur Entrer !");
         Image img = new Image(getClass().getResourceAsStream("/restart_button_temporaire.png"));
         ImageView view = new ImageView(img);
-        view.setFitHeight(500);
-        view.setFitWidth(500);
+        view.setFitHeight(800);
+        view.setFitWidth(800);
 
         restart_button.setFont(App.text_graphics);
         restart_button.setTextFill(javafx.scene.paint.Color.WHITE);
@@ -41,7 +41,7 @@ public class GameOverState implements State {
         view.setPreserveRatio(true);
         restart_button.setGraphic(view);
 
-        restart_menu.setPrefSize(300, 300);
+        restart_menu.setPrefSize(500, 500);
         restart_menu.setStyle("-fx-background-color: black;"); // Définir la couleur de fond du BorderPane
 
         // Ajoute le label avec l'image au BorderPane
