@@ -1,0 +1,36 @@
+{
+    "maze": [[
+      ["seVee", "nTee", "nTee", "nTee", "nTee", "nTee", "nTee", "nTee", "nTee", "nTee", "nTee", "nTee", "nTee", "closed"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["open", "open", "wTee", "vPipe", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["wTee", "open", "open", "open", "open", "open", "seVee", "open", "swVee", "open", "open", "open", "open", "eTee"],
+      ["wTee", "open", "open", "open", "open", "open", "neVee", "sTee", "nwVee", "open", "open", "sTee", "open", "eTee"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["open", "nU", "open", "eU", "hPipe", "open", "sU", "open", "wU", "open", "nTee", "open", "eTee", "open"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["wTee", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "open", "eTee"],
+      ["neVee", "closed", "open", "hPipe", "open", "vPipe", "open", "swVee", "open", "neVee", "open", "seVee", "open", "nwVee"]
+    ],
+    [
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", "", "", "", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", "", "", "", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+      [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]
+    ]
+      
+    ]
+  }
