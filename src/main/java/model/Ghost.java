@@ -69,6 +69,9 @@ public enum Ghost implements Critter {
         if (this == CLYDE) {
             return 2E-2;
         }
+        if (this == INKY) {
+            return 4E-2;
+        }
         return 0;
 
     }
