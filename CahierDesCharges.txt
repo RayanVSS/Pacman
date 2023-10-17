@@ -2,6 +2,9 @@ Cahier des charges du Pacman :
 
 Fonctionnalités à implémenter :
 
+Lien du google doc :
+https://docs.google.com/document/d/1mGC_1sDgAYYwZYTuZSQt_Q32JTQp9_GEQqUrBY-sPLo/edit?usp=sharing
+
 - Fonctionnement des supers pacgoms comme dans le jeu d'origine
 - Amélioration visuelle de l'UI
 - Jeu en plein écran, support de multiples résolutions
