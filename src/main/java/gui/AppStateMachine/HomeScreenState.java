@@ -2,9 +2,11 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.HomeScreenController;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import lib.State;
 
@@ -12,7 +14,7 @@ public class HomeScreenState implements State {
     private String state_name = "Home Screen State";
     private static final HomeScreenState instance = new HomeScreenState();
    
-    StackPane start_menu = new StackPane(); // Utilise StackPane pour centrer l'image
+    BorderPane start_menu = new BorderPane();
 
     private HomeScreenState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -26,10 +28,14 @@ public class HomeScreenState implements State {
         return state_name;
     }
 
-    public void enter() {
+    public Label createStartButton(){
         Label start_button = new Label("Appuyer sur Entrer !");
         Image img = new Image(getClass().getResourceAsStream("/start_button_temporaire.png"));
         ImageView view = new ImageView(img);
+
+        view.setFitHeight(100);
+        view.setFitWidth(200);
+        view.setPreserveRatio(true);
 
         start_button.setFont(App.text_graphics);
         start_button.setTextFill(javafx.scene.paint.Color.WHITE);
@@ -37,20 +43,25 @@ public class HomeScreenState implements State {
         view.setPreserveRatio(true);
         start_button.setGraphic(view);
 
-        start_menu.setPrefSize(400, 300);
-        start_menu.setStyle("-fx-background-color: black;"); // Définir la couleur de fond du StackPane
+        return start_button;
+    }
+
+    public void enter() {
+        start_menu.setStyle("-fx-background-color: black"); // Définir la couleur de fond du menu
+        start_menu.setPrefSize(App.screen.getWidth(), App.screen.getHeight() );
+
+        Label start_button = createStartButton();
+
+        StackPane centerPane = new StackPane(start_button);
+        centerPane.setAlignment(Pos.CENTER);
 
         // Ajoute le label avec l'image au StackPane
-        start_menu.getChildren().add(start_button);
+        start_menu.setCenter(centerPane);
 
         var homeScreenController = new HomeScreenController();
-        start_menu.setOnKeyPressed(homeScreenController::keyPressedHandler);
+        App.screen.setOnKeyPressed(homeScreenController::keyPressedHandler);
 
         App.screen.setRoot(start_menu);
-
-        start_menu.requestFocus();
-
-        App.pStage.show();
     }
 
     public void process(long deltaT) {

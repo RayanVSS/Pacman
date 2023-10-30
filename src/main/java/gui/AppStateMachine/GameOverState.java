@@ -7,7 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import lib.State;
-import model.MazeState;
 import javafx.scene.text.TextAlignment;;
 
 public class GameOverState implements State {
@@ -48,11 +47,9 @@ public class GameOverState implements State {
         restart_menu.setCenter(restart_button);
 
         var GameOverController = new GameOverController();
-        restart_menu.setOnKeyPressed(GameOverController::keyPressedHandler);
+        App.screen.setOnKeyPressed(GameOverController::keyPressedHandler);
 
         App.screen.setRoot(restart_menu);
-
-        restart_menu.requestFocus();
 
     }
     
