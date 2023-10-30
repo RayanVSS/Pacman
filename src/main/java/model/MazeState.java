@@ -7,12 +7,10 @@ import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
 import gui.AppStateMachine.GameOverState;
-import model.PacMan;
 
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.PrivateCredentialPermission;
 
 import static model.Ghost.*;
 
@@ -229,7 +227,7 @@ public final class MazeState {
 
     public void playerLost() {
         lives--;
-        PlayingState.life_graphics.setText("" + lives);
+        PlayingState.getInstance().life_graphics_update(lives);
         if (lives == 0) {
             System.out.println("Game over!");
             App.app_state.changeState(GameOverState.getInstance());
@@ -270,7 +268,7 @@ public final class MazeState {
 
     public void setLives(int l) {
         lives = l;
-        PlayingState.life_graphics.setText("" + lives);
+        PlayingState.getInstance().life_graphics_update(l);
     }
 
     public static void resetScore() {
