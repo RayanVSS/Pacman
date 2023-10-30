@@ -3,6 +3,7 @@ package gui.AppStateMachine;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import config.MazeConfig;
 import gui.App;
@@ -22,6 +23,9 @@ public class PlayingState extends App implements State {
     public static Label score_graphics = new Label("" + 0);
 
     public static HBox life_graphics = new HBox();
+
+    private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
+    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
 
     private static final PlayingState instance = new PlayingState();
 
@@ -44,7 +48,7 @@ public class PlayingState extends App implements State {
         Label score_graphics = new Label();
 
         score_graphics.setTextAlignment(TextAlignment.LEFT);
-        score_graphics.setFont(App.text_graphics);
+        score_graphics.setFont(pixel_font);
         score_graphics.setTextFill(javafx.scene.paint.Color.WHITE);
 
         return score_graphics;

@@ -6,7 +6,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -17,11 +16,7 @@ public class App extends Application {
     public static Scene screen = new Scene(root);
 
     public static AppState app_state = AppState.HOME_SCREEN;
-    // Définit les paramètres du texte de l'application
-    static final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
-    public static Font text_graphics = new Font(STYLESHEET_CASPIAN, MAX_FONT_SIZE); // TODO : modifier la police
-                                                                                    // d'écriture
-
+ 
     @Override
     public void start(Stage primaryStage) {
         pStage = primaryStage;

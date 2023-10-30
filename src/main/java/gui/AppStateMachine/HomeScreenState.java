@@ -7,12 +7,18 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import lib.State;
 
 public class HomeScreenState implements State {
     private String state_name = "Home Screen State";
     private static final HomeScreenState instance = new HomeScreenState();
+
+    private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
+    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
    
     BorderPane start_menu = new BorderPane();
 
@@ -28,8 +34,15 @@ public class HomeScreenState implements State {
         return state_name;
     }
 
-    public Label createStartButton(){
-        Label start_button = new Label("Appuyer sur Entrer !");
+    public Pane createStartButton(){
+        BorderPane start_button = new BorderPane();
+        start_button.setMaxHeight(Screen.getPrimary().getBounds().getHeight() / 2);
+        start_button.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
+        
+        start_button.setStyle("-fx-background-color: black");
+        Label start_button_text = new Label("Appuyer sur Entree !");
+        start_button_text.setTextAlignment(TextAlignment.CENTER);
+
         Image img = new Image(getClass().getResourceAsStream("/start_button_temporaire.png"));
         ImageView view = new ImageView(img);
 
@@ -37,26 +50,22 @@ public class HomeScreenState implements State {
         view.setFitWidth(200);
         view.setPreserveRatio(true);
 
-        start_button.setFont(App.text_graphics);
-        start_button.setTextFill(javafx.scene.paint.Color.WHITE);
+        start_button_text.setFont(pixel_font);
+        start_button_text.setTextFill(javafx.scene.paint.Color.WHITE);
 
-        view.setPreserveRatio(true);
-        start_button.setGraphic(view);
+        start_button.setCenter(view);
+        start_button.setBottom(start_button_text);
+        BorderPane.setAlignment(start_button_text, Pos.BOTTOM_CENTER);
 
         return start_button;
     }
 
     public void enter() {
-        start_menu.setStyle("-fx-background-color: black"); // Définir la couleur de fond du menu
-        start_menu.setPrefSize(App.screen.getWidth(), App.screen.getHeight() );
+        Pane start_button = createStartButton();
+        
+        start_menu.setStyle("-fx-background-color: black");
 
-        Label start_button = createStartButton();
-
-        StackPane centerPane = new StackPane(start_button);
-        centerPane.setAlignment(Pos.CENTER);
-
-        // Ajoute le label avec l'image au StackPane
-        start_menu.setCenter(centerPane);
+        start_menu.setCenter(start_button);
 
         var homeScreenController = new HomeScreenController();
         App.screen.setOnKeyPressed(homeScreenController::keyPressedHandler);
