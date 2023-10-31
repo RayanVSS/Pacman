@@ -111,7 +111,6 @@ public final class MazeState {
             }
         }
 
-        if(critter instanceof PacMan){
             if(critter instanceof PacMan){
                 if(config.getCell(critter.getPos().round()).canMoveInDirection(PacmanController.nextDirection)  /* && isPerfect(PacmanController.currentDirection, PacmanController.nextDirection, critter.getPos()) */){
                     switch(PacmanController.nextDirection){
@@ -119,14 +118,14 @@ public final class MazeState {
                             if(PacmanController.currentDirection == Direction.EAST){
                                 int w = critter.getPos().ceilX().round().x();
                                 if(critter.getPos().x() <= w || true){
-                                    critter.setPos(new RealCoordinates(w, critter.getPos().round().y()));
+                                    critter.setPos(new RealCoordinates(w, critter.getPos().y()));
                                 }
                                 System.out.println("NS : EAST");
                             }
                             else if(PacmanController.currentDirection == Direction.WEST){
                                 int e = critter.getPos().floorX().round().x();
                                 if(critter.getPos().x() <= e || true){
-                                    critter.setPos(new RealCoordinates(e, critter.getPos().round().y()));
+                                    critter.setPos(new RealCoordinates(e, critter.getPos().y()));
                                 }
                                 System.out.println("NS : WEST");
                             }
@@ -141,14 +140,14 @@ public final class MazeState {
                             if(PacmanController.currentDirection == Direction.SOUTH){
                                 int s = critter.getPos().ceilY().round().y();
                                 if(critter.getPos().y() <= s || true){
-                                    critter.setPos(new RealCoordinates(critter.getPos().round().x(), s));
+                                    critter.setPos(new RealCoordinates(critter.getPos().x(), s));
                                 }
                                 System.out.println("EW : SOUTH");
                             }
                             else if(PacmanController.currentDirection == Direction.NORTH){
                                 int n = critter.getPos().floorY().round().y();
                                 if(critter.getPos().y() <= n || true){
-                                    critter.setPos(new RealCoordinates(critter.getPos().round().x(), n));
+                                    critter.setPos(new RealCoordinates(critter.getPos().x(), n));
                                 }
                                 System.out.println("EW : NORTH");
                             }
@@ -164,47 +163,9 @@ public final class MazeState {
                     critter.setPos(nextPos.warp(width, height));
                 }
             }
-        }
         else{
         critter.setPos(nextPos.warp(width, height));
         }
-    }
-
-    public boolean isPerfect(Direction prevDirection,Direction direction, RealCoordinates coordinates){
-        if (direction == Direction.NORTH || direction == Direction.SOUTH){
-            if(prevDirection == Direction.WEST){
-                System.out.println(coordinates);
-                int  w = coordinates.round().x();
-                System.out.println("NS : WEST : " + (w));
-                return w >= coordinates.x();
-            }
-            else if(prevDirection == Direction.EAST){
-                System.out.println(coordinates);
-                int e = coordinates.round().x();
-                System.out.println("NS : EST : " + (e));
-                
-                return e <= coordinates.x();
-            }
-            else return true;
-        }
-        else if (direction == Direction.EAST || direction == Direction.WEST){
-            if(prevDirection == Direction.SOUTH){
-                System.out.println(coordinates);
-                int s = coordinates.ceilY().round().y();
-                System.out.println("EW : SUD : " + (s));
-                
-                return s <= coordinates.y();
-            }
-            else if(prevDirection == Direction.NORTH){
-                System.out.println(coordinates);
-                int n = coordinates.floorY().round().y();
-                System.out.println("EW : NORD : " + (n));
-                
-                return n >= coordinates.y() && n != -1;
-            }
-            else return true;
-        }
-        else return false;
     }
 
     public void update(Long deltaTns) {
