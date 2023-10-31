@@ -116,14 +116,14 @@ public final class MazeState {
                     switch(PacmanController.nextDirection){
                         case NORTH, SOUTH -> {
                             if(PacmanController.currentDirection == Direction.EAST){
-                                int w = critter.getPos().ceilX().round().x();
+                                int w = critter.getPos().round().x();
                                 if(critter.getPos().x() <= w || true){
                                     critter.setPos(new RealCoordinates(w, critter.getPos().y()));
                                 }
                                 System.out.println("NS : EAST");
                             }
                             else if(PacmanController.currentDirection == Direction.WEST){
-                                int e = critter.getPos().floorX().round().x();
+                                int e = critter.getPos().round().x();
                                 if(critter.getPos().x() <= e || true){
                                     critter.setPos(new RealCoordinates(e, critter.getPos().y()));
                                 }
@@ -138,14 +138,14 @@ public final class MazeState {
 
                         case EAST, WEST -> {
                             if(PacmanController.currentDirection == Direction.SOUTH){
-                                int s = critter.getPos().ceilY().round().y();
+                                int s = critter.getPos().round().y();
                                 if(critter.getPos().y() <= s || true){
                                     critter.setPos(new RealCoordinates(critter.getPos().x(), s));
                                 }
                                 System.out.println("EW : SOUTH");
                             }
                             else if(PacmanController.currentDirection == Direction.NORTH){
-                                int n = critter.getPos().floorY().round().y();
+                                int n = critter.getPos().round().y();
                                 if(critter.getPos().y() <= n || true){
                                     critter.setPos(new RealCoordinates(critter.getPos().x(), n));
                                 }
