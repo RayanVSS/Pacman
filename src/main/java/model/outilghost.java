@@ -1,8 +1,10 @@
 package model;
 
+import config.MazeConfig;
 import geometry.RealCoordinates;
+import geometry.IntCoordinates;
 
-public class outilghost {
+public class outil {
 
     public static Direction[] tri(Direction[] directions, double[] distances) {
         int n = distances.length;
@@ -21,6 +23,37 @@ public class outilghost {
             distances[j + 1] = currentDistance;
         }
         return directions;
+    }
+
+    public static Direction inverse(Direction dir) {
+        switch (dir) {
+            case NORTH:
+                return Direction.SOUTH;
+            case EAST:
+                return Direction.WEST;
+            case SOUTH:
+                return Direction.NORTH;
+            case WEST:
+                return Direction.EAST;
+            default:
+                return Direction.NONE;
+        }
+    }
+
+    public static Direction estpossible(Direction[] d, Ghost g, MazeConfig config) {
+        for (Direction dir : d) {
+            if (dir != inverse(g.getDirection())) {
+                if (config.getCell(g.getPos().floor()).canMoveInDirection(dir)) {
+                    if (dir == Direction.NONE) {
+                        return g.getDirection();
+                    }
+                    return dir;
+                }
+            }
+
+        }
+        return g.getDirection();
+
     }
 
     public static double distance(RealCoordinates point1, RealCoordinates point2) {
