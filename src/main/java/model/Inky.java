@@ -23,12 +23,12 @@ public class Inky {
         int i = 0;
         for (Direction dir : possibleDirections) {
             RealCoordinates newPos = inkyPos
-                    .plus(outilghost.DirectionToRealCoordinates(dir).times(INKY.getSpeed()));
+                    .plus(outil.DirectionToRealCoordinates(dir).times(INKY.getSpeed()));
 
-            double distance = outilghost.distance(newPos, targetPos);
+            double distance = outil.distance(newPos, targetPos);
             tabDistance[i] = distance;
             i += 1;
         }
-        return outilghost.tri(possibleDirections, tabDistance)[0];
+        return outil.estpossible(outil.tri(possibleDirections, tabDistance), INKY, config);
     }
 }
