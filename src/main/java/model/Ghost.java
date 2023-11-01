@@ -9,8 +9,10 @@ public enum Ghost implements Critter {
     // in Wikipedia's page
     BLINKY, INKY, PINKY, CLYDE;
 
+    private long temps = 0;
     private RealCoordinates pos;
     private Direction direction = Direction.NONE;
+    private boolean sortie = false;
 
     @Override
     public RealCoordinates getPos() {
@@ -25,20 +27,36 @@ public enum Ghost implements Critter {
     @Override
     public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
         if (this == PINKY) {
-            Direction d = Pinky.nextDirection(PINKY, PacMan.INSTANCE, config);
-            setDirection(d);
-            setPos(getPos().plus(outilghost.DirectionToRealCoordinates(d).times(getSpeed())));
-            return pos;
+            if (!sortie && deltaTNanoSeconds > 1E7) {
+                setPos(new RealCoordinates(7, 4));
+                sortie = true;
+            } else if (sortie) {
+                Direction d = Pinky.nextDirection(PINKY, PacMan.INSTANCE, config);
+                setDirection(d);
+                setPos(getPos().plus(outil.DirectionToRealCoordinates(d).times(getSpeed())));
+                return pos;
+            }
         } else if (this == CLYDE) {
-            Direction d = Clyde.nextDirection(config, CLYDE, PacMan.INSTANCE);
-            setDirection(d);
-            setPos(getPos().plus(outilghost.DirectionToRealCoordinates(d).times(getSpeed())));
-            return pos;
+            if (!sortie && deltaTNanoSeconds > 1E7) {
+                setPos(new RealCoordinates(7, 4));
+                sortie = true;
+            } else if (sortie) {
+                Direction d = Clyde.nextDirection(config, CLYDE, PacMan.INSTANCE);
+                setDirection(d);
+                setPos(getPos().plus(outil.DirectionToRealCoordinates(d).times(getSpeed())));
+                return pos;
+            }
         } else if (this == INKY) {
-            Direction d = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE, config);
-            setDirection(d);
-            setPos(getPos().plus(outilghost.DirectionToRealCoordinates(d).times(getSpeed())));
-            return pos;
+            if (!sortie && deltaTNanoSeconds > 1E7) {
+                setPos(new RealCoordinates(7, 4));
+                sortie = true;
+            } else if (sortie) {
+                Direction d = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE, config);
+                setDirection(d);
+                setPos(getPos().plus(outil.DirectionToRealCoordinates(d).times(getSpeed())));
+                return pos;
+            }
+
         } else {
             /*
              * Direction d = Blinky.nextDirection(BLINKY, PacMan.INSTANCE, config);
@@ -61,16 +79,24 @@ public enum Ghost implements Critter {
         return direction;
     }
 
+    public void setSortie(boolean sortie) {
+        this.sortie = sortie;
+    }
+
+    public void setTemps(long tp) {
+        this.temps = tp;
+    }
+
     @Override
     public double getSpeed() {
         if (this == PINKY) {
-            return 3E-2;
+            return 0.02;
         }
         if (this == CLYDE) {
-            return 2E-2;
+            return 0.01;
         }
-        if (this == INKY){
-            return 2E-2;
+        if (this == INKY) {
+            return 0.01;
         }
         return 0;
 
