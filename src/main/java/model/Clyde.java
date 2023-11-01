@@ -15,27 +15,37 @@ public class Clyde {
                 Direction.EAST,
                 Direction.SOUTH,
                 Direction.WEST };
-        double distanceToPacMan = outilghost.distance(clydePos, pacManPos);
+        double distanceToPacMan = outil.distance(clydePos, pacManPos);
         if (distanceToPacMan < 5) {
-            Direction bestDirection = null;
-            double minDistance = Double.MAX_VALUE;
+            double[] tabDistance = new double[4];
+            int i = 0;
             for (Direction dir : tab) {
                 RealCoordinates newPos = clydePos
-                        .plus(outilghost.DirectionToRealCoordinates(dir).times(CLYDE.getSpeed()));
+                        .plus(outil.DirectionToRealCoordinates(dir).times(CLYDE.getSpeed()));
 
-                double newDistance = outilghost.distance(newPos, pacManPos);
+                double newDistance = outil.distance(newPos, pacManPos);
 
-                if (newDistance < minDistance) {
-                    bestDirection = dir;
-                    minDistance = newDistance;
-                }
+                tabDistance[i] = newDistance;
             }
-            return bestDirection;
+            return outil.estpossible(outil.tri(tab, tabDistance), CLYDE, config);
         } else {
-            Random rand = new Random();
-            Direction randomDirection = tab[rand.nextInt(tab.length)];
-            return randomDirection;
+            return outil.estpossible(trialeatoire(tab), CLYDE, config);
         }
+    }
+
+    public static Direction[] trialeatoire(Direction[] directions) {
+        Random rand = new Random();
+
+        for (int i = directions.length - 1; i > 0; i--) {
+            int index = rand.nextInt(i + 1);
+
+            // Échange les directions aux positions i et index
+            Direction temp = directions[i];
+            directions[i] = directions[index];
+            directions[index] = temp;
+        }
+
+        return directions;
     }
 
 }
