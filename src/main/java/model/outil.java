@@ -40,20 +40,40 @@ public class outil {
         }
     }
 
-    public static Direction estpossible(Direction[] d, Ghost g, MazeConfig config) {
+    public static RealCoordinates nextPos(Direction[] d, Ghost g, MazeConfig config) {
         for (Direction dir : d) {
-            if (dir != inverse(g.getDirection())) {
-                if (config.getCell(g.getPos().floor()).canMoveInDirection(dir)) {
-                    if (dir == Direction.NONE) {
-                        return g.getDirection();
+            if (config.getCell(g.getPos().round()).canMoveInDirection(dir) && dir != inverse(g.getDirection())) {
+                switch (dir) {
+                    case NORTH, SOUTH -> {
+                        if (g.getDirection() == Direction.EAST || g.getDirection() == Direction.WEST) {
+                            int w = g.getPos().round().x();
+                            if (g.getPos().x() <= w || true) {
+                                g.setDirection(dir);
+                                return new RealCoordinates(w, g.getPos().y());
+                            }
+                        } else {
+                            g.setDirection(dir);
+                            return g.getPos().plus(DirectionToRealCoordinates(dir).times(g.getSpeed()));
+                        }
                     }
-                    return dir;
+
+                    case EAST, WEST -> {
+                        if (g.getDirection() == Direction.SOUTH || g.getDirection() == Direction.NORTH) {
+                            int s = g.getPos().round().y();
+                            if (g.getPos().y() <= s || true) {
+                                g.setDirection(dir);
+                                return new RealCoordinates(g.getPos().x(), s);
+
+                            }
+                        } else {
+                            g.setDirection(dir);
+                            return g.getPos().plus(DirectionToRealCoordinates(dir).times(g.getSpeed()));
+                        }
+                    }
                 }
             }
-
         }
-        return g.getDirection();
-
+        return g.getPos().plus(DirectionToRealCoordinates(g.getDirection()).times(g.getSpeed()));
     }
 
     public static double distance(RealCoordinates point1, RealCoordinates point2) {
