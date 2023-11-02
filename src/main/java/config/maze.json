@@ -4,7 +4,7 @@
     ["vPipe", "eU", "swVee", "vPipe", "nU", "vPipe", "eU", "hPipe", "wU", "vPipe", "nU", "vPipe", "seVee", "wU", "vPipe"],
     ["neVee", "swVee", "nU", "wTee", "hPipe", "sTee", "hPipe", "nTee", "hPipe", "sTee",  "hPipe", "eTee", "nU", "seVee", "nwVee"],
     ["wU", "wTee", "hPipe", "eTee", "seVee", "hPipe", "wU", "vPipe", "eU", "hPipe",  "swVee", "wTee", "hPipe", "eTee", "eU"],
-    ["hPipe", "eTee", "sU", "vPipe", "vPipe", "seVee", "hPipe", "open", "hPipe", "swVee",  "vPipe", "vPipe", "sU", "wTee", "hPipe"],
+    ["hPipe", "eTee", "sU", "vPipe", "vPipe", "seVee", "hPipe", "sTee", "hPipe", "swVee",  "vPipe", "vPipe", "sU", "wTee", "hPipe"],
     ["wU", "vPipe", "vPipe", "vPipe", "vPipe", "vPipe", "seVee", "ghostHouseDoor", "swVee", "vPipe",  "vPipe", "vPipe", "vPipe", "vPipe", "eU"],
     ["seVee", "nwVee", "vPipe", "vPipe", "nU", "vPipe", "neVee", "sTee", "nwVee", "vPipe",  "nU", "vPipe", "vPipe", "neVee", "swVee"],
     ["vPipe", "eU", "nwVee", "wTee", "hPipe", "sTee", "hPipe", "hPipe", "hPipe", "sTee",  "hPipe", "eTee", "neVee", "wU", "vPipe"],
