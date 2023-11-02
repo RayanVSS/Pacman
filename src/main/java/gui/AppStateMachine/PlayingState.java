@@ -24,8 +24,8 @@ public class PlayingState extends App implements State {
 
     public static HBox life_graphics = new HBox();
 
-    private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
-    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
+    private final double MAX_FONT_SIZE = 20.0;
+    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
 
     private static final PlayingState instance = new PlayingState();
 

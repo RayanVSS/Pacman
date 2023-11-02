@@ -11,14 +11,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
+import animatefx.animation.Bounce;
 import lib.State;
 
 public class HomeScreenState implements State {
     private String state_name = "Home Screen State";
     private static final HomeScreenState instance = new HomeScreenState();
 
-    private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
-    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
+    private final double MAX_FONT_SIZE = 20.0;
+    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
    
     BorderPane start_menu = new BorderPane();
 
@@ -36,7 +37,7 @@ public class HomeScreenState implements State {
 
     public Pane createStartButton(){
         BorderPane start_button = new BorderPane();
-        start_button.setMaxHeight(Screen.getPrimary().getBounds().getHeight() / 2);
+        start_button.setMaxHeight(Screen.getPrimary().getBounds().getHeight() / 1.5);
         start_button.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
         
         start_button.setStyle("-fx-background-color: black");
@@ -62,7 +63,8 @@ public class HomeScreenState implements State {
 
     public void enter() {
         Pane start_button = createStartButton();
-        
+        new Bounce(start_button).play();
+
         start_menu.setStyle("-fx-background-color: black");
 
         start_menu.setCenter(start_button);
