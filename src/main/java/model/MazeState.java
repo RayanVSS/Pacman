@@ -11,7 +11,6 @@ import gui.AppStateMachine.GameOverState;
 import java.util.List;
 import java.util.Map;
 
-
 import static model.Ghost.*;
 
 public final class MazeState {
@@ -34,12 +33,6 @@ public final class MazeState {
         width = config.getWidth();
         critters = List.of(PacMan.INSTANCE, Ghost.CLYDE, BLINKY, INKY, PINKY);
         gridState = new boolean[height][width];
-        //set the gridState to true if it does not have a dot
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++){
-                gridState[i][j] = !config.getCell(new IntCoordinates(j, i)).hasDot();
-            }
-        }
         initialPos = Map.of(
                 PacMan.INSTANCE, config.getPacManPos().toRealCoordinates(1.0),
                 BLINKY, config.getBlinkyPos().toRealCoordinates(1.0),
@@ -72,7 +65,8 @@ public final class MazeState {
         var nextPos = critter.nextPos(deltaTns, config);
         var curNeighbours = curPos.intNeighbours();
         var nextNeighbours = nextPos.intNeighbours();
-        if (!curNeighbours.containsAll(nextNeighbours)) { // the critter would overlap new cells. Do we allow it?
+        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) { // the critter would overlap
+                                                                                         // new cells. Do we allow it?
             switch (critter.getDirection()) {
                 case NORTH -> {
                     for (var n : curNeighbours) {
@@ -117,60 +111,54 @@ public final class MazeState {
             }
         }
 
-            if(critter instanceof PacMan){
-                if(config.getCell(critter.getPos().round()).canMoveInDirection(PacmanController.nextDirection)  /* && isPerfect(PacmanController.currentDirection, PacmanController.nextDirection, critter.getPos()) */){
-                    switch(PacmanController.nextDirection){
-                        case NORTH, SOUTH -> {
-                            if(PacmanController.currentDirection == Direction.EAST){
-                                int w = critter.getPos().round().x();
-                                if(critter.getPos().x() <= w || true){
-                                    critter.setPos(new RealCoordinates(w, critter.getPos().y()));
-                                }
-                                System.out.println("NS : EAST");
+        if (critter instanceof PacMan) {
+            if (config.getCell(critter.getPos().round()).canMoveInDirection(PacmanController.nextDirection)) {
+                switch (PacmanController.nextDirection) {
+                    case NORTH, SOUTH -> {
+                        if (PacmanController.currentDirection == Direction.EAST) {
+                            int w = critter.getPos().round().x();
+                            if (critter.getPos().x() <= w || true) {
+                                critter.setPos(new RealCoordinates(w, critter.getPos().y()));
                             }
-                            else if(PacmanController.currentDirection == Direction.WEST){
-                                int e = critter.getPos().round().x();
-                                if(critter.getPos().x() <= e || true){
-                                    critter.setPos(new RealCoordinates(e, critter.getPos().y()));
-                                }
-                                System.out.println("NS : WEST");
+                            System.out.println("NS : EAST");
+                        } else if (PacmanController.currentDirection == Direction.WEST) {
+                            int e = critter.getPos().round().x();
+                            if (critter.getPos().x() <= e || true) {
+                                critter.setPos(new RealCoordinates(e, critter.getPos().y()));
                             }
-                            else{
-                                critter.setPos(nextPos.warp(width, height));
-                            }
-                            critter.setDirection(PacmanController.nextDirection);
-                            PacmanController.currentDirection = PacmanController.nextDirection;
+                            System.out.println("NS : WEST");
+                        } else {
+                            critter.setPos(nextPos.warp(width, height));
                         }
+                        critter.setDirection(PacmanController.nextDirection);
+                        PacmanController.currentDirection = PacmanController.nextDirection;
+                    }
 
-                        case EAST, WEST -> {
-                            if(PacmanController.currentDirection == Direction.SOUTH){
-                                int s = critter.getPos().round().y();
-                                if(critter.getPos().y() <= s || true){
-                                    critter.setPos(new RealCoordinates(critter.getPos().x(), s));
-                                }
-                                System.out.println("EW : SOUTH");
+                    case EAST, WEST -> {
+                        if (PacmanController.currentDirection == Direction.SOUTH) {
+                            int s = critter.getPos().round().y();
+                            if (critter.getPos().y() <= s || true) {
+                                critter.setPos(new RealCoordinates(critter.getPos().x(), s));
                             }
-                            else if(PacmanController.currentDirection == Direction.NORTH){
-                                int n = critter.getPos().round().y();
-                                if(critter.getPos().y() <= n || true){
-                                    critter.setPos(new RealCoordinates(critter.getPos().x(), n));
-                                }
-                                System.out.println("EW : NORTH");
+                            System.out.println("EW : SOUTH");
+                        } else if (PacmanController.currentDirection == Direction.NORTH) {
+                            int n = critter.getPos().round().y();
+                            if (critter.getPos().y() <= n || true) {
+                                critter.setPos(new RealCoordinates(critter.getPos().x(), n));
                             }
-                            else{
-                                critter.setPos(nextPos.warp(width, height));
-                            }
-                            critter.setDirection(PacmanController.nextDirection);
-                            PacmanController.currentDirection = PacmanController.nextDirection;
+                            System.out.println("EW : NORTH");
+                        } else {
+                            critter.setPos(nextPos.warp(width, height));
                         }
+                        critter.setDirection(PacmanController.nextDirection);
+                        PacmanController.currentDirection = PacmanController.nextDirection;
                     }
                 }
-                else{
-                    critter.setPos(nextPos.warp(width, height));
-                }
+            } else {
+                critter.setPos(nextPos.warp(width, height));
             }
-        else{
-        critter.setPos(nextPos.warp(width, height));
+        } else {
+            critter.setPos(nextPos.warp(width, height));
         }
     }
 
@@ -180,18 +168,6 @@ public final class MazeState {
         }
         PacMan.INSTANCE.handlePacManPoints(this);
         PacMan.INSTANCE.handleCollisionsWithGhosts(this);
-        gameisWon();
-    }
-
-    public void gameisWon(){
-        for(int i =0; i<gridState.length; i++){
-            for(int j =0; j<gridState[i].length; j++){
-                if(!gridState[i][j]){
-                    return;
-                }
-            }
-        }
-        System.out.println("Game won!");
     }
 
     public void addScore(int increment) {
@@ -218,6 +194,11 @@ public final class MazeState {
     public void resetCritter(Critter critter) {
         critter.setDirection(Direction.NONE);
         critter.setPos(initialPos.get(critter));
+        if (critter instanceof Ghost) {
+            ((Ghost) critter).setTemps(0);
+            ((Ghost) critter).setSortie(false);
+        }
+
     }
 
     private void resetCritters() {
