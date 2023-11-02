@@ -34,6 +34,12 @@ public final class MazeState {
         width = config.getWidth();
         critters = List.of(PacMan.INSTANCE, Ghost.CLYDE, BLINKY, INKY, PINKY);
         gridState = new boolean[height][width];
+        //set the gridState to true if it does not have a dot
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++){
+                gridState[i][j] = !config.getCell(new IntCoordinates(j, i)).hasDot();
+            }
+        }
         initialPos = Map.of(
                 PacMan.INSTANCE, config.getPacManPos().toRealCoordinates(1.0),
                 BLINKY, config.getBlinkyPos().toRealCoordinates(1.0),
@@ -174,6 +180,18 @@ public final class MazeState {
         }
         PacMan.INSTANCE.handlePacManPoints(this);
         PacMan.INSTANCE.handleCollisionsWithGhosts(this);
+        gameisWon();
+    }
+
+    public void gameisWon(){
+        for(int i =0; i<gridState.length; i++){
+            for(int j =0; j<gridState[i].length; j++){
+                if(!gridState[i][j]){
+                    return;
+                }
+            }
+        }
+        System.out.println("Game won!");
     }
 
     public void addScore(int increment) {

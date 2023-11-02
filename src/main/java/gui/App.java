@@ -2,6 +2,7 @@ package gui;
 
 import gui.AppStateMachine.AppState;
 import gui.AppStateMachine.HomeScreenState;
+import gui.AppStateMachine.StartingLogosState;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,7 +16,7 @@ public class App extends Application {
     private static Pane root = new Pane();
     public static Scene screen = new Scene(root);
 
-    public static AppState app_state = AppState.HOME_SCREEN;
+    public static AppState app_state = AppState.STARTING_LOGOS;
  
     @Override
     public void start(Stage primaryStage) {
@@ -33,7 +34,7 @@ public class App extends Application {
         System.out.println(app_state.showState());
 
         // Etat intitial de l'application
-        app_state.changeState(HomeScreenState.getInstance());
+        app_state.changeState(StartingLogosState.getInstance());
 
         new AnimationTimer() {
             long last = 0;

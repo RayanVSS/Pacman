@@ -28,6 +28,9 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
     // ghost house cells
     public static Cell ghostHouseDoor() { return new Cell(false, false, false, false, Content.GHOST_DOOR); }
 
+    public boolean hasDot(){
+        return initialContent == Content.DOT || initialContent == Content.ENERGIZER;
+    }
     public static Cell withContent(String type, String value) {
         Content content = switch (value) {
             case "." -> Content.DOT;
