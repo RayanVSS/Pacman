@@ -259,10 +259,15 @@ public class StartingLogosState implements State {
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(10);
         Timeline pacmanPop = createPopCharacter("pacman", characters);
+        pacmanPop.setCycleCount(1);
         Timeline blinkyPop = createPopCharacter("blinky", characters);
+        blinkyPop.setCycleCount(1);
         Timeline pinkyPop = createPopCharacter("pinky", characters);
+        pinkyPop.setCycleCount(1);
         Timeline inkyPop = createPopCharacter("inky", characters);
+        inkyPop.setCycleCount(1);
         Timeline clydePop = createPopCharacter("clyde", characters);
+        clydePop.setCycleCount(1);
 
         pacmanPop.play();
         new RubberBand(starting_logos).play();
@@ -272,6 +277,7 @@ public class StartingLogosState implements State {
                 zoomPac.play();
                 new RubberBand(starting_logos).play();
             }));
+            zoomOut.setCycleCount(1);
             zoomOut.play();
             blinkyPop.play();
             blinkyPop.setOnFinished(event2 -> {
@@ -280,6 +286,7 @@ public class StartingLogosState implements State {
                     zoomBlinky.play();
                     new RubberBand(starting_logos).play();
                 }));
+                zoomBlinky.setCycleCount(1);
                 zoomOutBlinky.play();
                 pinkyPop.play();
             });
@@ -290,6 +297,7 @@ public class StartingLogosState implements State {
                 zoomPinky.play();
                 new RubberBand(starting_logos).play();
             }));
+            zoomOutPinky.setCycleCount(1);
             zoomOutPinky.play();
             inkyPop.play();
         });
@@ -299,6 +307,7 @@ public class StartingLogosState implements State {
                 zoomInky.play();
                 new RubberBand(starting_logos).play();
             }));
+            zoomOutInky.setCycleCount(1);
             zoomOutInky.play();
             clydePop.play();
         });
@@ -310,6 +319,7 @@ public class StartingLogosState implements State {
             Timeline zoomOutClyde = new Timeline(new KeyFrame(Duration.seconds(1.5), event2 -> {
                 zoomClyde.play();
             }));
+            zoomOutClyde.setCycleCount(1);
             zoomOutClyde.play();
             Timeline wait = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
                 timelineTranslateTransition.play();
@@ -317,20 +327,21 @@ public class StartingLogosState implements State {
                 fadeOut.setDelay(Duration.seconds(0.5));
                 fadeOut.setSpeed(0.75);
                 fadeOut.play();
-            }));wait.play();
-
-        });
-        KeyFrame wait = new KeyFrame(Duration.seconds(2), event3 -> {
-            App.app_state.changeState(HomeScreenState.getInstance());
+            }));
+            wait.setCycleCount(1);
+            wait.play();
         });
         timelineTranslateTransition.setOnFinished(event -> {
-            new Timeline(wait).play();
+            Timeline wait = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
+                App.app_state.changeState(HomeScreenState.getInstance());
+            }));
+            wait.setCycleCount(1);
+            wait.play();
         });
 
     }
 
     private void whenGhostTranslateIsFinishedAnimation() {
-
         double maxX = Screen.getPrimary().getBounds().getMaxX();
         double halfScreen = starting_logos.getMaxHeight() / 2;
 
@@ -354,9 +365,11 @@ public class StartingLogosState implements State {
         starting_logos.getChildren().add(paneGameBy);
 
         Timeline fadeOutText1 = createFadeOut(paneGameBy);
+        fadeOutText1.setCycleCount(1);
         fadeOutText1.play();
 
         Timeline bouncing8h30 = createBouncingTitle(pane8h30Studio, text8h30, textStudio);
+        bouncing8h30.setCycleCount(1);
 
         fadeOutText1.setOnFinished(event1 -> {
             bouncing8h30.play();
@@ -379,10 +392,11 @@ public class StartingLogosState implements State {
         ArrayList<TranslateTransition> translateTransitionsLeft = createTranslateTransitions(ghosts, "left");
 
         Timeline timeline = createTranslateTransition(translateTransitionsLeft, ghosts);
+        timeline.setCycleCount(1);
         timeline.play();
 
         translateTransitionsLeft.get(0).setOnFinished(event -> {
-            //Remove the ghost from the pane when the animation is finished
+            // Remove the ghost from the pane when the animation is finished
             for (ImageView ghost : ghosts) {
                 starting_logos.getChildren().remove(ghost);
             }

@@ -26,8 +26,8 @@ public enum AppState {
 
     public void changeState(State s) {
         current_state.exit();
-        s.enter();
         current_state = s;
+        current_state.enter();
     }
 
     public void process(long deltaT) {

@@ -83,8 +83,6 @@ public class PlayingState extends App implements State {
         score_graphics = createScoreGraphics();
         life_graphics_update(maze.getLives());
 
-        App.screen.setRoot(game_screen);
-
         var pacmanController = new PacmanController();
         App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
         App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
@@ -99,6 +97,8 @@ public class PlayingState extends App implements State {
         game_screen.setTop(score_graphics);
 
         gameView.animate();
+
+        App.screen.setRoot(game_screen);
     }
 
     public void process(long deltaT) {
