@@ -2,14 +2,9 @@ package model;
 
 import config.MazeConfig;
 import geometry.RealCoordinates;
-import gui.Controller.PacmanController;
-
-import java.util.List;
 
 public enum Ghost implements Critter {
-
-    // TODO: implement a different AI for each ghost, according to the description
-    // in Wikipedia's page
+    
     BLINKY, INKY, PINKY, CLYDE;
 
     private long temps = 0;
@@ -61,13 +56,7 @@ public enum Ghost implements Critter {
 
     @Override
     public double getSpeed() {
-        if (this == BLINKY) {
-            return 0.04;
-        }
-        if (this == PINKY) {
-            return 0.04;
-        }
-        return 0.02;
+        return 0.04;
     }
 
     @Override
@@ -75,17 +64,14 @@ public enum Ghost implements Critter {
         if (mort) {
             outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
         } else if (!sortie) {
-            if (this == PINKY && deltaTNanoSeconds - temps > 2E7) {
-                sortie = outil.animation_sortie(PINKY);
-            } else if (this == CLYDE && deltaTNanoSeconds - temps > 4E7) {
-                sortie = outil.animation_sortie(CLYDE);
-            } else if (this == INKY && deltaTNanoSeconds - temps > 3E7) {
-                sortie = outil.animation_sortie(INKY);
-            } else if (this == BLINKY && deltaTNanoSeconds - temps > 1E7) {
+            if (this == BLINKY && deltaTNanoSeconds - temps > 1E7) {
                 sortie = outil.animation_sortie(BLINKY);
-                if (sortie) {
-                    temps = deltaTNanoSeconds;
-                }
+            } else if (this == PINKY && deltaTNanoSeconds - temps > 1E7) {
+                sortie = outil.animation_sortie(PINKY);
+            } else if (this == INKY && deltaTNanoSeconds - temps > 1E7) {
+                sortie = outil.animation_sortie(INKY);
+            } else if (this == CLYDE && deltaTNanoSeconds - temps > 1E7) {
+                sortie = outil.animation_sortie(CLYDE);
             }
         } else {
             Direction[] directions;
