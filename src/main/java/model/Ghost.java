@@ -93,4 +93,8 @@ public enum Ghost implements Critter {
 
         return pos;
     }
+
+    public boolean isMort() {
+        return mort;
+    }
 }
