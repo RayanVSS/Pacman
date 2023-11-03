@@ -2,6 +2,8 @@ package model;
 
 import config.MazeConfig;
 import geometry.RealCoordinates;
+import gui.Controller.PacmanController;
+
 import java.util.List;
 
 public enum Ghost implements Critter {
@@ -11,13 +13,19 @@ public enum Ghost implements Critter {
     BLINKY, INKY, PINKY, CLYDE;
 
     private long temps = 0;
+    private RealCoordinates initialPos;
     private RealCoordinates pos;
     private Direction direction = Direction.NONE;
     private boolean sortie = false;
+    private boolean mort = false;
 
     @Override
     public RealCoordinates getPos() {
         return pos;
+    }
+
+    public boolean isSortie() {
+        return sortie;
     }
 
     @Override
@@ -25,63 +33,12 @@ public enum Ghost implements Critter {
         pos = newPos;
     }
 
-    public static boolean fin_sortie(Ghost g) {
-        RealCoordinates currentPos = g.getPos();
-        RealCoordinates targetPos = new RealCoordinates(7.0, 4.0);
-
-        if (currentPos.x() >= 6.9 && currentPos.x() <= 7.1 && currentPos.y() >= 3.9 && currentPos.y() <= 4.1) {
-            return true;
-        } else {
-            double speed = g.getSpeed();
-            double deltaX = targetPos.x() - currentPos.x();
-            double deltaY = targetPos.y() - currentPos.y();
-
-            if (!(deltaX >= -0.1 && deltaX <= 0.1)) {
-                // Déplacement horizontal
-                double newX = currentPos.x() + (deltaX > 0.0 ? speed : -speed);
-                g.setPos(new RealCoordinates(newX, currentPos.y()));
-            } else if (!(deltaY >= -0.1 && deltaY <= 0.1)) {
-                // Déplacement vertical
-                double newY = currentPos.y() + (deltaY > 0.0 ? speed : -speed);
-                g.setPos(new RealCoordinates(currentPos.x(), newY));
-            }
-
-            return false;
-        }
+    public void setMort(boolean mort) {
+        this.mort = mort;
     }
 
-    @Override
-    public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
-        if (!sortie) {
-            if (this == PINKY && deltaTNanoSeconds - temps > 2E7) {
-                sortie = fin_sortie(PINKY);
-            } else if (this == CLYDE && deltaTNanoSeconds - temps > 4E7) {
-                sortie = fin_sortie(CLYDE);
-            } else if (this == INKY && deltaTNanoSeconds - temps > 3E7) {
-                sortie = fin_sortie(INKY);
-            } else if (this == BLINKY && deltaTNanoSeconds - temps > 1E7) {
-                sortie = fin_sortie(BLINKY);
-                if (sortie) {
-                    temps = deltaTNanoSeconds;
-                }
-            }
-        } else {
-            Direction[] directions;
-
-            if (this == PINKY) {
-                directions = Pinky.nextDirection(PINKY, PacMan.INSTANCE);
-            } else if (this == CLYDE) {
-                directions = Clyde.nextDirection(CLYDE, PacMan.INSTANCE);
-            } else if (this == INKY) {
-                directions = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE);
-            } else {
-                directions = Blinky.nextDirection(BLINKY, PacMan.INSTANCE);
-            }
-
-            return outil.nextPos(directions, this, config);
-        }
-
-        return pos;
+    public void setInitialPos(RealCoordinates initialPos) {
+        this.initialPos = initialPos;
     }
 
     @Override
@@ -111,5 +68,43 @@ public enum Ghost implements Critter {
             return 0.04;
         }
         return 0.02;
+    }
+
+    @Override
+    public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
+        if (mort) {
+            outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
+        } else if (!sortie) {
+            if (this == PINKY && deltaTNanoSeconds - temps > 2E7) {
+                sortie = outil.animation_sortie(PINKY);
+            } else if (this == CLYDE && deltaTNanoSeconds - temps > 4E7) {
+                sortie = outil.animation_sortie(CLYDE);
+            } else if (this == INKY && deltaTNanoSeconds - temps > 3E7) {
+                sortie = outil.animation_sortie(INKY);
+            } else if (this == BLINKY && deltaTNanoSeconds - temps > 1E7) {
+                sortie = outil.animation_sortie(BLINKY);
+                if (sortie) {
+                    temps = deltaTNanoSeconds;
+                }
+            }
+        } else {
+            Direction[] directions;
+
+            if (this == PINKY) {
+                directions = Pinky.nextDirection(PINKY, PacMan.INSTANCE);
+            } else if (this == CLYDE) {
+                directions = Clyde.nextDirection(CLYDE, PacMan.INSTANCE);
+            } else if (this == INKY) {
+                directions = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE);
+            } else {
+                directions = Blinky.nextDirection(BLINKY, PacMan.INSTANCE.getPos());
+            }
+            if (PacMan.INSTANCE.isEnergized()) {
+                directions = outil.inverse(directions);
+            }
+            return outil.nextPos(directions, this, config);
+        }
+
+        return pos;
     }
 }
