@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -253,84 +254,35 @@ public class StartingLogosState implements State {
         return timeline;
     }
 
-    private void createPopCharacters() {
-        Group characters = new Group();
-        starting_logos.getChildren().add(characters);
-        GaussianBlur gaussianBlur = new GaussianBlur();
-        gaussianBlur.setRadius(10);
-        Timeline pacmanPop = createPopCharacter("pacman", characters);
-        pacmanPop.setCycleCount(1);
-        Timeline blinkyPop = createPopCharacter("blinky", characters);
-        blinkyPop.setCycleCount(1);
-        Timeline pinkyPop = createPopCharacter("pinky", characters);
-        pinkyPop.setCycleCount(1);
-        Timeline inkyPop = createPopCharacter("inky", characters);
-        inkyPop.setCycleCount(1);
-        Timeline clydePop = createPopCharacter("clyde", characters);
-        clydePop.setCycleCount(1);
+    private Timeline createCharacterAnimation(String name, Group group) {
+        Timeline res = createPopCharacter(name, group);
+        res.setCycleCount(1);
+        return res;
+    }
 
-        pacmanPop.play();
-        new RubberBand(starting_logos).play();
-        pacmanPop.setOnFinished(event -> {
-            ZoomOut zoomPac = new ZoomOut(characters.getChildren().get(0));
-            Timeline zoomOut = new Timeline(new KeyFrame(Duration.seconds(1.5), event2 -> {
-                zoomPac.play();
-                new RubberBand(starting_logos).play();
-            }));
-            zoomOut.setCycleCount(1);
+    private Timeline createZoomOut(Node node){
+        ZoomOut zoomOut = new ZoomOut(node);
+        Timeline zoomOutTimeline = new Timeline(new KeyFrame(Duration.seconds(1.5), event -> {
             zoomOut.play();
-            blinkyPop.play();
-            blinkyPop.setOnFinished(event2 -> {
-                ZoomOut zoomBlinky = new ZoomOut(characters.getChildren().get(1));
-                Timeline zoomOutBlinky = new Timeline(new KeyFrame(Duration.seconds(1.5), event3 -> {
-                    zoomBlinky.play();
-                    new RubberBand(starting_logos).play();
-                }));
-                zoomBlinky.setCycleCount(1);
-                zoomOutBlinky.play();
-                pinkyPop.play();
-            });
-        });
-        pinkyPop.setOnFinished(event -> {
-            ZoomOut zoomPinky = new ZoomOut(characters.getChildren().get(2));
-            Timeline zoomOutPinky = new Timeline(new KeyFrame(Duration.seconds(1.5), event2 -> {
-                zoomPinky.play();
-                new RubberBand(starting_logos).play();
-            }));
-            zoomOutPinky.setCycleCount(1);
-            zoomOutPinky.play();
-            inkyPop.play();
-        });
-        inkyPop.setOnFinished(event -> {
-            ZoomOut zoomInky = new ZoomOut(characters.getChildren().get(3));
-            Timeline zoomOutInky = new Timeline(new KeyFrame(Duration.seconds(1.5), event2 -> {
-                zoomInky.play();
-                new RubberBand(starting_logos).play();
-            }));
-            zoomOutInky.setCycleCount(1);
-            zoomOutInky.play();
-            clydePop.play();
-        });
-        ArrayList<ImageView> ghosts = createGhosts(true);
-        ArrayList<TranslateTransition> translateTransitionsRight = createTranslateTransitions(ghosts, "right");
-        Timeline timelineTranslateTransition = createTranslateTransition(translateTransitionsRight, ghosts);
-        clydePop.setOnFinished(event -> {
-            ZoomOut zoomClyde = new ZoomOut(characters.getChildren().get(4));
-            Timeline zoomOutClyde = new Timeline(new KeyFrame(Duration.seconds(1.5), event2 -> {
-                zoomClyde.play();
-            }));
-            zoomOutClyde.setCycleCount(1);
-            zoomOutClyde.play();
-            Timeline wait = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
+            new RubberBand(starting_logos).play();
+        }));
+        zoomOutTimeline.setCycleCount(1);
+        return zoomOutTimeline;
+    }
+
+    private Timeline slideToHomeScreen(Timeline timelineTranslateTransition){
+        Timeline slideHome = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
                 timelineTranslateTransition.play();
                 FadeOutLeft fadeOut = new FadeOutLeft(starting_logos);
                 fadeOut.setDelay(Duration.seconds(0.5));
                 fadeOut.setSpeed(0.75);
                 fadeOut.play();
             }));
-            wait.setCycleCount(1);
-            wait.play();
-        });
+        slideHome.setCycleCount(1);
+        return slideHome;
+    }
+
+    private void changeHomeScreenStateWait(Timeline timelineTranslateTransition){
         timelineTranslateTransition.setOnFinished(event -> {
             Timeline wait = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
                 App.app_state.changeState(HomeScreenState.getInstance());
@@ -338,7 +290,51 @@ public class StartingLogosState implements State {
             wait.setCycleCount(1);
             wait.play();
         });
+    }
 
+    private void createPopCharactersAndFinalSlide() {
+        Group characters = new Group();
+        starting_logos.getChildren().add(characters);
+        GaussianBlur gaussianBlur = new GaussianBlur();
+        gaussianBlur.setRadius(10);
+        Timeline pacmanPop = createCharacterAnimation("pacman", characters);
+        Timeline blinkyPop = createCharacterAnimation("blinky", characters);
+        Timeline pinkyPop = createCharacterAnimation("pinky", characters);
+        Timeline inkyPop = createCharacterAnimation("inky", characters);
+        Timeline clydePop = createCharacterAnimation("clyde", characters);
+
+        pacmanPop.play();
+        new RubberBand(starting_logos).play();
+        pacmanPop.setOnFinished(event -> {
+            Timeline zoomOut = createZoomOut(characters.getChildren().get(0));
+            zoomOut.play();
+            blinkyPop.play();
+            blinkyPop.setOnFinished(event2 -> {
+                Timeline zoomOutBlinky = createZoomOut(characters.getChildren().get(1));
+                zoomOutBlinky.play();
+                pinkyPop.play();
+            });
+        });
+        pinkyPop.setOnFinished(event -> {
+            Timeline zoomOutPinky = createZoomOut(characters.getChildren().get(2));
+            zoomOutPinky.play();
+            inkyPop.play();
+        });
+        inkyPop.setOnFinished(event -> {
+            Timeline zoomOutInky = createZoomOut(characters.getChildren().get(3));
+            zoomOutInky.play();
+            clydePop.play();
+        });
+        ArrayList<ImageView> ghosts = createGhosts(true);
+        ArrayList<TranslateTransition> translateTransitionsRight = createTranslateTransitions(ghosts, "right");
+        Timeline timelineTranslateTransition = createTranslateTransition(translateTransitionsRight, ghosts);
+        clydePop.setOnFinished(event -> {
+            Timeline zoomOutClyde = createZoomOut(characters.getChildren().get(4));
+            zoomOutClyde.play();
+            Timeline ghostSlideToHome = slideToHomeScreen(timelineTranslateTransition);
+            ghostSlideToHome.play();
+        });
+        changeHomeScreenStateWait(timelineTranslateTransition);
     }
 
     private void whenGhostTranslateIsFinishedAnimation() {
@@ -376,7 +372,7 @@ public class StartingLogosState implements State {
         });
 
         bouncing8h30.setOnFinished(event2 -> {
-            createPopCharacters();
+            createPopCharactersAndFinalSlide();
         });
     }
 
