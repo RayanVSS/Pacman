@@ -290,7 +290,9 @@ public class StartingLogosState implements State {
         timelineTranslateTransition.setOnFinished(event -> {
             timelineTranslateTransition.stop();
             Timeline wait = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
-                App.app_state.changeState(HomeScreenState.getInstance());
+                if(App.app_state.getState() == StartingLogosState.getInstance()){
+                    App.app_state.changeState(HomeScreenState.getInstance());
+                }
             }));
             wait.setCycleCount(1);
             wait.setOnFinished(event2 -> {
@@ -319,6 +321,7 @@ public class StartingLogosState implements State {
             zoomOut.play();
             blinkyPop.play();
             blinkyPop.setOnFinished(event2 -> {
+                blinkyPop.stop();
                 Timeline zoomOutBlinky = createZoomOut(characters.getChildren().get(1));
                 zoomOutBlinky.play();
                 pinkyPop.play();
