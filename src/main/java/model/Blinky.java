@@ -3,8 +3,7 @@ package model;
 import geometry.RealCoordinates;
 
 public class Blinky {
-    public static Direction[] nextDirection(Ghost Blinky, Critter PacMan) {
-        RealCoordinates PacManPos = PacMan.getPos();
+    public static Direction[] nextDirection(Ghost Blinky, RealCoordinates PacMan) {
         RealCoordinates BlinkyPos = Blinky.getPos();
         Direction[] possibleDirections = {
                 Direction.NORTH,
@@ -17,7 +16,7 @@ public class Blinky {
             RealCoordinates newPos = BlinkyPos
                     .plus(outil.DirectionToRealCoordinates(dir).times(Blinky.getSpeed()));
 
-            double distance = outil.distance(newPos, PacManPos);
+            double distance = outil.distance(newPos, PacMan);
             tabDistance[i] = distance;
             i += 1;
         }
