@@ -211,11 +211,18 @@ public final class MazeState {
     }
 
     public void resetCritter(Critter critter) {
+        boolean verif = true;
         critter.setDirection(Direction.NONE);
-        critter.setPos(initialPos.get(critter));
         if (critter instanceof Ghost) {
             ((Ghost) critter).setTemps(0);
             ((Ghost) critter).setSortie(false);
+            if (((Ghost) critter).isSortie()) {
+                ((Ghost) critter).setMort(true);
+                verif = false;
+            }
+        }
+        if (verif) {
+            critter.setPos(initialPos.get(critter));
         }
 
     }
