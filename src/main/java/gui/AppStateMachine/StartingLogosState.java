@@ -18,6 +18,7 @@ import javafx.stage.Screen;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.MotionBlur;
 import javafx.util.Duration;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import animatefx.animation.FadeIn;
 import animatefx.animation.FadeOut;
@@ -178,6 +179,9 @@ public class StartingLogosState implements State {
             }));
             zizi.play(); // On lance zizi
         }));
+        timeline.setOnFinished(event -> {
+            timeline.stop();
+        });
         return timeline;
     }
 
@@ -260,7 +264,7 @@ public class StartingLogosState implements State {
         return res;
     }
 
-    private Timeline createZoomOut(Node node){
+    private Timeline createZoomOut(Node node) {
         ZoomOut zoomOut = new ZoomOut(node);
         Timeline zoomOutTimeline = new Timeline(new KeyFrame(Duration.seconds(1.5), event -> {
             zoomOut.play();
@@ -270,24 +274,28 @@ public class StartingLogosState implements State {
         return zoomOutTimeline;
     }
 
-    private Timeline slideToHomeScreen(Timeline timelineTranslateTransition){
+    private Timeline slideToHomeScreen(Timeline timelineTranslateTransition) {
         Timeline slideHome = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
-                timelineTranslateTransition.play();
-                FadeOutLeft fadeOut = new FadeOutLeft(starting_logos);
-                fadeOut.setDelay(Duration.seconds(0.5));
-                fadeOut.setSpeed(0.75);
-                fadeOut.play();
-            }));
+            timelineTranslateTransition.play();
+            FadeOutLeft fadeOut = new FadeOutLeft(starting_logos);
+            fadeOut.setDelay(Duration.seconds(0.5));
+            fadeOut.setSpeed(0.75);
+            fadeOut.play();
+        }));
         slideHome.setCycleCount(1);
         return slideHome;
     }
 
-    private void changeHomeScreenStateWait(Timeline timelineTranslateTransition){
+    private void changeHomeScreenStateWait(Timeline timelineTranslateTransition) {
         timelineTranslateTransition.setOnFinished(event -> {
+            timelineTranslateTransition.stop();
             Timeline wait = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
                 App.app_state.changeState(HomeScreenState.getInstance());
             }));
             wait.setCycleCount(1);
+            wait.setOnFinished(event2 -> {
+                wait.stop();
+            });
             wait.play();
         });
     }
@@ -306,6 +314,7 @@ public class StartingLogosState implements State {
         pacmanPop.play();
         new RubberBand(starting_logos).play();
         pacmanPop.setOnFinished(event -> {
+            pacmanPop.stop();
             Timeline zoomOut = createZoomOut(characters.getChildren().get(0));
             zoomOut.play();
             blinkyPop.play();
@@ -316,11 +325,13 @@ public class StartingLogosState implements State {
             });
         });
         pinkyPop.setOnFinished(event -> {
+            pinkyPop.stop();
             Timeline zoomOutPinky = createZoomOut(characters.getChildren().get(2));
             zoomOutPinky.play();
             inkyPop.play();
         });
         inkyPop.setOnFinished(event -> {
+            inkyPop.stop();
             Timeline zoomOutInky = createZoomOut(characters.getChildren().get(3));
             zoomOutInky.play();
             clydePop.play();
@@ -328,11 +339,19 @@ public class StartingLogosState implements State {
         ArrayList<ImageView> ghosts = createGhosts(true);
         ArrayList<TranslateTransition> translateTransitionsRight = createTranslateTransitions(ghosts, "right");
         Timeline timelineTranslateTransition = createTranslateTransition(translateTransitionsRight, ghosts);
+        Timeline ghostSlideToHome = slideToHomeScreen(timelineTranslateTransition);
         clydePop.setOnFinished(event -> {
             Timeline zoomOutClyde = createZoomOut(characters.getChildren().get(4));
             zoomOutClyde.play();
-            Timeline ghostSlideToHome = slideToHomeScreen(timelineTranslateTransition);
             ghostSlideToHome.play();
+        });
+        clydePop.setOnFinished(event -> {
+            clydePop.stop();
+            ghostSlideToHome.play();
+        });
+        ghostSlideToHome.setOnFinished(event -> {
+            ghostSlideToHome.stop();
+            timelineTranslateTransition.play();
         });
         changeHomeScreenStateWait(timelineTranslateTransition);
     }
@@ -368,12 +387,15 @@ public class StartingLogosState implements State {
         bouncing8h30.setCycleCount(1);
 
         fadeOutText1.setOnFinished(event1 -> {
+            fadeOutText1.stop();
             bouncing8h30.play();
         });
 
         bouncing8h30.setOnFinished(event2 -> {
+            bouncing8h30.stop();
             createPopCharactersAndFinalSlide();
         });
+
     }
 
     public void enter() {
@@ -392,6 +414,9 @@ public class StartingLogosState implements State {
         timeline.play();
 
         translateTransitionsLeft.get(0).setOnFinished(event -> {
+            for (TranslateTransition translateTransition : translateTransitionsLeft) {
+                translateTransition.stop();
+            }
             // Remove the ghost from the pane when the animation is finished
             for (ImageView ghost : ghosts) {
                 starting_logos.getChildren().remove(ghost);
