@@ -76,7 +76,7 @@ public final class PacMan implements Critter {
     public void handleCollisionsWithGhosts(MazeState maze) {
         var pacPos = PacMan.INSTANCE.getPos().round();
         for (var critter : maze.getCritters()) {
-            if (critter instanceof Ghost && critter.getPos().round().equals(pacPos)) {
+            if (critter instanceof Ghost && critter.getPos().round().equals(pacPos) && !((Ghost) critter).isMort()) {
                 handleGhostCollision(maze, (Ghost) critter);
             }
         }
