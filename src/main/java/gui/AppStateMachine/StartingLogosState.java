@@ -12,13 +12,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.MotionBlur;
 import javafx.util.Duration;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import animatefx.animation.FadeIn;
 import animatefx.animation.FadeOut;
@@ -27,6 +28,7 @@ import animatefx.animation.ZoomOut;
 import animatefx.animation.FadeOutLeft;
 import animatefx.animation.RubberBand;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import animatefx.animation.BounceInUp;
@@ -35,6 +37,10 @@ import lib.State;
 public class StartingLogosState implements State {
     private String state_name = "Starting Logos State";
     private static final StartingLogosState instance = new StartingLogosState();
+    private String musicFileName = "src\\main\\resources\\ost\\Carl-Orff-O-Fortuna-_-Carmina-Burana.wav";
+    private File musicFile = new File(musicFileName);
+    private Media media = new Media(musicFile.toURI().toString());
+    public MediaPlayer mediaPlayer = new MediaPlayer(media);
     private StackPane black_background = new StackPane();
     private StackPane starting_logos = new StackPane();
 
@@ -262,7 +268,7 @@ public class StartingLogosState implements State {
         if(App.app_state.getState() != StartingLogosState.getInstance()){
             return null;
         }
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2.5), event -> {
             lightSpeedIn.play();
             character.setVisible(true);
         }));
@@ -277,7 +283,7 @@ public class StartingLogosState implements State {
 
     private Timeline createZoomOut(Node node) {
         ZoomOut zoomOut = new ZoomOut(node);
-        Timeline zoomOutTimeline = new Timeline(new KeyFrame(Duration.seconds(1.5), event -> {
+        Timeline zoomOutTimeline = new Timeline(new KeyFrame(Duration.seconds(2.5), event -> {
             zoomOut.play();
             new RubberBand(starting_logos).play();
         }));
@@ -302,6 +308,7 @@ public class StartingLogosState implements State {
             timelineTranslateTransition.stop();
             Timeline wait = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
                 if(App.app_state.getState() == StartingLogosState.getInstance()){
+                    mediaPlayer.stop();
                     App.app_state.changeState(HomeScreenState.getInstance());
                 }
             }));
@@ -418,6 +425,8 @@ public class StartingLogosState implements State {
     }
 
     public void enter() {
+        mediaPlayer.setStartTime(Duration.seconds(1));
+        mediaPlayer.play();
         black_background.setStyle("-fx-background-color: black");
         black_background.setMaxHeight(App.pStage.getHeight());
         black_background.setMaxWidth(App.pStage.getWidth());
