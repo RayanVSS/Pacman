@@ -170,13 +170,13 @@ public class StartingLogosState implements State {
             for (ImageView ghost : ghosts) {
                 ghost.setVisible(false);
                 starting_logos.getChildren().add(ghost);
-
             }
             Timeline zizi = new Timeline(new KeyFrame(Duration.seconds(0.2), event2 -> {
                 for (ImageView ghost : ghosts) {
                     ghost.setVisible(true);
                 }
             }));
+            zizi.setCycleCount(1);
             zizi.play(); // On lance zizi
         }));
         timeline.setOnFinished(event -> {
@@ -187,6 +187,9 @@ public class StartingLogosState implements State {
 
     private Timeline createBouncingTitle(StackPane pane, Label text1, Label text2) {
         return new Timeline(new KeyFrame(Duration.seconds(1.5), event0 -> {
+            if(App.app_state.getState() != StartingLogosState.getInstance()){
+                return;
+            }
             pane.setVisible(false);
             starting_logos.getChildren().removeAll();
             starting_logos.getChildren().add(pane);
@@ -197,6 +200,7 @@ public class StartingLogosState implements State {
             Timeline jpp = new Timeline(new KeyFrame(Duration.seconds(0.1), event1 -> {
                 pane.setVisible(true);
             }));
+            jpp.setCycleCount(1);
             jpp.play();
             Timeline blurText = new Timeline(new KeyFrame(Duration.seconds(2), event3 -> {
                 GaussianBlur gaussianBlur = new GaussianBlur();
@@ -204,12 +208,16 @@ public class StartingLogosState implements State {
                 text1.setEffect(gaussianBlur);
                 text2.setEffect(gaussianBlur);
             }));
+            blurText.setCycleCount(1);
             blurText.play();
         }));
     }
 
     private Timeline createFadeOut(StackPane p) {
         return new Timeline(new KeyFrame(Duration.seconds(2.0), event2 -> {
+            if(App.app_state.getState() != StartingLogosState.getInstance()){
+                return;
+            }
             FadeOut fadeOutTransitionText1 = new FadeOut(p);
             fadeOutTransitionText1.play();
         }));
@@ -251,6 +259,9 @@ public class StartingLogosState implements State {
         character.setVisible(false);
         createCharacterIcon(character, name);
         group.getChildren().add(character);
+        if(App.app_state.getState() != StartingLogosState.getInstance()){
+            return null;
+        }
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
             lightSpeedIn.play();
             character.setVisible(true);
@@ -303,6 +314,9 @@ public class StartingLogosState implements State {
     }
 
     private void createPopCharactersAndFinalSlide() {
+        if(App.app_state.getState() != StartingLogosState.getInstance()){
+            return;
+        }
         Group characters = new Group();
         starting_logos.getChildren().add(characters);
         GaussianBlur gaussianBlur = new GaussianBlur();
@@ -312,7 +326,6 @@ public class StartingLogosState implements State {
         Timeline pinkyPop = createCharacterAnimation("pinky", characters);
         Timeline inkyPop = createCharacterAnimation("inky", characters);
         Timeline clydePop = createCharacterAnimation("clyde", characters);
-
         pacmanPop.play();
         new RubberBand(starting_logos).play();
         pacmanPop.setOnFinished(event -> {
@@ -360,6 +373,9 @@ public class StartingLogosState implements State {
     }
 
     private void whenGhostTranslateIsFinishedAnimation() {
+        if(App.app_state.getState() != StartingLogosState.getInstance()){
+            return;
+        }
         double maxX = Screen.getPrimary().getBounds().getMaxX();
         double halfScreen = starting_logos.getMaxHeight() / 2;
 
