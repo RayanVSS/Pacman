@@ -6,7 +6,7 @@ import geometry.RealCoordinates;
 
 public class Clyde {
 
-    public static Direction[] nextDirection(Ghost clyde, Critter pacMan) {
+    public static Direction[] nextDirection(Ghost clyde, Critter pacMan, MazeConfig config) {
         RealCoordinates clydePos = clyde.getPos();
         RealCoordinates pacManPos = pacMan.getPos();
         Direction[] tab = {
@@ -18,19 +18,14 @@ public class Clyde {
         double distanceToPacMan = outil.distance(clydePos, pacManPos);
 
         if (distanceToPacMan < 5) {
-            double[] tabDistance = new double[4];
-            int i = 0;
-
-            for (Direction dir : tab) {
-                RealCoordinates newPos = clydePos.plus(outil.DirectionToRealCoordinates(dir).times(clyde.getSpeed()));
-                double newDistance = outil.distance(newPos, pacManPos);
-                tabDistance[i] = newDistance;
-                i++;
-            }
-
-            return outil.tri(tab, tabDistance);
+            return Blinky.nextDirection(clyde, pacManPos);
         } else {
-            return triAleatoire(tab);
+            if (config.getCell(clyde.getPos().round()).canMoveInDirection(clyde.getDirection())) {
+                tab[0] = clyde.getDirection();
+                return tab;
+            } else {
+                return triAleatoire(tab);
+            }
         }
     }
 
