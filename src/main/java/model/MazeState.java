@@ -8,6 +8,7 @@ import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
 import javafx.scene.control.Cell;
 import gui.AppStateMachine.GameOverState;
+import gui.AppStateMachine.MazeWinState;
 
 import java.util.List;
 import java.util.Map;
@@ -196,7 +197,7 @@ public final class MazeState {
                 }
             }
         }
-        System.out.println("Game won!");
+        App.app_state.changeState(MazeWinState.getInstance());
     }
 
     public void playerLost() {
