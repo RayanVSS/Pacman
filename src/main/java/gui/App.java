@@ -1,7 +1,6 @@
 package gui;
 
 import gui.AppStateMachine.AppState;
-import gui.AppStateMachine.HomeScreenState;
 import gui.AppStateMachine.StartingLogosState;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

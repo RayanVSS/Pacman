@@ -13,6 +13,7 @@ public enum Ghost implements Critter {
     private Direction direction = Direction.NONE;
     private boolean sortie = false;
     private boolean mort = false;
+    private final boolean disableGhost = false;
 
     @Override
     public RealCoordinates getPos() {
@@ -56,6 +57,9 @@ public enum Ghost implements Critter {
 
     @Override
     public double getSpeed() {
+        if(disableGhost){
+            return 0;
+        }
         return 0.04;
     }
 
