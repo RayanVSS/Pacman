@@ -14,7 +14,7 @@ public class Pinky {
                 Direction.WEST
         };
         RealCoordinates targetPos = pacManPos
-                .plus(outil.DirectionToRealCoordinates(pacman.getDirection()).times(2 * pacman.getSpeed()));
+                .plus(outil.DirectionToRealCoordinates(pacman.getDirection()).times(pacman.getSpeed()));
 
         double[] tabDistance = new double[4];
         int i = 0;
