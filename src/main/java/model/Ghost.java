@@ -79,7 +79,7 @@ public enum Ghost implements Critter {
             if (this == PINKY) {
                 directions = Pinky.nextDirection(PINKY, PacMan.INSTANCE);
             } else if (this == CLYDE) {
-                directions = Clyde.nextDirection(CLYDE, PacMan.INSTANCE);
+                directions = Clyde.nextDirection(CLYDE, PacMan.INSTANCE, config);
             } else if (this == INKY) {
                 directions = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE);
             } else {
