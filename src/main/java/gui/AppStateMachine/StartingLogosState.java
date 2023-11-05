@@ -4,6 +4,8 @@ import gui.App;
 import gui.Controller.StartingLogoController;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -454,6 +456,14 @@ public class StartingLogosState implements State {
 
         var startingLogoController = new StartingLogoController();
         App.screen.setOnKeyPressed(startingLogoController::keyPressedHandler);
+         App.screen.setOnMouseClicked(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                if(event.getEventType().equals(javafx.scene.input.MouseEvent.MOUSE_CLICKED)){
+                    App.app_state.changeState(HomeScreenState.getInstance());
+                }
+            }
+        });
 
         App.screen.setRoot(black_background);
     }
@@ -463,6 +473,7 @@ public class StartingLogosState implements State {
     }
 
     public void exit() {
-
+        mediaPlayer.stop();
+        App.screen.setOnMouseClicked(null);
     }
 }

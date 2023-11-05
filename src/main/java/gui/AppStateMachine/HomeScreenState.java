@@ -2,6 +2,8 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.HomeScreenController;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -84,6 +86,14 @@ public class HomeScreenState implements State {
 
         var homeScreenController = new HomeScreenController();
         App.screen.setOnKeyPressed(homeScreenController::keyPressedHandler);
+        App.screen.setOnMouseClicked(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                if(event.getEventType().equals(javafx.scene.input.MouseEvent.MOUSE_CLICKED)){
+                    App.app_state.changeState(PlayingState.getInstance());
+                }
+            }
+        });
 
         App.screen.setRoot(start_menu);
     }
@@ -93,6 +103,7 @@ public class HomeScreenState implements State {
     }
 
     public void exit() {
+        App.screen.setOnMouseClicked(null);
         mediaPlayer.stop();
     }
 }
