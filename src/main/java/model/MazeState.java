@@ -7,11 +7,14 @@ import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
 import javafx.scene.control.Cell;
+import javafx.scene.effect.Glow;
 import gui.AppStateMachine.GameOverState;
 import gui.AppStateMachine.MazeWinState;
 
 import java.util.List;
 import java.util.Map;
+
+import animatefx.animation.GlowText;
 
 import static model.Ghost.*;
 
@@ -182,6 +185,7 @@ public final class MazeState {
     public void addScore(int increment) {
         score += increment * 10;
         PlayingState.score_graphics.setText("" + score);
+        new GlowText(PlayingState.score_graphics,javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW).play();
         displayScore();
     }
 
