@@ -32,6 +32,8 @@ public class PlayingState extends App implements State {
     public static MazeState maze;
     public static GameView gameView;
 
+    public static int bestScore = 0;
+
     private PlayingState() {
         // Constructeur privé pour empêcher la création d'autres instances
     }
