@@ -2,18 +2,24 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.GameOverController;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import lib.State;
-import model.MazeState;
-import javafx.scene.text.TextAlignment;;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import gui.AppStateMachine.PlayingState;
 
 public class GameOverState implements State {
     private String state_name = "Game Over";
     private static final GameOverState instance = new GameOverState();
     BorderPane restart_menu = new BorderPane();
+
+    private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
+    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
 
     private GameOverState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -23,44 +29,59 @@ public class GameOverState implements State {
         return instance;
     }
 
-    public String showState(){
+    public String showState() {
         return state_name;
     }
-    
-    public void enter(){
-        Label restart_button = new Label("Appuyer sur Entrer !");
+
+    public Pane createRestartButton() {
+        BorderPane restart_button = new BorderPane();
+        restart_button.setMaxHeight(App.screen.getHeight() / 2);
+        restart_button.setMaxWidth(App.screen.getWidth());
+
+        restart_button.setStyle("-fx-background-color: black");
+        if(PlayingState.getInstance().maze.getScore() > PlayingState.bestScore){
+            PlayingState.bestScore = PlayingState.getInstance().maze.getScore();
+        }
+        Label restart_button_text = new Label("Appuyer sur Entree !\n" +
+                "Best Score :" + PlayingState.bestScore + "\n" +
+                "Score : "+ PlayingState.getInstance().maze.getScore());
+        restart_button_text.setTextAlignment(TextAlignment.CENTER);
+
         Image img = new Image(getClass().getResourceAsStream("/restart_button_temporaire.png"));
         ImageView view = new ImageView(img);
-        view.setFitHeight(800);
-        view.setFitWidth(800);
 
-        restart_button.setFont(App.text_graphics);
-        restart_button.setTextFill(javafx.scene.paint.Color.WHITE);
-        restart_button.setTextAlignment(TextAlignment.LEFT);
-
+        view.setFitHeight(100);
+        view.setFitWidth(200);
         view.setPreserveRatio(true);
-        restart_button.setGraphic(view);
 
-        restart_menu.setPrefSize(500, 500);
-        restart_menu.setStyle("-fx-background-color: black;"); // Définir la couleur de fond du BorderPane
+        restart_button_text.setFont(pixel_font);
+        restart_button_text.setTextFill(javafx.scene.paint.Color.WHITE);
 
-        // Ajoute le label avec l'image au BorderPane
+        restart_button.setCenter(view);
+        restart_button.setBottom(restart_button_text);
+        BorderPane.setAlignment(restart_button_text, Pos.BOTTOM_CENTER);
+
+        return restart_button;
+    }
+
+    public void enter() {
+        Pane restart_button = createRestartButton();
+
+        restart_menu.setStyle("-fx-background-color: black;");
+
         restart_menu.setCenter(restart_button);
 
         var GameOverController = new GameOverController();
-        restart_menu.setOnKeyPressed(GameOverController::keyPressedHandler);
+        App.screen.setOnKeyPressed(GameOverController::keyPressedHandler);
 
         App.screen.setRoot(restart_menu);
+    }
 
-        restart_menu.requestFocus();
+    public void process(long deltaT) {
 
     }
-    
-    public void process(long deltaT){
 
-    }
-    
-    public void exit(){
-        
+    public void exit() {
+
     }
 }

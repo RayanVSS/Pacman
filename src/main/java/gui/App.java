@@ -1,12 +1,12 @@
 package gui;
 
 import gui.AppStateMachine.AppState;
-import gui.AppStateMachine.HomeScreenState;
+import gui.AppStateMachine.StartingLogosState;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -15,19 +15,25 @@ public class App extends Application {
     private static Pane root = new Pane();
     public static Scene screen = new Scene(root);
 
-    public static AppState app_state = AppState.HOME_SCREEN;
-    // Définit les paramètres du texte de l'application
-    static final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
-    public static Font text_graphics = new Font(STYLESHEET_CASPIAN, MAX_FONT_SIZE); // TODO : modifier la police d'écriture
-
+    public static AppState app_state = AppState.STARTING_LOGOS;
+ 
     @Override
     public void start(Stage primaryStage) {
         pStage = primaryStage;
 
+        //Définit la taille de la fenêtre
+        double screen_width = Screen.getPrimary().getBounds().getWidth();
+        double screen_height = Screen.getPrimary().getBounds().getHeight();
+        double min_screen_size = Math.min(screen_width, screen_height) - 100;
+        pStage.setWidth(min_screen_size);
+        pStage.setHeight(min_screen_size);
+
+        pStage.setResizable(false);
+
         System.out.println(app_state.showState());
 
         // Etat intitial de l'application
-        app_state.changeState(HomeScreenState.getInstance());
+        app_state.changeState(StartingLogosState.getInstance());
 
         new AnimationTimer() {
             long last = 0;
@@ -45,8 +51,8 @@ public class App extends Application {
         }.start();
 
         pStage.setScene(screen);
-        // pStage.setFullScreen(true);
         pStage.setFullScreenExitHint(""); // Retire le message d'indication pour quitter le plein écran
-        pStage.show();
+        // pStage.setFullScreen(true);
+        pStage.show();  
     }
 }

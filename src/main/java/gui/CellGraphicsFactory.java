@@ -24,7 +24,7 @@ public class CellGraphicsFactory {
         var cell = state.getConfig().getCell(pos);
         var dot = new Circle();
         group.getChildren().add(dot);
-        dot.setRadius(switch (cell.initialContent()) { case DOT -> scale/15; case ENERGIZER -> scale/5; case NOTHING -> 0; });
+        dot.setRadius(switch (cell.initialContent()) { case DOT -> scale/15; case ENERGIZER -> scale/5; case NOTHING -> 0; case GHOST_DOOR -> 0; });
         dot.setCenterX(scale/2);
         dot.setCenterY(scale/2);
         dot.setFill(Color.YELLOW);
@@ -63,6 +63,15 @@ public class CellGraphicsFactory {
             nWall.setX(0);
             nWall.setFill(Color.BLUEVIOLET);
             group.getChildren().add(nWall);
+        }
+        if(cell.isGhostDoor()){
+            var ghostDoor = new Rectangle();
+            ghostDoor.setHeight(scale/10);
+            ghostDoor.setWidth(scale);
+            ghostDoor.setY(-1.5);
+            ghostDoor.setX(0);
+            ghostDoor.setFill(Color.WHITE);
+            group.getChildren().add(ghostDoor);
         }
         return new GraphicsUpdater() {
             @Override

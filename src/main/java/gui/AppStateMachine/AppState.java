@@ -5,6 +5,7 @@ import lib.State;
 //Implémentation d'une machine à état en utilisant un singleton
 
 public enum AppState {
+    STARTING_LOGOS(StartingLogosState.getInstance()),
     HOME_SCREEN(HomeScreenState.getInstance()),
     PLAYING(PlayingState.getInstance()),
     GAMEOVER(GameOverState.getInstance());
@@ -25,8 +26,8 @@ public enum AppState {
 
     public void changeState(State s) {
         current_state.exit();
-        s.enter();
         current_state = s;
+        current_state.enter();
     }
 
     public void process(long deltaT) {

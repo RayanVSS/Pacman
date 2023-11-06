@@ -1,10 +1,9 @@
 package model;
 
-import config.MazeConfig;
 import geometry.RealCoordinates;
 
 public class Inky {
-    public static Direction nextDirection(Ghost INKY, Ghost BLINKY, Critter PacMan, MazeConfig config) {
+    public static Direction[] nextDirection(Ghost INKY, Ghost BLINKY, Critter PacMan) {
         RealCoordinates pacManPos = PacMan.getPos();
         RealCoordinates inkyPos = INKY.getPos();
         RealCoordinates blinkyPos = BLINKY.getPos();
@@ -13,22 +12,27 @@ public class Inky {
                 pacManPos.x() + 2 * (pacManPos.x() - blinkyPos.x()),
                 pacManPos.y() + 2 * (pacManPos.y() - blinkyPos.y()));
 
+        // Liste des directions possibles
         Direction[] possibleDirections = {
                 Direction.NORTH,
                 Direction.EAST,
                 Direction.SOUTH,
                 Direction.WEST
         };
+
         double[] tabDistance = new double[4];
         int i = 0;
+
         for (Direction dir : possibleDirections) {
             RealCoordinates newPos = inkyPos
-                    .plus(outilghost.DirectionToRealCoordinates(dir).times(INKY.getSpeed()));
+                    .plus(outil.DirectionToRealCoordinates(dir).times(INKY.getSpeed()));
 
-            double distance = outilghost.distance(newPos, targetPos);
+            double distance = outil.distance(newPos, targetPos);
             tabDistance[i] = distance;
-            i += 1;
+            i++;
         }
-        return outilghost.tri(possibleDirections, tabDistance)[0];
+
+        return outil.tri(possibleDirections, tabDistance);
     }
+
 }
