@@ -4,7 +4,7 @@ stages:
 build:
   stage: build
   script:
-    - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+    - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java 2>/dev/null) 2>/dev/null) 2>/dev/null))
     - ./gradlew build
   only:
     - master
