@@ -3,7 +3,7 @@ package model;
 import config.MazeConfig;
 import geometry.RealCoordinates;
 
-public sealed interface Critter permits Ghost, PacMan, Blinky {
+public sealed interface Critter permits Ghost, PacMan {
     RealCoordinates getPos();
 
     Direction getDirection();

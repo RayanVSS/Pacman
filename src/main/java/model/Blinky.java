@@ -1,63 +1,25 @@
 package model;
 
-import config.MazeConfig;
 import geometry.RealCoordinates;
 
+public class Blinky {
+    public static Direction[] nextDirection(Ghost Blinky, RealCoordinates PacMan) {
+        RealCoordinates BlinkyPos = Blinky.getPos();
+        Direction[] possibleDirections = {
+                Direction.NORTH,
+                Direction.EAST,
+                Direction.SOUTH,
+                Direction.WEST };
+        double[] tabDistance = new double[4];
+        int i = 0;
+        for (Direction dir : possibleDirections) {
+            RealCoordinates newPos = BlinkyPos
+                    .plus(outil.DirectionToRealCoordinates(dir).times(Blinky.getSpeed()));
 
-public final class Blinky implements Critter {
-
-    private RealCoordinates pos;
-    private Direction direction;
-    private double speed;
-
-    public Blinky(RealCoordinates initialPos, double initialSpeed) {
-        pos = initialPos;
-        direction = Direction.NONE; // Initialiser la direction à NONE
-        speed = initialSpeed;
+            double distance = outil.distance(newPos, PacMan);
+            tabDistance[i] = distance;
+            i += 1;
+        }
+        return outil.tri(possibleDirections, tabDistance);
     }
-
-    @Override
-    public RealCoordinates getPos() {
-        return pos;
-    }
-
-    @Override
-    public void setPos(RealCoordinates newPos) {
-        pos = newPos;
-    }
-
-    @Override
-    public void setDirection(Direction newDirection) {
-        direction = newDirection;
-    }
-
-    @Override
-    public Direction getDirection() {
-        return direction;
-    }
-
-    @Override
-    public double getSpeed() {
-        return speed;
-    }
-
-    // Méthode pour mettre à jour la position de Blinky
-    @Override
-    public RealCoordinates nextPos(long deltaTNanoSeconds,MazeConfig config) {
-        return getPos().plus((switch (getDirection()) {
-            case NONE -> RealCoordinates.ZERO;
-            case NORTH -> RealCoordinates.NORTH_UNIT;
-            case EAST -> RealCoordinates.EAST_UNIT;
-            case SOUTH -> RealCoordinates.SOUTH_UNIT;
-            case WEST -> RealCoordinates.WEST_UNIT;
-        }).times(getSpeed()*deltaTNanoSeconds * 1E-9));
-    }
-    
 }
-
-
-
-
-
-
-
