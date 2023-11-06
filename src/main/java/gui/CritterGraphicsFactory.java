@@ -16,15 +16,23 @@ public final class CritterGraphicsFactory {
         this.scale = scale;
     }
 
-    public GraphicsUpdater makeGraphics(Critter critter) {
+   public GraphicsUpdater makeGraphics(Critter critter) {
         var size = 0.7;
-        var url = (critter instanceof PacMan) ? "pac-man-fortnite.gif" :
-                switch ((Ghost) critter) {
+        var url = "pac-man-fortnite.gif";
+        if (critter instanceof Ghost) {
+            if (((Ghost) critter).isMort()) {
+                url = "ghost_dead.png";
+            } else if (PacMan.INSTANCE.isEnergized()) {
+                url = "ghost_scared.png";
+            } else {
+                url = switch ((Ghost) critter) {
                     case BLINKY -> "ghost_blinky.png";
                     case CLYDE -> "ghost_clyde.png";
                     case INKY -> "ghost_inky.png";
                     case PINKY -> "ghost_pinky.png";
                 };
+            }
+        }
         var image = new ImageView(new Image(url, scale * size, scale * size, true, true));
         Rotate rotation = new Rotate(0, scale * size / 2, scale * size / 2); // Initial rotation angle set to 0
         image.getTransforms().add(rotation);

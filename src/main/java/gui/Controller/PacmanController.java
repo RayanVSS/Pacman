@@ -12,20 +12,10 @@ public class PacmanController {
     private MazeState config = PlayingState.maze;
 
     public void keyPressedHandler(KeyEvent event) {
-        System.out.println("1 : " + currentDirection);
-        Direction newDirection = getDirectionFromKeyEvent(event);
-        System.out.println("2 : " + newDirection);
-        if( PacMan.INSTANCE.getDirection().equals(Direction.NONE) || currentDirection == Direction.NONE || currentDirection == null || config.canMoveInDirection(newDirection, PacMan.INSTANCE.getPos().round())){
-            PacMan.INSTANCE.setDirection(newDirection);
-            currentDirection = newDirection;
+        Direction temp = getDirectionFromKeyEvent(event);
+        if(temp != nextDirection){
+            nextDirection = temp;
         }
-        else{
-            PacMan.INSTANCE.setDirection(currentDirection);
-            nextDirection = newDirection;
-        }
-        System.out.println("3 : " + PacMan.INSTANCE.getDirection());
-        System.out.println("4 : " + nextDirection);
-        System.out.println(config.canMoveInDirection(currentDirection, PacMan.INSTANCE.getPos().round()));
     }
     
     public void keyReleasedHandler(KeyEvent event) {

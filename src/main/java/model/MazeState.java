@@ -6,10 +6,15 @@ import geometry.RealCoordinates;
 import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
+import javafx.scene.control.Cell;
+import javafx.scene.effect.Glow;
 import gui.AppStateMachine.GameOverState;
+import gui.AppStateMachine.MazeWinState;
 
 import java.util.List;
 import java.util.Map;
+
+import animatefx.animation.GlowText;
 
 import static model.Ghost.*;
 
@@ -33,6 +38,12 @@ public final class MazeState {
         width = config.getWidth();
         critters = List.of(PacMan.INSTANCE, Ghost.CLYDE, BLINKY, INKY, PINKY);
         gridState = new boolean[height][width];
+        // Met le gridState à true if si il n'a pas de boule
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                gridState[i][j] = !config.getCell(new IntCoordinates(j, i)).hasDot();
+            }
+        }
         initialPos = Map.of(
                 PacMan.INSTANCE, config.getPacManPos().toRealCoordinates(1.0),
                 BLINKY, config.getBlinkyPos().toRealCoordinates(1.0),
@@ -65,88 +76,116 @@ public final class MazeState {
         var nextPos = critter.nextPos(deltaTns, config);
         var curNeighbours = curPos.intNeighbours();
         var nextNeighbours = nextPos.intNeighbours();
-        if (!curNeighbours.containsAll(nextNeighbours)) { // the critter would overlap new cells. Do we allow it?
+        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) { // the critter would overlap
+                                                                                         // new cells. Do we allow it?
             switch (critter.getDirection()) {
                 case NORTH -> {
-                    for (var n : curNeighbours)
+                    for (var n : curNeighbours) {
                         if (config.getCell(n).northWall()) {
-                            if (critter instanceof PacMan)
-                                System.out.println("mur du nord");
                             nextPos = curPos.floorY();
-                            if (critter instanceof PacMan) {
-                                critter.setDirection(PacmanController.nextDirection);
-                                PacmanController.currentDirection = PacmanController.nextDirection;
-                                PacmanController.nextDirection = Direction.NONE;
-                            } else
-                                critter.setDirection(Direction.NONE);
+                            critter.setDirection(Direction.NONE);
                             break;
                         }
+                    }
                 }
                 case EAST -> {
-                    for (var n : curNeighbours)
+                    for (var n : curNeighbours) {
                         if (config.getCell(n).eastWall()) {
-                            if (critter instanceof PacMan) {
-                                System.out.println("mur de l'est");
-                                System.out.println(PacmanController.nextDirection);
-                            }
                             nextPos = curPos.ceilX();
-                            if (critter instanceof PacMan) {
-                                critter.setDirection(PacmanController.nextDirection);
-                                PacmanController.currentDirection = PacmanController.nextDirection;
-                                PacmanController.nextDirection = Direction.NONE;
-                            } else
-                                critter.setDirection(Direction.NONE);
+                            critter.setDirection(Direction.NONE);
                             break;
                         }
+                    }
                 }
                 case SOUTH -> {
-                    for (var n : curNeighbours)
+                    for (var n : curNeighbours) {
                         if (config.getCell(n).southWall()) {
-                            if (critter instanceof PacMan)
-                                System.out.println("mur du sud");
                             nextPos = curPos.ceilY();
-                            if (critter instanceof PacMan) {
-                                critter.setDirection(PacmanController.nextDirection);
-                                PacmanController.currentDirection = PacmanController.nextDirection;
-                                PacmanController.nextDirection = Direction.NONE;
-                            } else
-                                critter.setDirection(Direction.NONE);
+                            critter.setDirection(Direction.NONE);
                             break;
                         }
+                    }
                 }
                 case WEST -> {
-                    for (var n : curNeighbours)
+                    for (var n : curNeighbours) {
                         if (config.getCell(n).westWall()) {
-                            if (critter instanceof PacMan)
-                                System.out.println("mur de l'ouest");
                             nextPos = curPos.floorX();
-                            if (critter instanceof PacMan) {
-                                critter.setDirection(PacmanController.nextDirection);
-                                PacmanController.currentDirection = PacmanController.nextDirection;
-                                PacmanController.nextDirection = Direction.NONE;
-                            } else
-                                critter.setDirection(Direction.NONE);
+                            critter.setDirection(Direction.NONE);
                             break;
                         }
+                    }
+                }
+                default -> {
+                    critter.setDirection(Direction.NONE);
+                    break;
                 }
             }
-
         }
 
-        critter.setPos(nextPos.warp(width, height));
+        if (critter instanceof PacMan) {
+            if (config.getCell(critter.getPos().round()).canMoveInDirection(PacmanController.nextDirection)) {
+                switch (PacmanController.nextDirection) {
+                    case NORTH, SOUTH -> {
+                        if (PacmanController.currentDirection == Direction.EAST) {
+                            int w = critter.getPos().round().x();
+                            if (critter.getPos().x() <= w || true) {
+                                critter.setPos(new RealCoordinates(w, critter.getPos().y()));
+                            }
+                            System.out.println("NS : EAST");
+                        } else if (PacmanController.currentDirection == Direction.WEST) {
+                            int e = critter.getPos().round().x();
+                            if (critter.getPos().x() <= e || true) {
+                                critter.setPos(new RealCoordinates(e, critter.getPos().y()));
+                            }
+                            System.out.println("NS : WEST");
+                        } else {
+                            critter.setPos(nextPos.warp(width, height));
+                        }
+                        critter.setDirection(PacmanController.nextDirection);
+                        PacmanController.currentDirection = PacmanController.nextDirection;
+                    }
+
+                    case EAST, WEST -> {
+                        if (PacmanController.currentDirection == Direction.SOUTH) {
+                            int s = critter.getPos().round().y();
+                            if (critter.getPos().y() <= s || true) {
+                                critter.setPos(new RealCoordinates(critter.getPos().x(), s));
+                            }
+                            System.out.println("EW : SOUTH");
+                        } else if (PacmanController.currentDirection == Direction.NORTH) {
+                            int n = critter.getPos().round().y();
+                            if (critter.getPos().y() <= n || true) {
+                                critter.setPos(new RealCoordinates(critter.getPos().x(), n));
+                            }
+                            System.out.println("EW : NORTH");
+                        } else {
+                            critter.setPos(nextPos.warp(width, height));
+                        }
+                        critter.setDirection(PacmanController.nextDirection);
+                        PacmanController.currentDirection = PacmanController.nextDirection;
+                    }
+                }
+            } else {
+                critter.setPos(nextPos.warp(width, height));
+            }
+        } else {
+            critter.setPos(nextPos.warp(width, height));
+        }
     }
 
-    public void update(long deltaTns) {
+    public void update(Long deltaTns) {
         for (var critter : critters) {
             handleWallCollisions(critter, deltaTns);
         }
         PacMan.INSTANCE.handlePacManPoints(this);
         PacMan.INSTANCE.handleCollisionsWithGhosts(this);
+        gameisWon();
     }
 
     public void addScore(int increment) {
         score += increment * 10;
         PlayingState.score_graphics.setText("" + score);
+        new GlowText(PlayingState.score_graphics,javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW).play();
         displayScore();
     }
 
@@ -154,9 +193,20 @@ public final class MazeState {
         System.out.println("Score: " + score);
     }
 
+    public void gameisWon(){
+        for(int i =0; i<gridState.length; i++){
+            for(int j =0; j<gridState[i].length; j++){
+                if(!gridState[i][j]){
+                    return;
+                }
+            }
+        }
+        App.app_state.changeState(MazeWinState.getInstance());
+    }
+
     public void playerLost() {
         lives--;
-        PlayingState.life_graphics.setText("" + lives);
+        PlayingState.getInstance().life_graphics_update(lives);
         if (lives == 0) {
             System.out.println("Game over!");
             App.app_state.changeState(GameOverState.getInstance());
@@ -166,8 +216,20 @@ public final class MazeState {
     }
 
     public void resetCritter(Critter critter) {
+        boolean verif = true;
         critter.setDirection(Direction.NONE);
-        critter.setPos(initialPos.get(critter));
+        if (critter instanceof Ghost) {
+            ((Ghost) critter).setTemps(0);
+            ((Ghost) critter).setSortie(false);
+            if (((Ghost) critter).isSortie()) {
+                ((Ghost) critter).setMort(true);
+                verif = false;
+            }
+        }
+        if (verif) {
+            critter.setPos(initialPos.get(critter));
+        }
+
     }
 
     private void resetCritters() {
@@ -191,16 +253,16 @@ public final class MazeState {
         gridState[y][x] = b;
     }
 
-    public int getLives(){
+    public int getLives() {
         return lives;
     }
 
-    public void setLives(int l){
+    public void setLives(int l) {
         lives = l;
-        PlayingState.life_graphics.setText("" + lives);
+        PlayingState.getInstance().life_graphics_update(l);
     }
 
-    public static void resetScore(){
+    public static void resetScore() {
         score = 0;
     }
 }

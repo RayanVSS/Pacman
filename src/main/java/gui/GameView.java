@@ -2,6 +2,7 @@ package gui;
 
 import geometry.IntCoordinates;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import model.MazeState;
 
@@ -31,9 +32,9 @@ public class GameView {
         this.maze = maze;
         this.gameRoot = root;
         // pixels per cell
-        root.setMinWidth(maze.getWidth() * scale);
-        root.setMinHeight(maze.getHeight() * scale);
-        root.setStyle("-fx-background-color: #000000");
+        root.setMaxWidth(maze.getWidth() * scale);
+        root.setMaxHeight(maze.getHeight() * scale);
+        root.setStyle("-fx-background-color: black");
         var critterFactory = new CritterGraphicsFactory(scale);
         var cellFactory = new CellGraphicsFactory(scale);
         graphicsUpdaters = new ArrayList<>();
@@ -66,5 +67,9 @@ public class GameView {
 
     public void stop(){
         animationTimer.stop();
+    }
+
+    public Node getGameRoot() {
+        return gameRoot;
     }
 }
