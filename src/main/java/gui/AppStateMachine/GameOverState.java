@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import lib.State;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import gui.AppStateMachine.PlayingState;
 
 public class GameOverState implements State {
     private String state_name = "Game Over";
@@ -38,7 +39,7 @@ public class GameOverState implements State {
         restart_button.setMaxWidth(App.screen.getWidth());
 
         restart_button.setStyle("-fx-background-color: black");
-        Label restart_button_text = new Label("Appuyer sur Entree !");
+        Label restart_button_text = new Label("Appuyer sur Entree !\n" + "Score : "+ PlayingState.getInstance().maze.getScore());
         restart_button_text.setTextAlignment(TextAlignment.CENTER);
 
         Image img = new Image(getClass().getResourceAsStream("/restart_button_temporaire.png"));
