@@ -76,52 +76,6 @@ public final class MazeState {
         var nextPos = critter.nextPos(deltaTns, config);
         var curNeighbours = curPos.intNeighbours();
         var nextNeighbours = nextPos.intNeighbours();
-        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) { // the critter would overlap
-                                                                                         // new cells. Do we allow it?
-            switch (critter.getDirection()) {
-                case NORTH -> {
-                    for (var n : curNeighbours) {
-                        if (config.getCell(n).northWall()) {
-                            nextPos = curPos.floorY();
-                            critter.setDirection(Direction.NONE);
-                            break;
-                        }
-                    }
-                }
-                case EAST -> {
-                    for (var n : curNeighbours) {
-                        if (config.getCell(n).eastWall()) {
-                            nextPos = curPos.ceilX();
-                            critter.setDirection(Direction.NONE);
-                            break;
-                        }
-                    }
-                }
-                case SOUTH -> {
-                    for (var n : curNeighbours) {
-                        if (config.getCell(n).southWall()) {
-                            nextPos = curPos.ceilY();
-                            critter.setDirection(Direction.NONE);
-                            break;
-                        }
-                    }
-                }
-                case WEST -> {
-                    for (var n : curNeighbours) {
-                        if (config.getCell(n).westWall()) {
-                            nextPos = curPos.floorX();
-                            critter.setDirection(Direction.NONE);
-                            break;
-                        }
-                    }
-                }
-                default -> {
-                    critter.setDirection(Direction.NONE);
-                    break;
-                }
-            }
-        }
-
         if (critter instanceof PacMan) {
             if (config.getCell(critter.getPos().round()).canMoveInDirection(PacmanController.nextDirection)) {
                 switch (PacmanController.nextDirection) {
