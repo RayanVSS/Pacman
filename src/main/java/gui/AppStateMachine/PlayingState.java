@@ -22,6 +22,7 @@ public class PlayingState extends App implements State {
     private String state_name = "Playing State";
 
     BorderPane game_screen = new BorderPane();
+    BorderPane game_root = new BorderPane();
 
     public static Label score_graphics = new Label("" + 0);
 
@@ -99,9 +100,19 @@ public class PlayingState extends App implements State {
         var pacmanController = new PacmanController();
         App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
         App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        gameView = new GameView(maze, root, 30);
+        
+        double scale = 0;
+        //Calculate the scale according to screen resolution and by making sure that all the maze will be visible
+        if (maze.getWidth() > maze.getHeight()) {
+            scale = (App.screen.getWidth() - 100) / maze.getWidth();
+        } else {
+            scale = (App.screen.getHeight() - 100) / maze.getHeight();
+        }
+        gameView = new GameView(maze, root, scale);
 
-        game_screen.setCenter(gameView.getGameRoot());
+        game_root.setCenter(gameView.getGameRoot());
+
+        game_screen.setCenter(game_root);
 
         // Ajoutez life_graphics en bas du BorderPane
         game_screen.setBottom(life_graphics);

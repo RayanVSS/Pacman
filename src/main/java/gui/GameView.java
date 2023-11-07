@@ -72,4 +72,8 @@ public class GameView {
     public Node getGameRoot() {
         return gameRoot;
     }
+
+    public double getTileSize() {
+        return gameRoot.getWidth() / maze.getWidth();
+    }
 }
