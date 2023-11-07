@@ -74,10 +74,10 @@ public class outil {
                 switch (dir) {
                     case NORTH, SOUTH -> {
                         if (g.getDirection() == Direction.EAST || g.getDirection() == Direction.WEST) {
-                            int w = g.getPos().round().x();
-                            if (g.getPos().x() <= w || true) {
+                            int x = g.getPos().round().x();
+                            if (x - 0.1 <= g.getPos().x() && g.getPos().x() <= x) {
                                 g.setDirection(dir);
-                                return new RealCoordinates(w, g.getPos().y());
+                                return new RealCoordinates(x, g.getPos().y());
                             }
                         } else {
                             g.setDirection(dir);
@@ -86,20 +86,18 @@ public class outil {
                     }
                     case EAST, WEST -> {
                         if (g.getDirection() == Direction.SOUTH || g.getDirection() == Direction.NORTH) {
-                            int s = g.getPos().round().y();
-                            if (g.getPos().y() <= s || true) {
+                            int y = g.getPos().round().y();
+                            if (y - 0.1 <= g.getPos().y() && g.getPos().y() <= y) {
                                 g.setDirection(dir);
-                                return new RealCoordinates(g.getPos().x(), s);
+                                return new RealCoordinates(g.getPos().x(), y);
 
                             }
-                        } else {
+                        }
+
+                        else {
                             g.setDirection(dir);
                             return g.getPos().plus(DirectionToRealCoordinates(dir).times(g.getSpeed()));
                         }
-                    }
-                    default -> {
-                        g.setDirection(Direction.NONE);
-                        return g.getPos();
                     }
                 }
             }
