@@ -24,7 +24,8 @@ public class MazeWinState implements State {
             File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
             pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
         } catch (Exception e) {
-            e.printStackTrace();
+            //Pour MacOS jsp pk ça marche pas
+            pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
         }
     }
     BorderPane win_menu = new BorderPane();
