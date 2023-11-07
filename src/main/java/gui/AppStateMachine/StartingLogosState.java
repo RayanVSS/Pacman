@@ -4,6 +4,7 @@ import gui.App;
 import gui.Controller.StartingLogoController;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -20,7 +21,6 @@ import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.effect.MotionBlur;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import animatefx.animation.FadeIn;
@@ -39,15 +39,22 @@ import lib.State;
 public class StartingLogosState implements State {
     private String state_name = "Starting Logos State";
     private static final StartingLogosState instance = new StartingLogosState();
-    private String musicFileName = "src\\main\\resources\\ost\\Carl-Orff-O-Fortuna-_-Carmina-Burana.wav";
-    private File musicFile = new File(musicFileName);
-    //private Media media = new Media(musicFile.toURI().toString());
-    //public MediaPlayer mediaPlayer = new MediaPlayer(media);
+    private String musicFileName = "/ost/Carl-Orff-O-Fortuna-_-Carmina-Burana.wav";
+    private Media media = new Media(getClass().getResource(musicFileName).toString());
+    public MediaPlayer mediaPlayer = new MediaPlayer(media);
     private StackPane black_background = new StackPane();
     private StackPane starting_logos = new StackPane();
 
     private final double MAX_FONT_SIZE = 30.0;
-    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
+    private Font pixel_font;
+    {
+        try {
+            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
+            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private StartingLogosState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -62,17 +69,10 @@ public class StartingLogosState implements State {
     }
 
     private ImageView createGhost(String name) {
-        MotionBlur motionBlur = new MotionBlur();
-        motionBlur.setRadius(25);
-        motionBlur.setAngle(180);
-
         ImageView ghost = new ImageView(new Image(getClass().getResourceAsStream("/logos/3d_" + name + ".png")));
         ghost.setFitHeight(100);
         ghost.setFitWidth(100);
         ghost.setPreserveRatio(true);
-        ghost.setRotationAxis(Rotate.Y_AXIS);
-        ghost.setRotate(180);
-        ghost.setEffect(motionBlur);
         return ghost;
     }
 
@@ -185,7 +185,9 @@ public class StartingLogosState implements State {
                 }
             }));
             zizi.setCycleCount(1);
-            zizi.play(); // On lance zizi
+            Platform.runLater(() -> {
+                zizi.play(); // Pour éviter un bug graphique
+            });
         }));
         timeline.setOnFinished(event -> {
             timeline.stop();
@@ -271,8 +273,10 @@ public class StartingLogosState implements State {
             return null;
         }
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2.5), event -> {
-            lightSpeedIn.play();
             character.setVisible(true);
+            Platform.runLater(() -> {
+                lightSpeedIn.play();
+            });
         }));
         return timeline;
     }
@@ -432,6 +436,8 @@ public class StartingLogosState implements State {
         black_background.setStyle("-fx-background-color: black");
         black_background.setMaxHeight(App.pStage.getHeight());
         black_background.setMaxWidth(App.pStage.getWidth());
+        starting_logos.setMaxHeight(App.pStage.getHeight());
+        starting_logos.setMaxWidth(App.pStage.getWidth());
 
         black_background.getChildren().add(starting_logos);
         createBackground("/black_background.jpg");
@@ -441,7 +447,9 @@ public class StartingLogosState implements State {
 
         Timeline timeline = createTranslateTransition(translateTransitionsLeft, ghosts);
         timeline.setCycleCount(1);
-        timeline.play();
+        Platform.runLater(() -> {
+            timeline.play();
+        });
 
         translateTransitionsLeft.get(0).setOnFinished(event -> {
             for (TranslateTransition translateTransition : translateTransitionsLeft) {

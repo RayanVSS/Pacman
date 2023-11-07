@@ -1,5 +1,7 @@
 package gui.AppStateMachine;
 
+import java.io.File;
+
 import gui.App;
 import gui.Controller.GameOverController;
 import javafx.geometry.Pos;
@@ -19,7 +21,15 @@ public class GameOverState implements State {
     BorderPane restart_menu = new BorderPane();
 
     private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
-    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
+    private Font pixel_font;
+    {
+        try {
+            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
+            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private GameOverState() {
         // Constructeur privé pour empêcher la création d'autres instances

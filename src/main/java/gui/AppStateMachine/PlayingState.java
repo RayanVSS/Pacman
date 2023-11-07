@@ -5,6 +5,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+
+import java.io.File;
+
 import config.MazeConfig;
 import gui.App;
 import javafx.scene.image.Image;
@@ -25,7 +28,15 @@ public class PlayingState extends App implements State {
     public static HBox life_graphics = new HBox();
 
     private final double MAX_FONT_SIZE = 20.0;
-    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
+    private Font pixel_font;
+   {
+        try {
+            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
+            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private static final PlayingState instance = new PlayingState();
 
@@ -58,21 +69,21 @@ public class PlayingState extends App implements State {
 
     public void life_graphics_update(int lives) {
         life_graphics.getChildren().clear(); // Efface les vies précédentes
-    
+
         for (int i = 0; i < lives; i++) {
             Image img = new Image(getClass().getResourceAsStream("/pixel_pacman_icon.png"));
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
             view.setFitHeight(50);
             view.setFitWidth(50);
-    
+
             Label lifeLabel = new Label();
             lifeLabel.setGraphic(view);
-    
+
             life_graphics.getChildren().add(lifeLabel);
         }
     }
-    
+
     public void enter() {
         BorderPane root = new BorderPane();
 

@@ -24,14 +24,20 @@ import lib.State;
 public class HomeScreenState implements State {
     private String state_name = "Home Screen State";
     private static final HomeScreenState instance = new HomeScreenState();
-    private String musicFileName = "src\\main\\resources\\ost\\Carl-Orff-O-Fortuna-_-Carmina-Burana.wav";
-    private File musicFile = new File(musicFileName);
-    // private Media media = new Media(musicFile.toURI().toString());
-    // public MediaPlayer mediaPlayer = new MediaPlayer(media);
+    private String musicFileName = "/ost/Carl-Orff-O-Fortuna-_-Carmina-Burana.wav";
+    private Media media = new Media(getClass().getResource(musicFileName).toString());
+    public MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     private final double MAX_FONT_SIZE = 20.0;
-    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
-   
+    private Font pixel_font;
+    {
+        try {
+            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
+            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     BorderPane start_menu = new BorderPane();
 
     private HomeScreenState() {
