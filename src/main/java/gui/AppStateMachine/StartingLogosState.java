@@ -15,8 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-//import javafx.scene.media.Media;
-//import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
@@ -431,8 +431,8 @@ public class StartingLogosState implements State {
     }
 
     public void enter() {
-        //mediaPlayer.setStartTime(Duration.seconds(1));
-        //mediaPlayer.play();
+        mediaPlayer.setStartTime(Duration.seconds(1));
+        mediaPlayer.play();
         black_background.setStyle("-fx-background-color: black");
         black_background.setMaxHeight(App.pStage.getHeight());
         black_background.setMaxWidth(App.pStage.getWidth());
@@ -481,7 +481,7 @@ public class StartingLogosState implements State {
     }
 
     public void exit() {
-        //mediaPlayer.stop();
+        mediaPlayer.stop();
         App.screen.setOnMouseClicked(null);
     }
 }

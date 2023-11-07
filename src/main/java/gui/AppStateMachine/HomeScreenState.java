@@ -10,8 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-// import javafx.scene.media.Media;
-// import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
@@ -79,10 +79,10 @@ public class HomeScreenState implements State {
     }
 
     public void enter() {
-        //mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        //mediaPlayer.setStartTime(javafx.util.Duration.seconds(25));
-        //mediaPlayer.setStopTime(javafx.util.Duration.seconds(2 * 60 + 32));
-        //mediaPlayer.play();
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setStartTime(javafx.util.Duration.seconds(25));
+        mediaPlayer.setStopTime(javafx.util.Duration.seconds(2 * 60 + 32));
+        mediaPlayer.play();
         
         Pane start_button = createStartButton();
         new Bounce(start_button).play();
@@ -111,6 +111,6 @@ public class HomeScreenState implements State {
 
     public void exit() {
         App.screen.setOnMouseClicked(null);
-        // mediaPlayer.stop();
+        mediaPlayer.stop();
     }
 }
