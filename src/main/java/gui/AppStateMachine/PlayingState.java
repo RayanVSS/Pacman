@@ -36,7 +36,7 @@ public class PlayingState extends App implements State {
             pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
         } catch (Exception e) {
             //Pour MacOS jsp pk ça marche pas
-            pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
+            pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
         }
     }
 
