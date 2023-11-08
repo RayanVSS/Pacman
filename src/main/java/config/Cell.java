@@ -31,6 +31,11 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
     public boolean hasDot(){
         return initialContent == Content.DOT || initialContent == Content.ENERGIZER;
     }
+    
+    public Content getContent() {
+        return initialContent;
+    }
+    
     public static Cell withContent(String type, String value) {
         Content content = switch (value) {
             case "." -> Content.DOT;
