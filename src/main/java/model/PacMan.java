@@ -1,17 +1,19 @@
 package model;
 
 import lib.Vector2D;
-
+import config.Cell;
 import geometry.RealCoordinates;
 
 /**
- * Implements Pac-Man character using singleton pattern. FIXME: check whether singleton is really a good idea.
+ * Implements Pac-Man character using singleton pattern. FIXME: check whether
+ * singleton is really a good idea.
  */
 public final class PacMan implements Critter {
     private Direction direction = Direction.NONE;
-    private Vector2D velocity = new Vector2D(0,0);
+    private Vector2D velocity = new Vector2D(0, 0);
     private RealCoordinates pos;
     private boolean energized;
+    private long temps = 0;
 
     private PacMan() {
     }
@@ -43,12 +45,21 @@ public final class PacMan implements Critter {
         this.pos = pos;
     }
 
+    public void setTemps(long tp) {
+        this.temps = tp;
+    }
+
+    public long getTemps() {
+        return temps;
+    }
+
     /**
      *
      * @return whether Pac-Man just ate an energizer
      */
     public boolean isEnergized() {
         // TODO handle timeout!
+
         return energized;
     }
 
@@ -56,20 +67,37 @@ public final class PacMan implements Critter {
         this.energized = energized;
     }
 
-    public void setVelocity(){
-        switch (direction){
-            case NONE : velocity.set(0, 0);
-            case NORTH : velocity.set(0,getSpeed());
-            case SOUTH : velocity.set(0, - getSpeed());
-            case WEST : velocity.set(- getSpeed(), 0);
-            case EAST : velocity.set(getSpeed(), 0);
+    public void setVelocity() {
+        switch (direction) {
+            case NONE:
+                velocity.set(0, 0);
+            case NORTH:
+                velocity.set(0, getSpeed());
+            case SOUTH:
+                velocity.set(0, -getSpeed());
+            case WEST:
+                velocity.set(-getSpeed(), 0);
+            case EAST:
+                velocity.set(getSpeed(), 0);
         }
     }
 
-    public void handlePacManPoints(MazeState maze) {
+    public void handlePacManPoints(MazeState maze, long deltaTNanoSeconds) {
         if (!maze.getGridState(pos.round())) {
-            maze.addScore(1);
-            maze.setGridState(true, pos.round().y(), pos.round().x());
+            if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER) {
+                maze.addScore(10);
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+                setEnergized(true);
+                setTemps(deltaTNanoSeconds);
+                for (var critter : maze.getCritters()) {
+                    if (critter instanceof Ghost) {
+                        ((Ghost) critter).setDisableEnergizer(false);
+                    }
+                }
+            } else if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.DOT) {
+                maze.addScore(1);
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+            }
         }
     }
 
@@ -83,8 +111,9 @@ public final class PacMan implements Critter {
     }
 
     private void handleGhostCollision(MazeState maze, Ghost ghost) {
-        if (isEnergized()) {
+        if (isEnergized() && !ghost.getDisableEnergizer()) {
             maze.addScore(10);
+            ghost.setMort(true);
             maze.resetCritter(ghost);
         } else {
             maze.playerLost();
