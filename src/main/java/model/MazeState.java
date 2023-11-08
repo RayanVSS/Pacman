@@ -51,6 +51,9 @@ public final class MazeState {
                 CLYDE, config.getClydePos().toRealCoordinates(1.0),
                 PINKY, config.getPinkyPos().toRealCoordinates(1.0));
         resetCritters();
+        for (var ghost : List.of(BLINKY, INKY, PINKY, CLYDE)) {
+            ghost.setInitialPos(initialPos.get(ghost));
+        }
     }
 
     public List<Critter> getCritters() {
@@ -218,10 +221,14 @@ public final class MazeState {
         critter.setDirection(Direction.NONE);
         if (critter instanceof Ghost) {
             ((Ghost) critter).setTemps(0);
-            ((Ghost) critter).setSortie(false);
-            if (((Ghost) critter).isSortie()) {
-                ((Ghost) critter).setMort(true);
+            if (((Ghost) critter).isSortie() && ((Ghost) critter).isMort()) {
+                ((Ghost) critter).setSortie(false);
+                ((Ghost) critter).setDisableEnergizer(true);
                 verif = false;
+            } else {
+                ((Ghost) critter).setMort(false);
+                ((Ghost) critter).setSortie(false);
+                ((Ghost) critter).setDisableEnergizer(true);
             }
         }
         if (verif) {
