@@ -178,8 +178,12 @@ public final class MazeState {
         for (var critter : critters) {
             handleWallCollisions(critter, deltaTns);
         }
-        PacMan.INSTANCE.handlePacManPoints(this);
+        PacMan.INSTANCE.handlePacManPoints(this, deltaTns);
         PacMan.INSTANCE.handleCollisionsWithGhosts(this);
+        if (PacMan.INSTANCE.isEnergized() && deltaTns - PacMan.INSTANCE.getTemps() > 10E7) {
+            PacMan.INSTANCE.setEnergized(false);
+            PacMan.INSTANCE.setTemps(0);
+        }
         gameisWon();
     }
 
