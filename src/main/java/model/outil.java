@@ -105,40 +105,29 @@ public class outil {
         return g.getPos().plus(DirectionToRealCoordinates(g.getDirection()).times(g.getSpeed()));
     }
 
-    public static boolean animation_sortie(Ghost g) {
+    public static boolean animation_sortie(Ghost g, MazeConfig config) {
         RealCoordinates currentPos = g.getPos();
         RealCoordinates targetPos = new RealCoordinates(7.0, 4.0);
 
         if (currentPos.x() >= 6.9 && currentPos.x() <= 7.1 && currentPos.y() >= 3.9 && currentPos.y() <= 4.1) {
+            g.setPos(targetPos);
             return true;
         } else {
-            double speed = g.getSpeed();
-            double deltaX = targetPos.x() - currentPos.x();
-            double deltaY = targetPos.y() - currentPos.y();
-
-            if (!(deltaX >= -0.1 && deltaX <= 0.1)) {
-                // Déplacement horizontal
-                double newX = currentPos.x() + (deltaX > 0.0 ? speed : -speed);
-                g.setPos(new RealCoordinates(newX, currentPos.y()));
-            } else if (!(deltaY >= -0.1 && deltaY <= 0.1)) {
-                // Déplacement vertical
-                double newY = currentPos.y() + (deltaY > 0.0 ? speed : -speed);
-                g.setPos(new RealCoordinates(currentPos.x(), newY));
-            }
-
+            g.setPos(outil.nextPos(Blinky.nextDirection(g, new RealCoordinates(7.0, 4.0)), g, config));
             return false;
         }
     }
 
     public static void animation_mort(Ghost g, RealCoordinates initialPos, MazeConfig config, long deltaTNanoSeconds) {
-        if (g.getPos().x() >= initialPos.x() - 0.1 && g.getPos().x() <= initialPos.x() + 0.1
-                && g.getPos().y() >= initialPos.y() - 0.1 && g.getPos().y() <= initialPos.y() + 0.1) {
+        if (g.getPos().x() >= 6.9 && g.getPos().x() <= 7.1
+                && g.getPos().y() >= 3.9 && g.getPos().y() <= 4.1) {
+
             g.setPos(initialPos);
             g.setMort(false);
             g.setTemps(deltaTNanoSeconds);
             return;
         } else {
-            g.setPos(outil.nextPos(Blinky.nextDirection(g, initialPos), g, config));
+            g.setPos(outil.nextPos(Blinky.nextDirection(g, new RealCoordinates(7.0, 4.0)), g, config));
             return;
         }
     }
