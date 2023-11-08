@@ -4,7 +4,7 @@ import config.MazeConfig;
 import geometry.RealCoordinates;
 
 public enum Ghost implements Critter {
-    
+
     BLINKY, INKY, PINKY, CLYDE;
 
     private long temps = 0;
@@ -14,6 +14,7 @@ public enum Ghost implements Critter {
     private boolean sortie = false;
     private boolean mort = false;
     private final boolean disableGhost = false;
+    private boolean disableEnergizer = false;
 
     @Override
     public RealCoordinates getPos() {
@@ -55,12 +56,29 @@ public enum Ghost implements Critter {
         this.temps = tp;
     }
 
+    public void setDisableEnergizer(boolean disableEnergizer) {
+        this.disableEnergizer = disableEnergizer;
+    }
+
+    public boolean getDisableEnergizer() {
+        return disableEnergizer;
+    }
+    
+    public boolean isMort() {
+        return mort;
+    }
+
     @Override
     public double getSpeed() {
-        if(disableGhost){
+        if (disableGhost) {
             return 0;
+        } else if (mort) {
+            return 0.15;
+        } else if (!sortie) {
+            return 0.05;
+        } else {
+            return 0.04;
         }
-        return 0.04;
     }
 
     @Override
@@ -68,14 +86,8 @@ public enum Ghost implements Critter {
         if (mort) {
             outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
         } else if (!sortie) {
-            if (this == BLINKY && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(BLINKY);
-            } else if (this == PINKY && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(PINKY);
-            } else if (this == INKY && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(INKY);
-            } else if (this == CLYDE && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(CLYDE);
+            if (deltaTNanoSeconds - temps > 1E7) {
+                sortie = outil.animation_sortie(this, config);
             }
         } else {
             Direction[] directions;
@@ -89,7 +101,7 @@ public enum Ghost implements Critter {
             } else {
                 directions = Blinky.nextDirection(BLINKY, PacMan.INSTANCE.getPos());
             }
-            if (PacMan.INSTANCE.isEnergized()) {
+            if (PacMan.INSTANCE.isEnergized() && !disableEnergizer) {
                 directions = outil.inverse(directions);
             }
             return outil.nextPos(directions, this, config);
@@ -98,7 +110,4 @@ public enum Ghost implements Critter {
         return pos;
     }
 
-    public boolean isMort() {
-        return mort;
-    }
 }
