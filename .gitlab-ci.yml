@@ -1,6 +1,7 @@
 image: gradle:8-jdk17-alpine
 
-
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
 
 stages:
   - build
