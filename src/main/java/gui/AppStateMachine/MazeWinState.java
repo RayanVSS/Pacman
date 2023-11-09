@@ -7,10 +7,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.File;
-
 import animatefx.animation.Flash;
 import gui.App;
+import lib.FontLoader;
 import lib.State;
 
 public class MazeWinState implements State {
@@ -18,16 +17,7 @@ public class MazeWinState implements State {
     private static final MazeWinState instance = new MazeWinState();
 
     private final double MAX_FONT_SIZE = 20.0;
-    private Font pixel_font;
-    {
-        try {
-            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
-            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
-        } catch (Exception e) {
-            //Pour MacOS jsp pk ça marche pas
-            pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
-        }
-    }
+    private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
     BorderPane win_menu = new BorderPane();
 
     Flash flashWin = new Flash();

@@ -6,8 +6,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.io.File;
-
 import config.MazeConfig;
 import gui.App;
 import javafx.scene.image.Image;
@@ -15,7 +13,7 @@ import javafx.scene.image.ImageView;
 import gui.GameView;
 import gui.Controller.PacmanController;
 import model.MazeState;
-
+import lib.FontLoader;
 import lib.State;
 
 public class PlayingState extends App implements State {
@@ -29,16 +27,7 @@ public class PlayingState extends App implements State {
     public static HBox life_graphics = new HBox();
 
     private final double MAX_FONT_SIZE = 20.0;
-    private Font pixel_font;
-    {
-        try {
-            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
-            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
-        } catch (Exception e) {
-            //Pour MacOS jsp pk ça marche pas
-            pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
-        }
-    }
+    private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private static final PlayingState instance = new PlayingState();
 
@@ -92,7 +81,7 @@ public class PlayingState extends App implements State {
         game_screen.setStyle("-fx-background-color: black;");
 
         maze = new MazeState(MazeConfig.makeExample1());
-        MazeState.resetScore();
+        maze.resetScore();
         maze.setLives(3);
 
         score_graphics = createScoreGraphics();

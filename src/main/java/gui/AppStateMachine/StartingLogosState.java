@@ -18,7 +18,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import javafx.scene.effect.GaussianBlur;
 import javafx.util.Duration;
@@ -30,10 +29,10 @@ import animatefx.animation.ZoomOut;
 import animatefx.animation.FadeOutLeft;
 import animatefx.animation.RubberBand;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import animatefx.animation.BounceInUp;
+import lib.FontLoader;
 import lib.State;
 
 public class StartingLogosState implements State {
@@ -46,16 +45,7 @@ public class StartingLogosState implements State {
     private StackPane starting_logos = new StackPane();
 
     private final double MAX_FONT_SIZE = 30.0;
-    private Font pixel_font;
-    {
-        try {
-            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
-            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
-        } catch (Exception e) {
-            //Pour MacOS jsp pk ça marche pas
-            pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
-        }
-    }
+    private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private StartingLogosState() {
         // Constructeur privé pour empêcher la création d'autres instances

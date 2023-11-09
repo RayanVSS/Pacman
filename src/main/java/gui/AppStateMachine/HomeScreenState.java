@@ -15,8 +15,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
-
-import java.io.File;
+import lib.FontLoader;
 
 import animatefx.animation.Bounce;
 import lib.State;
@@ -29,16 +28,7 @@ public class HomeScreenState implements State {
     public MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     private final double MAX_FONT_SIZE = 20.0;
-    private Font pixel_font;
-    {
-        try {
-            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
-            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
-        } catch (Exception e) {
-            //Pour MacOS jsp pk ça marche pas
-            pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
-        }
-    }
+    private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
     BorderPane start_menu = new BorderPane();
 
     private HomeScreenState() {

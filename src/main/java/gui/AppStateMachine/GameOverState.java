@@ -1,7 +1,5 @@
 package gui.AppStateMachine;
 
-import java.io.File;
-
 import gui.App;
 import gui.Controller.GameOverController;
 import javafx.geometry.Pos;
@@ -10,10 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import lib.FontLoader;
 import lib.State;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import gui.AppStateMachine.PlayingState;
 
 public class GameOverState implements State {
     private String state_name = "Game Over";
@@ -21,16 +19,7 @@ public class GameOverState implements State {
     BorderPane restart_menu = new BorderPane();
 
     private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
-    private Font pixel_font;
-    {
-        try {
-            File f = new File(getClass().getResource("/Font/pixel_font.ttf").toURI());
-            pixel_font = Font.loadFont(f.toURI().toURL().toString(), MAX_FONT_SIZE);
-        } catch (Exception e) {
-            //Pour MacOS jsp pk ça marche pas
-            pixel_font = Font.loadFont(getClass().getResourceAsStream("/Font/pixel_font.ttf"), MAX_FONT_SIZE);
-        }
-    }
+    private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private GameOverState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -50,12 +39,12 @@ public class GameOverState implements State {
         restart_button.setMaxWidth(App.screen.getWidth());
 
         restart_button.setStyle("-fx-background-color: black");
-        if(PlayingState.getInstance().maze.getScore() > PlayingState.bestScore){
-            PlayingState.bestScore = PlayingState.getInstance().maze.getScore();
+        if(PlayingState.maze.getScore() > PlayingState.bestScore){
+            PlayingState.bestScore = PlayingState.maze.getScore();
         }
         Label restart_button_text = new Label("Appuyer sur Entree !\n" +
                 "Best Score :" + PlayingState.bestScore + "\n" +
-                "Score : "+ PlayingState.getInstance().maze.getScore());
+                "Score : "+ PlayingState.maze.getScore());
         restart_button_text.setTextAlignment(TextAlignment.CENTER);
 
         Image img = new Image(getClass().getResourceAsStream("/restart_button_temporaire.png"));

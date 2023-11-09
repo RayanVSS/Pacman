@@ -27,7 +27,7 @@ public final class MazeState {
     private final boolean[][] gridState;
 
     private final List<Critter> critters;
-    private static int score;
+    private int score;
 
     private final Map<Critter, RealCoordinates> initialPos;
     private int lives = 3;
@@ -254,7 +254,7 @@ public final class MazeState {
         return gridState[pos.y()][pos.x()];
     }
 
-    public static int getScore() {
+    public int getScore() {
         return score;
     }
 
@@ -271,7 +271,7 @@ public final class MazeState {
         PlayingState.getInstance().life_graphics_update(l);
     }
 
-    public static void resetScore() {
+    public void resetScore() {
         score = 0;
     }
 }
