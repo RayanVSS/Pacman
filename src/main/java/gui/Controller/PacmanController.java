@@ -5,6 +5,8 @@ import model.MazeState;
 import model.PacMan;
 import gui.AppStateMachine.PlayingState;
 import javafx.scene.input.KeyEvent;
+import gui.App;
+import gui.AppStateMachine.PauseState;
 
 public class PacmanController {
     public static Direction currentDirection = Direction.NONE;
@@ -12,9 +14,23 @@ public class PacmanController {
     private MazeState config = PlayingState.maze;
 
     public void keyPressedHandler(KeyEvent event) {
-        Direction temp = getDirectionFromKeyEvent(event);
-        if(temp != nextDirection){
-            nextDirection = temp;
+        // if is echap
+        if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+            System.out.println("Vous avez appuyé sur ECHAP");
+            // if we are not in pause
+            if (PlayingState.getInstance() == App.app_state.getState()) {
+                App.app_state.changeState(PauseState.getInstance());
+            }
+            // if we are in pause
+            else {
+                App.app_state.changeState(PlayingState.getInstance());
+            }
+        }
+        else {
+            Direction temp = getDirectionFromKeyEvent(event);
+            if(temp != nextDirection){
+                nextDirection = temp;
+            }
         }
     }
     

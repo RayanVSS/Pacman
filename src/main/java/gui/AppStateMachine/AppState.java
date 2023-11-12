@@ -8,6 +8,7 @@ public enum AppState {
     STARTING_LOGOS(StartingLogosState.getInstance()),
     HOME_SCREEN(HomeScreenState.getInstance()),
     PLAYING(PlayingState.getInstance()),
+    PAUSE(PauseState.getInstance()),
     GAMEOVER(GameOverState.getInstance());
 
     private State current_state;
