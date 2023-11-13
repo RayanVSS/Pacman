@@ -16,7 +16,7 @@ public class PacmanController {
     public void keyPressedHandler(KeyEvent event) {
         // if is echap
         if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
-            System.out.println("Vous avez appuyé sur ECHAP");
+            // System.out.println("Vous avez appuyé sur ECHAP");
             // if we are not in pause
             if (PlayingState.getInstance() == App.app_state.getState()) {
                 PlayingState.getInstance().hasPaused = true;
