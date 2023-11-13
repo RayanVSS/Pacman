@@ -135,7 +135,6 @@ public class PlayingState extends App implements State {
         gameView.stop();
         if(!hasPaused){
             game.getChildren().clear();
-            game_screen.getChildren().clear();
         }
     }
 }
