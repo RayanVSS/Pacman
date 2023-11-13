@@ -3,6 +3,7 @@ package gui.AppStateMachine;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -19,12 +20,15 @@ import lib.State;
 public class PlayingState extends App implements State {
     private String state_name = "Playing State";
 
-    BorderPane game_screen = new BorderPane();
-    BorderPane game_root = new BorderPane();
+    public StackPane game = new StackPane();
+    public BorderPane game_screen = new BorderPane();
+    public BorderPane game_root = new BorderPane();
 
     public static Label score_graphics = new Label("" + 0);
 
     public static HBox life_graphics = new HBox();
+
+    public boolean hasPaused = false;
 
     private final double MAX_FONT_SIZE = 20.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
@@ -76,43 +80,51 @@ public class PlayingState extends App implements State {
     }
 
     public void enter() {
-        BorderPane root = new BorderPane();
-
-        game_screen.setStyle("-fx-background-color: black;");
-
-        maze = new MazeState(MazeConfig.makeExample1());
-        maze.resetScore();
-        maze.setLives(3);
-
-        score_graphics = createScoreGraphics();
-        life_graphics_update(maze.getLives());
-
-        var pacmanController = new PacmanController();
-        App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
-        App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
-        
-        double scale = 0;
-        //Calculate the scale according to screen resolution and by making sure that all the maze will be visible
-        if (maze.getWidth() > maze.getHeight()) {
-            scale = (App.screen.getWidth() - 100) / maze.getWidth();
+        if (hasPaused) {
+            gameView.animate();
+            hasPaused = false;
         } else {
-            scale = (App.screen.getHeight() - 100) / maze.getHeight();
+            BorderPane root = new BorderPane();
+
+            game_screen.setStyle("-fx-background-color: black;");
+
+            maze = new MazeState(MazeConfig.makeExample1());
+            maze.resetScore();
+            maze.setLives(3);
+
+            score_graphics = createScoreGraphics();
+            life_graphics_update(maze.getLives());
+
+            var pacmanController = new PacmanController();
+            App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
+            App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
+
+            double scale = 0;
+            // Calculate the scale according to screen resolution and by making sure that
+            // all the maze will be visible
+            if (maze.getWidth() > maze.getHeight()) {
+                scale = (App.screen.getWidth() - 100) / maze.getWidth();
+            } else {
+                scale = (App.screen.getHeight() - 100) / maze.getHeight();
+            }
+            gameView = new GameView(maze, root, scale);
+
+            game_root.setCenter(gameView.getGameRoot());
+
+            game_screen.setCenter(game_root);
+
+            // Ajoutez life_graphics en bas du BorderPane
+            game_screen.setBottom(life_graphics);
+
+            // Ajoutez score_graphics en haut du BorderPane
+            game_screen.setTop(score_graphics);
+
+            gameView.animate();
+
+            game.getChildren().add(game_screen);
         }
-        gameView = new GameView(maze, root, scale);
 
-        game_root.setCenter(gameView.getGameRoot());
-
-        game_screen.setCenter(game_root);
-
-        // Ajoutez life_graphics en bas du BorderPane
-        game_screen.setBottom(life_graphics);
-
-        // Ajoutez score_graphics en haut du BorderPane
-        game_screen.setTop(score_graphics);
-
-        gameView.animate();
-
-        App.screen.setRoot(game_screen);
+        App.screen.setRoot(game);
     }
 
     public void process(long deltaT) {
@@ -120,8 +132,9 @@ public class PlayingState extends App implements State {
     }
 
     public void exit() {
-
         gameView.stop();
-        game_screen.getChildren().clear();
+        if(!hasPaused){
+            game_screen.getChildren().clear();
+        }
     }
 }
