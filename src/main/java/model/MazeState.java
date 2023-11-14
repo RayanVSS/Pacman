@@ -212,6 +212,10 @@ public final class MazeState {
     public void playerLost() {
         lives--;
         PlayingState.getInstance().life_graphics_update(lives);
+        if(lives == 1){
+            PlayingState.getInstance().mediaPlayerNormalMusic.stop();
+            PlayingState.getInstance().mediaPlayerCriticMusic.play();
+        }
         if (lives == 0) {
             System.out.println("Game over!");
             App.app_state.changeState(GameOverState.getInstance());

@@ -4,6 +4,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -25,6 +27,26 @@ public class PlayingState extends App implements State {
     public BorderPane game_screen = new BorderPane();
     public BorderPane game_root = new BorderPane();
 
+    private String musicFileName = "/ost/epic-hybrid.mp3";
+    private Media mediaNormalMusic = new Media(getClass().getResource(musicFileName).toString());
+    private String musicFileName2 = "/ost/eternal-energy.mp3";
+    private Media mediaCriticMusic = new Media(getClass().getResource(musicFileName2).toString());
+    public MediaPlayer mediaPlayerNormalMusic;
+    {
+        try {
+            mediaPlayerNormalMusic = new MediaPlayer(mediaNormalMusic);
+        } catch(Exception e){
+            System.out.println("Erreur de lecture du fichier audio");
+        }
+    }
+    public MediaPlayer mediaPlayerCriticMusic;
+    {
+        try {
+            mediaPlayerCriticMusic = new MediaPlayer(mediaCriticMusic);
+        } catch(Exception e){
+            System.out.println("Erreur de lecture du fichier audio");
+        }
+    }
     public static Label score_graphics = new Label("" + 0);
 
     public static HBox life_graphics = new HBox();
@@ -86,6 +108,8 @@ public class PlayingState extends App implements State {
             gameView.animate();
             hasPaused = false;
         } else {
+            mediaPlayerNormalMusic.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayerNormalMusic.play();
             BorderPane root = new BorderPane();
 
             game_screen.setStyle("-fx-background-color: black;");
@@ -136,6 +160,10 @@ public class PlayingState extends App implements State {
     public void exit() {
         gameView.stop();
         if(!hasPaused){
+            if(mediaPlayerNormalMusic.getStatus() == MediaPlayer.Status.PLAYING)
+            mediaPlayerNormalMusic.stop();
+            if(mediaPlayerCriticMusic.getStatus() == MediaPlayer.Status.PLAYING)
+            mediaPlayerCriticMusic.stop();
             game.getChildren().clear();
         }
     }
