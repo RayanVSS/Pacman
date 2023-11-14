@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import animatefx.animation.GlowText;
+import animatefx.animation.Shake;
 
 import static model.Ghost.*;
 
@@ -79,7 +80,7 @@ public final class MazeState {
         var nextPos = critter.nextPos(deltaTns, config);
         var curNeighbours = curPos.intNeighbours();
         var nextNeighbours = nextPos.intNeighbours();
-        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) { 
+        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) {
             switch (critter.getDirection()) {
                 case NORTH -> {
                     for (var n : curNeighbours) {
@@ -179,6 +180,7 @@ public final class MazeState {
             handleWallCollisions(critter, deltaTns);
         }
         PacMan.INSTANCE.handlePacManPoints(this, deltaTns);
+        if (PacMan.INSTANCE.canCollide())
         PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         if (PacMan.INSTANCE.isEnergized() && deltaTns - PacMan.INSTANCE.getTemps() > 10E7) {
             PacMan.INSTANCE.setEnergized(false);
@@ -190,7 +192,8 @@ public final class MazeState {
     public void addScore(int increment) {
         score += increment * 10;
         PlayingState.score_graphics.setText("" + score);
-        new GlowText(PlayingState.score_graphics,javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW).play();
+        new GlowText(PlayingState.score_graphics, javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW)
+                .play();
         displayScore();
     }
 
@@ -198,10 +201,10 @@ public final class MazeState {
         System.out.println("Score: " + score);
     }
 
-    public void gameisWon(){
-        for(int i =0; i<gridState.length; i++){
-            for(int j =0; j<gridState[i].length; j++){
-                if(!gridState[i][j]){
+    public void gameisWon() {
+        for (int i = 0; i < gridState.length; i++) {
+            for (int j = 0; j < gridState[i].length; j++) {
+                if (!gridState[i][j]) {
                     return;
                 }
             }
@@ -212,16 +215,28 @@ public final class MazeState {
     public void playerLost() {
         lives--;
         PlayingState.getInstance().life_graphics_update(lives);
-        if(lives == 1){
-            PlayingState.getInstance().mediaPlayerNormalMusic.stop();
-            PlayingState.getInstance().mediaPlayerCriticMusic.play();
-        }
-        if (lives == 0) {
-            System.out.println("Game over!");
-            App.app_state.changeState(GameOverState.getInstance());
-        }
-        System.out.println("Lives: " + lives);
-        resetCritters();
+        Shake shake = new Shake(PlayingState.getInstance().game_root);
+        PacMan.INSTANCE.disableCollision();
+        PlayingState.gameView.stop();
+        shake.play();
+        shake.setOnFinished(e -> {
+            System.out.println("shake");
+            System.out.println("Lives: " + lives);
+            if (lives == 1) {
+                PlayingState.getInstance().mediaPlayerNormalMusic.stop();
+                PlayingState.getInstance().mediaPlayerCriticMusic.play();
+            }
+            if (lives <= 0) {
+                System.out.println("Game over!");
+                App.app_state.changeState(GameOverState.getInstance());
+            }
+            System.out.println("Lives: " + lives);
+            resetCritters();
+            PacMan.INSTANCE.enableCollision();
+            if(lives > 0)
+            PlayingState.gameView.play();
+        });
+
     }
 
     public void resetCritter(Critter critter) {

@@ -14,6 +14,7 @@ public final class PacMan implements Critter {
     private RealCoordinates pos;
     private boolean energized;
     private long temps = 0;
+    private boolean canCollide = true;
 
     private PacMan() {
     }
@@ -23,6 +24,18 @@ public final class PacMan implements Critter {
     @Override
     public RealCoordinates getPos() {
         return pos;
+    }
+
+    public void disableCollision() {
+        canCollide = false;
+    }
+
+    public boolean canCollide() {
+        return canCollide;
+    }
+
+    public void enableCollision() {
+        canCollide = true;
     }
 
     @Override

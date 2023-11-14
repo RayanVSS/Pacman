@@ -69,6 +69,10 @@ public class GameView {
         animationTimer.stop();
     }
 
+    public void play(){
+        animationTimer.start();
+    }
+
     public Node getGameRoot() {
         return gameRoot;
     }
