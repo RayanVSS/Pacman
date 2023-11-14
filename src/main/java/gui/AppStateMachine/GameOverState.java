@@ -2,6 +2,7 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.GameOverController;
+import lib.ElementScaler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,7 +19,7 @@ public class GameOverState implements State {
     private static final GameOverState instance = new GameOverState();
     BorderPane restart_menu = new BorderPane();
 
-    private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
+    private double MAX_FONT_SIZE = 20; // Définit la taille du texte pour le score
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private GameOverState() {
@@ -50,8 +51,8 @@ public class GameOverState implements State {
         Image img = new Image(getClass().getResourceAsStream("/restart_button_temporaire.png"));
         ImageView view = new ImageView(img);
 
-        view.setFitHeight(100);
-        view.setFitWidth(200);
+        view.setFitHeight(ElementScaler.scale(300));
+        view.setFitWidth(ElementScaler.scale(400));
         view.setPreserveRatio(true);
 
         restart_button_text.setFont(pixel_font);
@@ -65,6 +66,7 @@ public class GameOverState implements State {
     }
 
     public void enter() {
+        MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
         Pane restart_button = createRestartButton();
 
         restart_menu.setStyle("-fx-background-color: black;");

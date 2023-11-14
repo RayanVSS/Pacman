@@ -19,6 +19,7 @@ import lib.FontLoader;
 
 import animatefx.animation.Bounce;
 import lib.State;
+import lib.ElementScaler;
 
 public class HomeScreenState implements State {
     private String state_name = "Home Screen State";
@@ -27,7 +28,7 @@ public class HomeScreenState implements State {
     private Media media = new Media(getClass().getResource(musicFileName).toString());
     public MediaPlayer mediaPlayer = new MediaPlayer(media);
 
-    private final double MAX_FONT_SIZE = 20.0;
+    private double MAX_FONT_SIZE = 20.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
     BorderPane start_menu = new BorderPane();
 
@@ -45,8 +46,8 @@ public class HomeScreenState implements State {
 
     public Pane createStartButton(){
         BorderPane start_button = new BorderPane();
-        start_button.setMaxHeight(Screen.getPrimary().getBounds().getHeight() / 1.5);
-        start_button.setMaxWidth(Screen.getPrimary().getBounds().getWidth());
+        start_button.setMaxHeight(App.screen.getHeight() / 2);
+        start_button.setMaxWidth(App.screen.getWidth());
         
         start_button.setStyle("-fx-background-color: black");
         Label start_button_text = new Label("Appuyer sur Entree !");
@@ -55,8 +56,8 @@ public class HomeScreenState implements State {
         Image img = new Image(getClass().getResourceAsStream("/start_button_temporaire.png"));
         ImageView view = new ImageView(img);
 
-        view.setFitHeight(100);
-        view.setFitWidth(200);
+        view.setFitHeight(ElementScaler.scale(300));
+        view.setFitWidth(ElementScaler.scale(400));
         view.setPreserveRatio(true);
 
         start_button_text.setFont(pixel_font);

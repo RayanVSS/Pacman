@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import animatefx.animation.BounceInUp;
 import lib.FontLoader;
 import lib.State;
+import lib.ElementScaler;
 
 public class StartingLogosState implements State {
     private String state_name = "Starting Logos State";
@@ -44,7 +45,7 @@ public class StartingLogosState implements State {
     private StackPane black_background = new StackPane();
     private StackPane starting_logos = new StackPane();
 
-    private final double MAX_FONT_SIZE = 30.0;
+    private double MAX_FONT_SIZE = 30.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private StartingLogosState() {
@@ -61,8 +62,8 @@ public class StartingLogosState implements State {
 
     private ImageView createGhost(String name) {
         ImageView ghost = new ImageView(new Image(getClass().getResourceAsStream("/logos/3d_" + name + ".png")));
-        ghost.setFitHeight(100);
-        ghost.setFitWidth(100);
+        ghost.setFitHeight(ElementScaler.scale(100));
+        ghost.setFitWidth(ElementScaler.scale(100));
         ghost.setPreserveRatio(true);
         return ghost;
     }
@@ -422,6 +423,7 @@ public class StartingLogosState implements State {
     }
 
     public void enter() {
+        MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
         mediaPlayer.setStartTime(Duration.seconds(1));
         mediaPlayer.play();
         black_background.setStyle("-fx-background-color: black");

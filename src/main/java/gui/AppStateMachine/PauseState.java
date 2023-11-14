@@ -74,15 +74,12 @@ public class PauseState implements State{
     }
 
     public void exit() {
-        PlayingState.getInstance().game.getChildren().remove(PlayingState.getInstance().game.getChildren().size() -1);
-        PlayingState.getInstance().game.getChildren().remove(PlayingState.getInstance().game.getChildren().size() -1);
-        PlayingState.getInstance().game.getChildren().remove(PlayingState.getInstance().game.getChildren().size() -1);
+        for(int i = 0; i < 4; i++)
         PlayingState.getInstance().game.getChildren().remove(PlayingState.getInstance().game.getChildren().size() -1);
     }
 
     public void process(long deltaT) {
         // TODO Auto-generated method stub
-        
     }
     
 }

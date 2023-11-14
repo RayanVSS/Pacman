@@ -16,6 +16,7 @@ import gui.Controller.PacmanController;
 import model.MazeState;
 import lib.FontLoader;
 import lib.State;
+import lib.ElementScaler;
 
 public class PlayingState extends App implements State {
     private String state_name = "Playing State";
@@ -30,7 +31,7 @@ public class PlayingState extends App implements State {
 
     public boolean hasPaused = false;
 
-    private final double MAX_FONT_SIZE = 20.0;
+    private double MAX_FONT_SIZE = 20.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private static final PlayingState instance = new PlayingState();
@@ -69,8 +70,8 @@ public class PlayingState extends App implements State {
             Image img = new Image(getClass().getResourceAsStream("/pixel_pacman_icon.png"));
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
-            view.setFitHeight(50);
-            view.setFitWidth(50);
+            view.setFitHeight(ElementScaler.scale(50));
+            view.setFitWidth(ElementScaler.scale(50));
 
             Label lifeLabel = new Label();
             lifeLabel.setGraphic(view);
@@ -80,6 +81,7 @@ public class PlayingState extends App implements State {
     }
 
     public void enter() {
+        MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
         if (hasPaused) {
             gameView.animate();
             hasPaused = false;
