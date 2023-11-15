@@ -2,12 +2,13 @@ package model;
 
 import config.MazeConfig;
 import geometry.RealCoordinates;
+import java.time.LocalTime;
 
 public enum Ghost implements Critter {
 
     BLINKY, INKY, PINKY, CLYDE;
 
-    private long temps = 0;
+    private LocalTime temps = LocalTime.now();
     private RealCoordinates initialPos;
     private RealCoordinates pos;
     private Direction direction = Direction.NONE;
@@ -52,8 +53,16 @@ public enum Ghost implements Critter {
         this.sortie = sortie;
     }
 
-    public void setTemps(long tp) {
-        this.temps = tp;
+    public void setTemps() {
+        if (this == BLINKY) {
+            temps = LocalTime.now().plusSeconds(1);
+        } else if (this == PINKY) {
+            temps = LocalTime.now().plusSeconds(3);
+        } else if (this == INKY) {
+            temps = LocalTime.now().plusSeconds(5);
+        } else {
+            temps = LocalTime.now().plusSeconds(7);
+        }
     }
 
     public void setDisableEnergizer(boolean disableEnergizer) {
@@ -63,7 +72,7 @@ public enum Ghost implements Critter {
     public boolean getDisableEnergizer() {
         return disableEnergizer;
     }
-    
+
     public boolean isMort() {
         return mort;
     }
@@ -72,8 +81,6 @@ public enum Ghost implements Critter {
     public double getSpeed() {
         if (disableGhost) {
             return 0;
-        } else if (mort) {
-            return 0.15;
         } else if (!sortie) {
             return 0.05;
         } else {
@@ -85,8 +92,11 @@ public enum Ghost implements Critter {
     public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
         if (mort) {
             outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
+            if (!mort) {
+                setTemps();
+            }
         } else if (!sortie) {
-            if (deltaTNanoSeconds - temps > 1E7) {
+            if (LocalTime.now().getSecond() >= temps.getSecond()) {
                 sortie = outil.animation_sortie(this, config);
             }
         } else {
