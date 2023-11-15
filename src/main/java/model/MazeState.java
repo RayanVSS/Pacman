@@ -216,7 +216,9 @@ public final class MazeState {
         PacMan.INSTANCE.disableCollision();
         PlayingState.gameView.stop();
         shake.play();
+        PlayingState.getInstance().canPause = false;
         shake.setOnFinished(e -> {
+            PlayingState.getInstance().canPause = true;
             System.out.println("shake");
             System.out.println("Lives: " + lives);
             if (lives == 1) {

@@ -24,8 +24,9 @@ public class PlayingState extends App implements State {
     private String state_name = "Playing State";
 
     public StackPane game = new StackPane();
-    public BorderPane game_screen = new BorderPane();
     public BorderPane game_root = new BorderPane();
+
+    public boolean canPause = true;
 
     private String musicFileName = "/ost/epic-hybrid.mp3";
     private Media mediaNormalMusic = new Media(getClass().getResource(musicFileName).toString());
@@ -53,7 +54,7 @@ public class PlayingState extends App implements State {
 
     public boolean hasPaused = false;
 
-    private double MAX_FONT_SIZE = 20.0;
+    private double MAX_FONT_SIZE = 30.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private static final PlayingState instance = new PlayingState();
@@ -103,6 +104,7 @@ public class PlayingState extends App implements State {
     }
 
     public void enter() {
+        BorderPane game_screen = new BorderPane();
         MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
         if (hasPaused) {
             gameView.animate();
