@@ -181,11 +181,8 @@ public final class MazeState {
         }
         PacMan.INSTANCE.handlePacManPoints(this, deltaTns);
         if (PacMan.INSTANCE.canCollide())
-        PacMan.INSTANCE.handleCollisionsWithGhosts(this);
-        if (PacMan.INSTANCE.isEnergized() && deltaTns - PacMan.INSTANCE.getTemps() > 10E7) {
-            PacMan.INSTANCE.setEnergized(false);
-            PacMan.INSTANCE.setTemps(0);
-        }
+            PacMan.INSTANCE.handleCollisionsWithGhosts(this);
+        PacMan.INSTANCE.fin_energizer(this, deltaTns);
         gameisWon();
     }
 
@@ -233,8 +230,8 @@ public final class MazeState {
             System.out.println("Lives: " + lives);
             resetCritters();
             PacMan.INSTANCE.enableCollision();
-            if(lives > 0)
-            PlayingState.gameView.play();
+            if (lives > 0)
+                PlayingState.gameView.play();
         });
 
     }
@@ -243,12 +240,12 @@ public final class MazeState {
         boolean verif = true;
         critter.setDirection(Direction.NONE);
         if (critter instanceof Ghost) {
-            ((Ghost) critter).setTemps(0);
-            if (((Ghost) critter).isSortie() && ((Ghost) critter).isMort()) {
+            if (((Ghost) critter).isMort()) {
                 ((Ghost) critter).setSortie(false);
                 ((Ghost) critter).setDisableEnergizer(true);
                 verif = false;
             } else {
+                ((Ghost) critter).setTemps();
                 ((Ghost) critter).setMort(false);
                 ((Ghost) critter).setSortie(false);
                 ((Ghost) critter).setDisableEnergizer(true);
