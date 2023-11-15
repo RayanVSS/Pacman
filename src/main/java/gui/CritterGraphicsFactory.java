@@ -10,18 +10,21 @@ import model.Critter;
 import model.Ghost;
 import model.PacMan;
 import java.util.Map;
+import java.time.LocalTime;
 
 public final class CritterGraphicsFactory {
     private final double scale;
 
     private Image image_mort;
     private Image image_scared;
+    private Image image_anim;
     private Map<Critter, Image> images;
 
     public CritterGraphicsFactory(double scale) {
         this.scale = scale;
         image_mort = new Image("ghost_dead.png", scale * 0.7, scale * 0.7, true, true);
         image_scared = new Image("ghost_scared.png", scale * 0.7, scale * 0.7, true, true);
+        image_anim = new Image("fin_energizer.gif", scale * 0.7, scale * 0.7, true, true);
         images = Map.of(
                 Ghost.BLINKY, new Image("ghost_blinky.png", scale * 0.7, scale * 0.7, true, true),
                 Ghost.CLYDE, new Image("ghost_clyde.png", scale * 0.7, scale * 0.7, true, true),
@@ -72,7 +75,13 @@ public final class CritterGraphicsFactory {
 
                     if (PacMan.INSTANCE.isEnergized() && !((Ghost) critter).getDisableEnergizer()
                             && !((Ghost) critter).isMort()) {
-                        image.setImage(image_scared);
+                        LocalTime temps = LocalTime.now();
+                        if (PacMan.INSTANCE.getTemps().getSecond() - temps.getSecond() <= 5) {
+                            image.setImage(image_anim);
+                        } else {
+                            image.setImage(image_scared);
+                        }
+
                     } else if (((Ghost) critter).isMort()) {
                         image.setImage(image_mort);
                     } else {
