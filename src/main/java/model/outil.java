@@ -124,7 +124,6 @@ public class outil {
 
             g.setPos(initialPos);
             g.setMort(false);
-            g.setTemps(deltaTNanoSeconds);
             return;
         } else {
             g.setPos(outil.nextPos(Blinky.nextDirection(g, new RealCoordinates(7.0, 4.0)), g, config));
