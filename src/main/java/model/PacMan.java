@@ -1,6 +1,9 @@
 package model;
 
 import lib.Vector2D;
+
+import java.time.LocalTime;
+
 import config.Cell;
 import geometry.RealCoordinates;
 
@@ -13,8 +16,8 @@ public final class PacMan implements Critter {
     private Vector2D velocity = new Vector2D(0, 0);
     private RealCoordinates pos;
     private boolean energized;
-    private long temps = 0;
     private boolean canCollide = true;
+    private LocalTime temps;
 
     private PacMan() {
     }
@@ -58,11 +61,11 @@ public final class PacMan implements Critter {
         this.pos = pos;
     }
 
-    public void setTemps(long tp) {
+    public void setTemps(LocalTime tp) {
         this.temps = tp;
     }
 
-    public long getTemps() {
+    public LocalTime getTemps() {
         return temps;
     }
 
@@ -95,13 +98,28 @@ public final class PacMan implements Critter {
         }
     }
 
+    public boolean verif_fin() {
+        return LocalTime.now().getSecond() >= temps.getSecond();
+    }
+
+    public void fin_energizer(MazeState maze, long deltaTNanoSeconds) {
+        if (isEnergized() && verif_fin()) {
+            setEnergized(false);
+            for (var critter : maze.getCritters()) {
+                if (critter instanceof Ghost) {
+                    ((Ghost) critter).setDisableEnergizer(true);
+                }
+            }
+        }
+    }
+
     public void handlePacManPoints(MazeState maze, long deltaTNanoSeconds) {
         if (!maze.getGridState(pos.round())) {
             if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER) {
                 maze.addScore(10);
                 maze.setGridState(true, pos.round().y(), pos.round().x());
                 setEnergized(true);
-                setTemps(deltaTNanoSeconds);
+                setTemps(LocalTime.now().plusSeconds(10));
                 for (var critter : maze.getCritters()) {
                     if (critter instanceof Ghost) {
                         ((Ghost) critter).setDisableEnergizer(false);
