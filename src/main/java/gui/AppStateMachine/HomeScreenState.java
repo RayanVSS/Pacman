@@ -97,12 +97,14 @@ public class HomeScreenState implements State {
         App.screen.setRoot(start_menu);
     }
 
-    public void process(long deltaT) {
-        
-    }
-
     public void exit() {
         App.screen.setOnMouseClicked(null);
         mediaPlayer.stop();
+    }
+
+    public void transitionTo(State s) {
+        if(s instanceof PlayingState){
+            PlayingState.getInstance().initializeMaze();
+        }
     }
 }

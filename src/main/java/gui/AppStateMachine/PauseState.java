@@ -18,6 +18,7 @@ public class PauseState implements State{
     private Font text_font = FontLoader.getPixelFont(30);
 
     private static final PauseState instance = new PauseState();
+    private boolean relaunch = false;
 
     private PauseState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -45,7 +46,6 @@ public class PauseState implements State{
         resume_button.setTranslateX(-200);
         resume_button.setOnAction(e -> {
             App.app_state.changeState(PlayingState.getInstance());
-            PlayingState.getInstance().hasPaused = false;
             System.out.println("resume");
         });
         PlayingState.getInstance().game.getChildren().add(resume_button);
@@ -56,7 +56,7 @@ public class PauseState implements State{
         restart_button.setTranslateY(150);
         restart_button.setTranslateX(200);
         restart_button.setOnAction(e -> {
-            PlayingState.getInstance().hasPaused = false;
+            relaunch = true;
             App.app_state.changeState(PlayingState.getInstance());
             System.out.println("restart");
         });
@@ -78,8 +78,14 @@ public class PauseState implements State{
         PlayingState.getInstance().game.getChildren().remove(PlayingState.getInstance().game.getChildren().size() -1);
     }
 
-    public void process(long deltaT) {
-        // TODO Auto-generated method stub
+    public void transitionTo(State s) {
+        if(s instanceof PlayingState && relaunch){
+            PlayingState.getInstance().initializeMaze();
+            relaunch = false;
+            return;
+        }
+        if(s instanceof PlayingState){
+            PlayingState.getInstance().gameView.animate();
+        }
     }
-    
 }

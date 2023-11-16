@@ -469,12 +469,12 @@ public class StartingLogosState implements State {
         App.screen.setRoot(black_background);
     }
 
-    public void process(long deltaT) {
-
-    }
-
     public void exit() {
         mediaPlayer.stop();
         App.screen.setOnMouseClicked(null);
+    }
+
+    public void transitionTo(State s) {
+
     }
 }

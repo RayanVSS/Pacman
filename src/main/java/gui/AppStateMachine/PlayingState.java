@@ -36,7 +36,7 @@ public class PlayingState extends App implements State {
     {
         try {
             mediaPlayerNormalMusic = new MediaPlayer(mediaNormalMusic);
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Erreur de lecture du fichier audio");
         }
     }
@@ -44,25 +44,23 @@ public class PlayingState extends App implements State {
     {
         try {
             mediaPlayerCriticMusic = new MediaPlayer(mediaCriticMusic);
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Erreur de lecture du fichier audio");
         }
     }
-    public static Label score_graphics = new Label("" + 0);
+    public Label score_graphics = new Label("" + 0);
 
-    public static HBox life_graphics = new HBox();
-
-    public boolean hasPaused = false;
+    public HBox life_graphics = new HBox();
 
     private double MAX_FONT_SIZE = 30.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
     private static final PlayingState instance = new PlayingState();
 
-    public static MazeState maze;
-    public static GameView gameView;
+    public MazeState maze;
+    public GameView gameView;
 
-    public static int bestScore = 0;
+    public int bestScore = 0;
 
     private PlayingState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -103,69 +101,65 @@ public class PlayingState extends App implements State {
         }
     }
 
-    public void enter() {
+    public void initializeMaze() {
+        game_root.getChildren().clear();
         BorderPane game_screen = new BorderPane();
-        MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
-        if (hasPaused) {
-            gameView.animate();
-            hasPaused = false;
+        mediaPlayerNormalMusic.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayerNormalMusic.play();
+        BorderPane root = new BorderPane();
+
+        game_screen.setStyle("-fx-background-color: black;");
+
+        maze = new MazeState(MazeConfig.makeExample1());
+        maze.resetScore();
+        maze.setLives(3);
+
+        score_graphics = createScoreGraphics();
+        life_graphics_update(maze.getLives());
+
+        var pacmanController = new PacmanController();
+        App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
+        App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
+
+        double scale = 0;
+        // Calculate the scale according to screen resolution and by making sure that
+        // all the maze will be visible
+        if (maze.getWidth() > maze.getHeight()) {
+            scale = (App.screen.getWidth() - 100) / maze.getWidth();
         } else {
-            mediaPlayerNormalMusic.setCycleCount(MediaPlayer.INDEFINITE);
-            mediaPlayerNormalMusic.play();
-            BorderPane root = new BorderPane();
-
-            game_screen.setStyle("-fx-background-color: black;");
-
-            maze = new MazeState(MazeConfig.makeExample1());
-            maze.resetScore();
-            maze.setLives(3);
-
-            score_graphics = createScoreGraphics();
-            life_graphics_update(maze.getLives());
-
-            var pacmanController = new PacmanController();
-            App.screen.setOnKeyPressed(pacmanController::keyPressedHandler);
-            App.screen.setOnKeyReleased(pacmanController::keyReleasedHandler);
-
-            double scale = 0;
-            // Calculate the scale according to screen resolution and by making sure that
-            // all the maze will be visible
-            if (maze.getWidth() > maze.getHeight()) {
-                scale = (App.screen.getWidth() - 100) / maze.getWidth();
-            } else {
-                scale = (App.screen.getHeight() - 100) / maze.getHeight();
-            }
-            gameView = new GameView(maze, root, scale);
-
-            game_root.setCenter(gameView.getGameRoot());
-
-            game_screen.setCenter(game_root);
-
-            // Ajoutez life_graphics en bas du BorderPane
-            game_screen.setBottom(life_graphics);
-
-            // Ajoutez score_graphics en haut du BorderPane
-            game_screen.setTop(score_graphics);
-
-            gameView.animate();
-
-            game.getChildren().add(game_screen);
+            scale = (App.screen.getHeight() - 100) / maze.getHeight();
         }
+        gameView = new GameView(maze, root, scale);
 
-        App.screen.setRoot(game);
+        game_root.setCenter(gameView.getGameRoot());
+
+        game_screen.setCenter(game_root);
+
+        // Ajoutez life_graphics en bas du BorderPane
+        game_screen.setBottom(life_graphics);
+
+        // Ajoutez score_graphics en haut du BorderPane
+        game_screen.setTop(score_graphics);
+
+        gameView.animate();
+
+        game.getChildren().add(game_screen);
     }
 
-    public void process(long deltaT) {
-
+    public void enter() {
+        App.screen.setRoot(game);
     }
 
     public void exit() {
         gameView.stop();
-        if(!hasPaused){
-            if(mediaPlayerNormalMusic.getStatus() == MediaPlayer.Status.PLAYING)
-            mediaPlayerNormalMusic.stop();
-            if(mediaPlayerCriticMusic.getStatus() == MediaPlayer.Status.PLAYING)
-            mediaPlayerCriticMusic.stop();
+    }
+
+    public void transitionTo(State s) {
+        if (s instanceof GameOverState || s instanceof MazeWinState || s instanceof PlayingState) {
+            if (mediaPlayerNormalMusic.getStatus() == MediaPlayer.Status.PLAYING)
+                mediaPlayerNormalMusic.stop();
+            if (mediaPlayerCriticMusic.getStatus() == MediaPlayer.Status.PLAYING)
+                mediaPlayerCriticMusic.stop();
             game.getChildren().clear();
         }
     }

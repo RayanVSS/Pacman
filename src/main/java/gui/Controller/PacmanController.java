@@ -11,7 +11,7 @@ import gui.AppStateMachine.PauseState;
 public class PacmanController {
     public static Direction currentDirection = Direction.NONE;
     public static Direction nextDirection = Direction.NONE;
-    private MazeState config = PlayingState.maze;
+    private MazeState config = PlayingState.getInstance().maze;
 
     public void keyPressedHandler(KeyEvent event) {
         // if is echap
@@ -19,7 +19,6 @@ public class PacmanController {
             // System.out.println("Vous avez appuyé sur ECHAP");
             // if we are not in pause
             if (PlayingState.getInstance() == App.app_state.getState()) {
-                PlayingState.getInstance().hasPaused = true;
                 App.app_state.changeState(PauseState.getInstance());
             }
             // if we are in pause

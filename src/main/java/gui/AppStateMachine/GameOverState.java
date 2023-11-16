@@ -40,12 +40,12 @@ public class GameOverState implements State {
         restart_button.setMaxWidth(App.screen.getWidth());
 
         restart_button.setStyle("-fx-background-color: black");
-        if(PlayingState.maze.getScore() > PlayingState.bestScore){
-            PlayingState.bestScore = PlayingState.maze.getScore();
+        if(PlayingState.getInstance().maze.getScore() > PlayingState.getInstance().bestScore){
+            PlayingState.getInstance().bestScore = PlayingState.getInstance().maze.getScore();
         }
         Label restart_button_text = new Label("Appuyer sur Entree !\n" +
-                "Best Score :" + PlayingState.bestScore + "\n" +
-                "Score : "+ PlayingState.maze.getScore());
+                "Best Score :" + PlayingState.getInstance().bestScore + "\n" +
+                "Score : "+ PlayingState.getInstance().maze.getScore());
         restart_button_text.setTextAlignment(TextAlignment.CENTER);
 
         Image img = new Image(getClass().getResourceAsStream("/restart_button_temporaire.png"));
@@ -79,11 +79,11 @@ public class GameOverState implements State {
         App.screen.setRoot(restart_menu);
     }
 
-    public void process(long deltaT) {
+    public void exit() {
 
     }
 
-    public void exit() {
+    public void transitionTo(State s) {
 
     }
 }

@@ -49,19 +49,5 @@ public class App extends Application {
         // Etat intitial de l'application
         app_state.changeState(StartingLogosState.getInstance());
 
-        new AnimationTimer() {
-            long last = 0;
-
-            @Override
-            public void handle(long now) {
-                if (last == 0) { // ignore the first tick, just compute the first deltaT
-                    last = now;
-                    return;
-                }
-                var deltaT = now - last;
-                app_state.process(deltaT);
-                last = now;
-            }
-        }.start();
     }
 }

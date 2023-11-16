@@ -58,12 +58,12 @@ public class MazeWinState implements State {
         App.screen.setRoot(win_menu);
     }
 
-    public void process(long deltaT) {
-
-    }
-
     public void exit() {
         waitTime.stop();
         flashWin.stop();
+    }
+
+    public void transitionTo(State s) {
+        
     }
 }

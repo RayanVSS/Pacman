@@ -188,8 +188,8 @@ public final class MazeState {
 
     public void addScore(int increment) {
         score += increment * 10;
-        PlayingState.score_graphics.setText("" + score);
-        new GlowText(PlayingState.score_graphics, javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW)
+        PlayingState.getInstance().score_graphics.setText("" + score);
+        new GlowText(PlayingState.getInstance().score_graphics, javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW)
                 .play();
         displayScore();
     }
@@ -214,7 +214,7 @@ public final class MazeState {
         PlayingState.getInstance().life_graphics_update(lives);
         Shake shake = new Shake(PlayingState.getInstance().game_root);
         PacMan.INSTANCE.disableCollision();
-        PlayingState.gameView.stop();
+        PlayingState.getInstance().gameView.stop();
         shake.play();
         PlayingState.getInstance().canPause = false;
         shake.setOnFinished(e -> {
@@ -233,7 +233,7 @@ public final class MazeState {
             resetCritters();
             PacMan.INSTANCE.enableCollision();
             if (lives > 0)
-                PlayingState.gameView.play();
+                PlayingState.getInstance().gameView.play();
         });
 
     }
