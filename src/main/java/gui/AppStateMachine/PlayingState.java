@@ -102,6 +102,7 @@ public class PlayingState extends App implements State {
     }
 
     public void initializeMaze() {
+        game.getChildren().clear();
         game_root.getChildren().clear();
         BorderPane game_screen = new BorderPane();
         mediaPlayerNormalMusic.setCycleCount(MediaPlayer.INDEFINITE);

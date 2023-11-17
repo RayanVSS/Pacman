@@ -84,6 +84,8 @@ public class GameOverState implements State {
     }
 
     public void transitionTo(State s) {
-
+        if(s instanceof PlayingState){
+            PlayingState.getInstance().initializeMaze();
+        }
     }
 }
