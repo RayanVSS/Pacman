@@ -20,6 +20,9 @@ public class PauseState implements State{
     private static final PauseState instance = new PauseState();
     private boolean relaunch = false;
 
+    private final String IDLE_BUTTON_STYLE = "-fx-text-fill: white;";
+    private final String HOVERED_BUTTON_STYLE = "-fx-text-fill: red;";
+
     private PauseState() {
         // Constructeur privé pour empêcher la création d'autres instances
     }
@@ -41,9 +44,11 @@ public class PauseState implements State{
         // bouton reprendre le jeu 
         Button resume_button = new Button("Reprendre");
         resume_button.setFont(text_font);
-        resume_button.setStyle("-fx-text-fill: red;");
+        resume_button.setStyle(IDLE_BUTTON_STYLE);
         resume_button.setTranslateY(150);
         resume_button.setTranslateX(-200);
+        resume_button.setOnMouseEntered(e -> resume_button.setStyle(HOVERED_BUTTON_STYLE));
+        resume_button.setOnMouseExited(e -> resume_button.setStyle(IDLE_BUTTON_STYLE));
         resume_button.setOnAction(e -> {
             App.app_state.changeState(PlayingState.getInstance());
             System.out.println("resume");
@@ -52,9 +57,11 @@ public class PauseState implements State{
         // bouton quitter recommencer
         Button restart_button = new Button("Recommencer");
         restart_button.setFont(text_font);
-        restart_button.setStyle("-fx-text-fill: red;");
+        restart_button.setStyle(IDLE_BUTTON_STYLE);
         restart_button.setTranslateY(150);
         restart_button.setTranslateX(200);
+        restart_button.setOnMouseEntered(e -> restart_button.setStyle(HOVERED_BUTTON_STYLE));
+        restart_button.setOnMouseExited(e -> restart_button.setStyle(IDLE_BUTTON_STYLE));
         restart_button.setOnAction(e -> {
             relaunch = true;
             App.app_state.changeState(PlayingState.getInstance());
