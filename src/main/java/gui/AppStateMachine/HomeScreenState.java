@@ -13,7 +13,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.control.TextField;
 import javafx.stage.Screen;
 import lib.FontLoader;
 
@@ -27,6 +29,7 @@ public class HomeScreenState implements State {
     private String musicFileName = "/ost/Carl-Orff-O-Fortuna-_-Carmina-Burana.wav";
     private Media media = new Media(getClass().getResource(musicFileName).toString());
     public MediaPlayer mediaPlayer = new MediaPlayer(media);
+    private String userName = "Player";
 
     private double MAX_FONT_SIZE = 20.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
@@ -83,12 +86,42 @@ public class HomeScreenState implements State {
 
         start_menu.setCenter(start_button);
 
+        // We want to add at the top of the screen a field to type our name
+        Label name_label = new Label("Entrez votre nom : ");
+        name_label.setFont(pixel_font);
+        name_label.setTextFill(javafx.scene.paint.Color.WHITE);
+        name_label.setTextAlignment(TextAlignment.CENTER);
+        start_menu.setTop(name_label);
+        BorderPane.setAlignment(name_label, Pos.TOP_CENTER);
+        TextField name_field = new TextField();
+        name_field.setStyle("-fx-text-alignment: center; -fx-text-fill: white;");
+        name_field.setAlignment(Pos.CENTER);
+        name_field.textProperty().addListener((observable, oldValue, newValue) -> {
+            //We want to limit the size of the name to 8 characters max and to not allow special characters and if the character is uppercase we want to put it in lowercase
+            if(newValue.length() > 8 || newValue.matches(".*[^a-zA-Z].*")){
+                name_field.setText(oldValue);
+                //We want to display a message to the user to tell him that he can't use special characters
+                name_label.setText("Entrez votre nom : " + "\n" + userName + "\n" + "Caractere speciaux interdits");
+            }
+            else{
+                if(newValue.matches(
+                    ".*[A-Z].*"
+                )){
+                    newValue = newValue.toLowerCase();
+                }
+                System.out.println(newValue);   
+                userName = newValue;
+                name_field.setText(userName);
+                name_label.setText("Entrez votre nom : " + "\n" + userName);
+            }
+        });
+        start_menu.getChildren().add(name_field);
         var homeScreenController = new HomeScreenController();
         App.screen.setOnKeyPressed(homeScreenController::keyPressedHandler);
         App.screen.setOnMouseClicked(new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                if(event.getEventType().equals(javafx.scene.input.MouseEvent.MOUSE_CLICKED)){
+                if (event.getEventType().equals(javafx.scene.input.MouseEvent.MOUSE_CLICKED)) {
                     App.app_state.changeState(PlayingState.getInstance());
                 }
             }
@@ -106,5 +139,9 @@ public class HomeScreenState implements State {
         if(s instanceof PlayingState){
             PlayingState.getInstance().initializeMaze();
         }
+    }
+
+    public String getUserName(){
+        return userName;
     }
 }
