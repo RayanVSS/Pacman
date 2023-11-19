@@ -22,14 +22,14 @@ public final class CritterGraphicsFactory {
 
     public CritterGraphicsFactory(double scale) {
         this.scale = scale;
-        image_mort = new Image("ghost_dead.png", scale * 0.7, scale * 0.7, true, true);
-        image_scared = new Image("ghost_scared.png", scale * 0.7, scale * 0.7, true, true);
-        image_anim = new Image("fin_energizer.gif", scale * 0.7, scale * 0.7, true, true);
+        image_mort = new Image("ghost_dead.gif", scale * 0.7, scale * 0.7, true, true);
+        image_scared = new Image("ghost_scared_haut.gif", scale * 0.7, scale * 0.7, true, true);
+        image_anim = new Image("ghost_rainbow_haut.gif", scale * 0.7, scale * 0.7, true, true);
         images = Map.of(
-                Ghost.BLINKY, new Image("ghost_blinky.png", scale * 0.7, scale * 0.7, true, true),
-                Ghost.CLYDE, new Image("ghost_clyde.png", scale * 0.7, scale * 0.7, true, true),
-                Ghost.INKY, new Image("ghost_inky.png", scale * 0.7, scale * 0.7, true, true),
-                Ghost.PINKY, new Image("ghost_pinky.png", scale * 0.7, scale * 0.7, true, true));
+                Ghost.BLINKY, new Image("ghost_red_droite.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.CLYDE, new Image("ghost_yellow_droite.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.INKY, new Image("ghost_blue_droite.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.PINKY, new Image("ghost_purple_droite.gif", scale * 0.7, scale * 0.7, true, true));
     }
 
     public GraphicsUpdater makeGraphics(Critter critter) {
@@ -37,10 +37,10 @@ public final class CritterGraphicsFactory {
         var url = "pac-man-fortnite.gif";
         if (critter instanceof Ghost) {
             url = switch ((Ghost) critter) {
-                case BLINKY -> "ghost_blinky.png";
-                case CLYDE -> "ghost_clyde.png";
-                case INKY -> "ghost_inky.png";
-                case PINKY -> "ghost_pinky.png";
+                case BLINKY -> "ghost_red_droite.gif";
+                case CLYDE -> "ghost_yellow_droite.gif";
+                case INKY -> "ghost_blue_droite.gif";
+                case PINKY -> "ghost_purple_droite.gif";
             };
 
         }
