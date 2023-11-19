@@ -17,13 +17,12 @@ public class LeaderBoard implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static ArrayList<Score> scores = new ArrayList<>(Arrays.asList(
-        new Score("Dick", 0),
-        new Score("Panini", 0),
-        new Score("Chicken", 0),
-        new Score("NullPointer", 0),
-        new Score("Jej", 0),
-        new Score("Zizi", 0)
-    ));
+            new Score("Dick", 0),
+            new Score("Panini", 0),
+            new Score("Chicken", 0),
+            new Score("NullPointer", 0),
+            new Score("Jej", 0),
+            new Score("Zizi", 0)));
 
     public class LeaderBoardIO {
         public static void saveScores() {
@@ -39,8 +38,18 @@ public class LeaderBoard implements Serializable {
         public static void loadScores() {
             String filename = "src/main/resources/save/scores.ser";
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-                LeaderBoard.setScores((ArrayList<Score>) ois.readObject());
-                System.out.println("Scores loaded successfully.");
+                Object obj = ois.readObject();
+                if (obj instanceof ArrayList<?>) {
+                    ArrayList<?> list = (ArrayList<?>) obj;
+                    if (!list.isEmpty() && list.get(0) instanceof Score) {
+                        ArrayList<Score> scores = new ArrayList<>();
+                        for (Object item : list) {
+                            scores.add((Score) item);
+                        }
+                        LeaderBoard.setScores(scores);
+                        System.out.println("Scores loaded successfully.");
+                    }
+                }
             } catch (IOException | ClassNotFoundException e) {
                 saveScores();
             }
@@ -64,7 +73,7 @@ public class LeaderBoard implements Serializable {
         }
         sort();
     }
-    
+
     public static void sort() {
         scores.sort(new Comparator<Score>() {
             @Override
