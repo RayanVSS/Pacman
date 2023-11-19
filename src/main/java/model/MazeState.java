@@ -180,7 +180,7 @@ public final class MazeState {
             handleWallCollisions(critter, deltaTns);
         }
         PacMan.INSTANCE.handlePacManPoints(this, deltaTns);
-        if (PacMan.INSTANCE.canCollide())
+        if (!PacMan.INSTANCE.isDead)
             PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         PacMan.INSTANCE.fin_energizer(this, deltaTns);
         gameisWon();
@@ -210,17 +210,19 @@ public final class MazeState {
     }
 
     public void playerLost() {
-        lives--;
-        PlayingState.getInstance().life_graphics_update(lives);
         Shake shake = new Shake(PlayingState.getInstance().game_root);
-        PacMan.INSTANCE.disableCollision();
+        PacMan.INSTANCE.playDeathAnimation();
         PlayingState.getInstance().gameView.stop();
         shake.play();
         PlayingState.getInstance().canPause = false;
         shake.setOnFinished(e -> {
+            resetCritters();
+            lives--;
+            PlayingState.getInstance().life_graphics_update(lives);
             PlayingState.getInstance().canPause = true;
             System.out.println("shake");
             System.out.println("Lives: " + lives);
+            PacMan.INSTANCE.isDead = false;
             if (lives == 1) {
                 PlayingState.getInstance().mediaPlayerNormalMusic.stop();
                 PlayingState.getInstance().mediaPlayerCriticMusic.play();
@@ -230,8 +232,6 @@ public final class MazeState {
                 App.app_state.changeState(GameOverState.getInstance());
             }
             System.out.println("Lives: " + lives);
-            resetCritters();
-            PacMan.INSTANCE.enableCollision();
             if (lives > 0)
                 PlayingState.getInstance().gameView.play();
         });

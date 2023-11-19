@@ -16,8 +16,8 @@ public final class PacMan implements Critter {
     private Vector2D velocity = new Vector2D(0, 0);
     private RealCoordinates pos;
     private boolean energized;
-    private boolean canCollide = true;
     private LocalTime temps;
+    public boolean isDead = false;
 
     private PacMan() {
     }
@@ -27,18 +27,6 @@ public final class PacMan implements Critter {
     @Override
     public RealCoordinates getPos() {
         return pos;
-    }
-
-    public void disableCollision() {
-        canCollide = false;
-    }
-
-    public boolean canCollide() {
-        return canCollide;
-    }
-
-    public void enableCollision() {
-        canCollide = true;
     }
 
     @Override
@@ -147,8 +135,16 @@ public final class PacMan implements Critter {
             ghost.setMort(true);
             maze.resetCritter(ghost);
         } else {
+            if(!isDead)
             maze.playerLost();
         }
+    }
+
+    public void playDeathAnimation(){
+        System.out.println("PacMan is dead");
+        isDead = true;
+        //Now we need to play the death animation by changing the sprite
+        
     }
 
 }
