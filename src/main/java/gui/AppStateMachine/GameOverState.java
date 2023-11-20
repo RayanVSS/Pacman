@@ -24,6 +24,9 @@ public class GameOverState implements State {
     private double MAX_FONT_SIZE = 20; // Définit la taille du texte pour le score
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
 
+    private final double MAX_FONT_SIZE = 20.0; // Définit la taille du texte pour le score
+    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
+
     private GameOverState() {
         // Constructeur privé pour empêcher la création d'autres instances
     }

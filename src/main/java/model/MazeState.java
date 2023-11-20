@@ -240,6 +240,7 @@ public final class MazeState {
     }
 
     public void resetCritter(Critter critter) {
+        boolean verif = true;
         critter.setDirection(Direction.NONE);
         if (critter instanceof Ghost) {
             ((Ghost) critter).setTemps();
