@@ -90,18 +90,18 @@ public final class PacMan implements Critter {
         return LocalTime.now().getSecond() >= temps.getSecond();
     }
 
-    public void fin_energizer(MazeState maze, long deltaTNanoSeconds) {
+    public void fin_energizer(MazeState maze) {
         if (isEnergized() && verif_fin()) {
             setEnergized(false);
             for (var critter : maze.getCritters()) {
                 if (critter instanceof Ghost) {
-                    ((Ghost) critter).setDisableEnergizer(true);
+                    ((Ghost) critter).setDisableEnergizer(false);
                 }
             }
         }
     }
 
-    public void handlePacManPoints(MazeState maze, long deltaTNanoSeconds) {
+    public void handlePacManPoints(MazeState maze) {
         if (!maze.getGridState(pos.round())) {
             if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER) {
                 maze.addScore(10);
@@ -133,18 +133,18 @@ public final class PacMan implements Critter {
         if (isEnergized() && !ghost.getDisableEnergizer()) {
             maze.addScore(10);
             ghost.setMort(true);
-            maze.resetCritter(ghost);
+            maze.resetGhost(ghost);
         } else {
-            if(!isDead)
-            maze.playerLost();
+            if (!isDead)
+                maze.playerLost();
         }
     }
 
-    public void playDeathAnimation(){
+    public void playDeathAnimation() {
         System.out.println("PacMan is dead");
         isDead = true;
-        //Now we need to play the death animation by changing the sprite
-        
+        // Now we need to play the death animation by changing the sprite
+
     }
 
 }

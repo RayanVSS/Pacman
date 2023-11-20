@@ -179,17 +179,18 @@ public final class MazeState {
         for (var critter : critters) {
             handleWallCollisions(critter, deltaTns);
         }
-        PacMan.INSTANCE.handlePacManPoints(this, deltaTns);
+        PacMan.INSTANCE.handlePacManPoints(this);
         if (!PacMan.INSTANCE.isDead)
             PacMan.INSTANCE.handleCollisionsWithGhosts(this);
-        PacMan.INSTANCE.fin_energizer(this, deltaTns);
+        PacMan.INSTANCE.fin_energizer(this);
         gameisWon();
     }
 
     public void addScore(int increment) {
         score += increment * 10;
         PlayingState.getInstance().score_graphics.setText("" + score);
-        new GlowText(PlayingState.getInstance().score_graphics, javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW)
+        new GlowText(PlayingState.getInstance().score_graphics, javafx.scene.paint.Color.WHITE,
+                javafx.scene.paint.Color.YELLOW)
                 .play();
         displayScore();
     }
@@ -239,24 +240,24 @@ public final class MazeState {
     }
 
     public void resetCritter(Critter critter) {
-        boolean verif = true;
         critter.setDirection(Direction.NONE);
         if (critter instanceof Ghost) {
-            if (((Ghost) critter).isMort()) {
-                ((Ghost) critter).setSortie(false);
-                ((Ghost) critter).setDisableEnergizer(true);
-                verif = false;
-            } else {
-                ((Ghost) critter).setTemps();
-                ((Ghost) critter).setMort(false);
-                ((Ghost) critter).setSortie(false);
-                ((Ghost) critter).setDisableEnergizer(true);
-            }
-        }
-        if (verif) {
+            ((Ghost) critter).setTemps();
+            ((Ghost) critter).setMort(false);
+            ((Ghost) critter).setSortie(false);
+            ((Ghost) critter).setPos(initialPos.get(critter));
+            ((Ghost) critter).setDisableEnergizer(false);
+
+        } else {
             critter.setPos(initialPos.get(critter));
+            ((PacMan) critter).setEnergized(false);
         }
 
+    }
+
+    public void resetGhost(Critter critter) {
+        ((Ghost) critter).setSortie(false);
+        ((Ghost) critter).setDisableEnergizer(true);
     }
 
     private void resetCritters() {
