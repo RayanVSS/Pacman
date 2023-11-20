@@ -79,7 +79,9 @@ public enum Ghost implements Critter {
 
     @Override
     public double getSpeed() {
-        if (disableGhost) {
+        if (mort) {
+            return 0.1;
+        } else if (disableGhost) {
             return 0;
         } else if (!sortie) {
             return 0.05;
@@ -88,10 +90,9 @@ public enum Ghost implements Critter {
         }
     }
 
-    @Override
-    public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
+    public RealCoordinates nextPos(MazeConfig config) {
         if (mort) {
-            outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
+            outil.animation_mort(this, initialPos, config);
             if (!mort) {
                 setTemps();
             }
