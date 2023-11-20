@@ -54,14 +54,18 @@ public enum Ghost implements Critter {
     }
 
     public void setTemps() {
-        if (this == BLINKY) {
-            temps = LocalTime.now().plusSeconds(1);
-        } else if (this == PINKY) {
-            temps = LocalTime.now().plusSeconds(3);
-        } else if (this == INKY) {
-            temps = LocalTime.now().plusSeconds(5);
+        if (mort) {
+            temps = LocalTime.now().plusSeconds(2);
         } else {
-            temps = LocalTime.now().plusSeconds(7);
+            if (this == BLINKY) {
+                temps = LocalTime.now().plusSeconds(1);
+            } else if (this == PINKY) {
+                temps = LocalTime.now().plusSeconds(3);
+            } else if (this == INKY) {
+                temps = LocalTime.now().plusSeconds(5);
+            } else {
+                temps = LocalTime.now().plusSeconds(7);
+            }
         }
     }
 
@@ -94,7 +98,9 @@ public enum Ghost implements Critter {
         if (mort) {
             outil.animation_mort(this, initialPos, config);
             if (!mort) {
+                mort = true;
                 setTemps();
+                mort = false;
             }
         } else if (!sortie) {
             if (LocalTime.now().getSecond() >= temps.getSecond()) {
