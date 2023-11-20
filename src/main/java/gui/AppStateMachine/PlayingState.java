@@ -62,8 +62,6 @@ public class PlayingState extends App implements State {
 
     public int bestScore = 0;
 
-    public static int bestScore = 0;
-
     private PlayingState() {
         // Constructeur privé pour empêcher la création d'autres instances
     }

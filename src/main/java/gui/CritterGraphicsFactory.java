@@ -32,7 +32,7 @@ public final class CritterGraphicsFactory {
                 Ghost.PINKY, new Image("ghost_purple_droite.gif", scale * 0.7, scale * 0.7, true, true));
     }
 
-   public GraphicsUpdater makeGraphics(Critter critter) {
+    public GraphicsUpdater makeGraphics(Critter critter) {
         var size = 0.7;
         var url = "pac-man-fortnite.gif";
         if (critter instanceof Ghost) {
