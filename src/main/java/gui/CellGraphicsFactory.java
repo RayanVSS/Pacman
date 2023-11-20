@@ -30,8 +30,11 @@ public class CellGraphicsFactory {
         dot.setFill(Color.YELLOW);
         if (cell.northWall()) {
             var nWall = new Rectangle();
-            nWall.setHeight(scale/10);
-            nWall.setWidth(scale);
+            //We want to not have an outline of the rectangle with the same color
+            //as the background, so we need to make the rectangle a bit bigger
+            //than the cell
+            nWall.setHeight(scale/10 + scale/100);
+            nWall.setWidth(scale + scale/100);
             nWall.setY(0);
             nWall.setX(0);
             nWall.setFill(Color.BLUE);
@@ -39,8 +42,8 @@ public class CellGraphicsFactory {
         }
         if (cell.eastWall()) {
             var nWall = new Rectangle();
-            nWall.setHeight(scale);
-            nWall.setWidth(scale/10);
+            nWall.setHeight(scale + scale/100);
+            nWall.setWidth(scale/10 + scale/100);
             nWall.setY(0);
             nWall.setX(9*scale/10);
             nWall.setFill(Color.BLUE);
@@ -48,8 +51,8 @@ public class CellGraphicsFactory {
         }
         if (cell.southWall()) {
             var nWall = new Rectangle();
-            nWall.setHeight(scale/10);
-            nWall.setWidth(scale);
+            nWall.setHeight(scale/10 + scale/100);
+            nWall.setWidth(scale + scale/100);
             nWall.setY(9*scale/10);
             nWall.setX(0);
             nWall.setFill(Color.BLUE);
@@ -57,8 +60,8 @@ public class CellGraphicsFactory {
         }
         if (cell.westWall()) {
             var nWall = new Rectangle();
-            nWall.setHeight(scale);
-            nWall.setWidth(scale/10);
+            nWall.setHeight(scale + scale/100);
+            nWall.setWidth(scale/10 + scale/100);
             nWall.setY(0);
             nWall.setX(0);
             nWall.setFill(Color.BLUE);
@@ -66,8 +69,8 @@ public class CellGraphicsFactory {
         }
         if(cell.isGhostDoor()){
             var ghostDoor = new Rectangle();
-            ghostDoor.setHeight(scale/10);
-            ghostDoor.setWidth(scale);
+            ghostDoor.setHeight(scale/10 + scale/100);
+            ghostDoor.setWidth(scale + scale/100);
             ghostDoor.setY(-1.5);
             ghostDoor.setX(0);
             ghostDoor.setFill(Color.WHITE);

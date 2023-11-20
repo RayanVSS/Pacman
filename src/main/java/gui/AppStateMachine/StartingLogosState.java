@@ -177,9 +177,7 @@ public class StartingLogosState implements State {
                 }
             }));
             zizi.setCycleCount(1);
-            Platform.runLater(() -> {
-                zizi.play(); // Pour éviter un bug graphique
-            });
+            zizi.play();
         }));
         timeline.setOnFinished(event -> {
             timeline.stop();
@@ -470,6 +468,7 @@ public class StartingLogosState implements State {
     }
 
     public void exit() {
+        starting_logos.getChildren().clear();
         mediaPlayer.stop();
         App.screen.setOnMouseClicked(null);
     }
