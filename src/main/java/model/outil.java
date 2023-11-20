@@ -118,7 +118,7 @@ public class outil {
         }
     }
 
-    public static void animation_mort(Ghost g, RealCoordinates initialPos, MazeConfig config, long deltaTNanoSeconds) {
+    public static void animation_mort(Ghost g, RealCoordinates initialPos, MazeConfig config) {
         if (g.getPos().x() >= 6.9 && g.getPos().x() <= 7.1
                 && g.getPos().y() >= 3.9 && g.getPos().y() <= 4.1) {
 
