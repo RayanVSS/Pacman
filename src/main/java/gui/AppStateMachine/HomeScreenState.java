@@ -74,6 +74,7 @@ public class HomeScreenState implements State {
     }
 
     public void enter() {
+        start_menu.getChildren().clear();
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setStartTime(javafx.util.Duration.seconds(25));
         mediaPlayer.setStopTime(javafx.util.Duration.seconds(2 * 60 + 32));
