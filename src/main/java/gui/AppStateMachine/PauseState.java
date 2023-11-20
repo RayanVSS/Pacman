@@ -87,6 +87,10 @@ public class PauseState implements State{
 
     public void transitionTo(State s) {
         if(s instanceof PlayingState && relaunch){
+            if(PlayingState.getInstance().mediaPlayerNormalMusic.getStatus().equals(javafx.scene.media.MediaPlayer.Status.PLAYING))
+                PlayingState.getInstance().mediaPlayerNormalMusic.stop();
+            if(PlayingState.getInstance().mediaPlayerCriticMusic.getStatus().equals(javafx.scene.media.MediaPlayer.Status.PLAYING))
+            PlayingState.getInstance().mediaPlayerCriticMusic.stop();
             PlayingState.getInstance().initializeMaze();
             relaunch = false;
             return;
