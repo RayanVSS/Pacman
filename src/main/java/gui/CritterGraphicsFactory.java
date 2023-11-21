@@ -18,19 +18,42 @@ public final class CritterGraphicsFactory {
     private Image image_mort;
     private Image image_scared;
     private Image image_anim;
-    private Map<Critter, Image> images;
+    private Image BLINKY_g;
+    private Map<Critter, Image> images_D,images_G,images_H,images_B;
 
     public CritterGraphicsFactory(double scale) {
         this.scale = scale;
         image_mort = new Image("ghost_dead.gif", scale * 0.7, scale * 0.7, true, true);
         image_scared = new Image("ghost_scared_haut.gif", scale * 0.7, scale * 0.7, true, true);
         image_anim = new Image("ghost_rainbow_haut.gif", scale * 0.7, scale * 0.7, true, true);
-        images = Map.of(
+        BLINKY_g = new Image("ghost_red_gauche.gif", scale * 0.7, scale * 0.7, true, true);
+
+        images_D = Map.of(
                 Ghost.BLINKY, new Image("ghost_red_droite.gif", scale * 0.7, scale * 0.7, true, true),
                 Ghost.CLYDE, new Image("ghost_yellow_droite.gif", scale * 0.7, scale * 0.7, true, true),
                 Ghost.INKY, new Image("ghost_blue_droite.gif", scale * 0.7, scale * 0.7, true, true),
                 Ghost.PINKY, new Image("ghost_purple_droite.gif", scale * 0.7, scale * 0.7, true, true));
+
+        images_G = Map.of(
+                Ghost.BLINKY, new Image("ghost_red_gauche.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.CLYDE, new Image("ghost_yellow_gauche.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.INKY, new Image("ghost_blue_gauche.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.PINKY, new Image("ghost_purple_gauche.gif", scale * 0.7, scale * 0.7, true, true));
+        
+        images_H = Map.of(
+                Ghost.BLINKY, new Image("ghost_red_haut.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.CLYDE, new Image("ghost_yellow_haut.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.INKY, new Image("ghost_blue_haut.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.PINKY, new Image("ghost_purple_haut.gif", scale * 0.7, scale * 0.7, true, true));
+
+
+        images_B = Map.of(
+                Ghost.BLINKY, new Image("ghost_red_bas.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.CLYDE, new Image("ghost_yellow_bas.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.INKY, new Image("ghost_blue_bas.gif", scale * 0.7, scale * 0.7, true, true),
+                Ghost.PINKY, new Image("ghost_purple_bas.gif", scale * 0.7, scale * 0.7, true, true));
     }
+    
 
     public GraphicsUpdater makeGraphics(Critter critter) {
         var size = 0.7;
@@ -73,6 +96,7 @@ public final class CritterGraphicsFactory {
                 }
                 if (critter instanceof Ghost) {
 
+
                     if (PacMan.INSTANCE.isEnergized() && !((Ghost) critter).getDisableEnergizer()
                             && !((Ghost) critter).isMort()) {
                         LocalTime temps = LocalTime.now();
@@ -85,7 +109,20 @@ public final class CritterGraphicsFactory {
                     } else if (((Ghost) critter).isMort()) {
                         image.setImage(image_mort);
                     } else {
-                        image.setImage(images.get(critter));
+                    switch (((Ghost) critter).getDirection()) {
+                        case NORTH:
+                        image.setImage(images_H.get(critter));
+                            break;
+                        case EAST:
+                        image.setImage(images_D.get(critter));                        
+                            break;
+                        case WEST:
+                        image.setImage(images_G.get(critter));
+                            break;
+                        case SOUTH:
+                        image.setImage(images_B.get(critter));
+                            break;
+                    }
 
                     }
                 }
