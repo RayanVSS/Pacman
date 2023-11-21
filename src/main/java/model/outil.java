@@ -68,7 +68,7 @@ public class outil {
         return res;
     }
 
-    public static RealCoordinates nextPos(Direction[] d, Ghost g, MazeConfig config) {
+    public static RealCoordinates nextPos(Direction[] d, Ghost g, MazeConfig config, long delaTimeNanoSeconds) {
         for (Direction dir : d) {
             if (config.getCell(g.getPos().round()).canMoveInDirection(dir) && dir != inverse(g.getDirection())) {
                 switch (dir) {
@@ -81,7 +81,7 @@ public class outil {
                             }
                         } else {
                             g.setDirection(dir);
-                            return g.getPos().plus(DirectionToRealCoordinates(dir).times(g.getSpeed()));
+                            return g.getPos().plus(DirectionToRealCoordinates(dir).times(g.getSpeed(delaTimeNanoSeconds)));
                         }
                     }
                     case EAST, WEST -> {
@@ -96,16 +96,16 @@ public class outil {
 
                         else {
                             g.setDirection(dir);
-                            return g.getPos().plus(DirectionToRealCoordinates(dir).times(g.getSpeed()));
+                            return g.getPos().plus(DirectionToRealCoordinates(dir).times(g.getSpeed(delaTimeNanoSeconds)));
                         }
                     }
                 }
             }
         }
-        return g.getPos().plus(DirectionToRealCoordinates(g.getDirection()).times(g.getSpeed()));
+        return g.getPos().plus(DirectionToRealCoordinates(g.getDirection()).times(g.getSpeed(delaTimeNanoSeconds)));
     }
 
-    public static boolean animation_sortie(Ghost g, MazeConfig config) {
+    public static boolean animation_sortie(Ghost g, MazeConfig config, long deltaTNanoSeconds) {
         RealCoordinates currentPos = g.getPos();
         RealCoordinates targetPos = new RealCoordinates(7.0, 4.0);
 
@@ -113,12 +113,13 @@ public class outil {
             g.setPos(targetPos);
             return true;
         } else {
-            g.setPos(outil.nextPos(Blinky.nextDirection(g, new RealCoordinates(7.0, 4.0)), g, config));
+            Direction[] directions = Blinky.nextDirection(g, new RealCoordinates(7.0, 4.0), deltaTNanoSeconds);
+            g.setPos(outil.nextPos(directions, g, config, deltaTNanoSeconds));
             return false;
         }
     }
 
-    public static void animation_mort(Ghost g, RealCoordinates initialPos, MazeConfig config) {
+    public static void animation_mort(Ghost g, RealCoordinates initialPos, MazeConfig config, long deltaTNanoSeconds) {
         if (g.getPos().x() >= 6.9 && g.getPos().x() <= 7.1
                 && g.getPos().y() >= 3.9 && g.getPos().y() <= 4.1) {
 
@@ -126,7 +127,8 @@ public class outil {
             g.setMort(false);
             return;
         } else {
-            g.setPos(outil.nextPos(Blinky.nextDirection(g, new RealCoordinates(7.0, 4.0)), g, config));
+            Direction[] directions = Blinky.nextDirection(g, new RealCoordinates(7.0, 4.0), deltaTNanoSeconds);
+            g.setPos(outil.nextPos(directions, g, config, deltaTNanoSeconds));
             return;
         }
     }

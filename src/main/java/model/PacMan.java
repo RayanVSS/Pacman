@@ -13,7 +13,6 @@ import geometry.RealCoordinates;
  */
 public final class PacMan implements Critter {
     private Direction direction = Direction.NONE;
-    private Vector2D velocity = new Vector2D(0, 0);
     private RealCoordinates pos;
     private boolean energized;
     private LocalTime temps;
@@ -30,8 +29,8 @@ public final class PacMan implements Critter {
     }
 
     @Override
-    public double getSpeed() {
-        return isEnergized() ? 6 : 4;
+    public double getSpeed(long deltaTNanoSeconds) {
+        return isEnergized() ? 6 *deltaTNanoSeconds * 1E-9 : 4 * deltaTNanoSeconds * 1E-9;
     }
 
     @Override
@@ -69,21 +68,6 @@ public final class PacMan implements Critter {
 
     public void setEnergized(boolean energized) {
         this.energized = energized;
-    }
-
-    public void setVelocity() {
-        switch (direction) {
-            case NONE:
-                velocity.set(0, 0);
-            case NORTH:
-                velocity.set(0, getSpeed());
-            case SOUTH:
-                velocity.set(0, -getSpeed());
-            case WEST:
-                velocity.set(-getSpeed(), 0);
-            case EAST:
-                velocity.set(getSpeed(), 0);
-        }
     }
 
     public boolean verif_fin() {

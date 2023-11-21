@@ -82,21 +82,21 @@ public enum Ghost implements Critter {
     }
 
     @Override
-    public double getSpeed() {
+    public double getSpeed(long deltaTNanoSeconds) {
         if (mort) {
-            return 0.1;
+            return 1 * deltaTNanoSeconds * 1E-9;
         } else if (disableGhost) {
             return 0;
         } else if (!sortie) {
-            return 0.05;
+            return 5 * deltaTNanoSeconds * 1E-9;
         } else {
-            return 0.04;
+            return 4 * deltaTNanoSeconds * 1E-9;
         }
     }
 
-    public RealCoordinates nextPos(MazeConfig config) {
+    public RealCoordinates nextPos(MazeConfig config, long deltaTNanoSeconds) {
         if (mort) {
-            outil.animation_mort(this, initialPos, config);
+            outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
             if (!mort) {
                 mort = true;
                 setTemps();
@@ -104,24 +104,24 @@ public enum Ghost implements Critter {
             }
         } else if (!sortie) {
             if (LocalTime.now().getSecond() >= temps.getSecond()) {
-                sortie = outil.animation_sortie(this, config);
+                sortie = outil.animation_sortie(this, config, deltaTNanoSeconds);
             }
         } else {
             Direction[] directions;
 
             if (this == PINKY) {
-                directions = Pinky.nextDirection(PINKY, PacMan.INSTANCE);
+                directions = Pinky.nextDirection(PINKY, PacMan.INSTANCE, deltaTNanoSeconds);
             } else if (this == CLYDE) {
-                directions = Clyde.nextDirection(CLYDE, PacMan.INSTANCE, config);
+                directions = Clyde.nextDirection(CLYDE, PacMan.INSTANCE, config, deltaTNanoSeconds);
             } else if (this == INKY) {
-                directions = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE);
+                directions = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE, deltaTNanoSeconds);
             } else {
-                directions = Blinky.nextDirection(BLINKY, PacMan.INSTANCE.getPos());
+                directions = Blinky.nextDirection(BLINKY, PacMan.INSTANCE.getPos(), deltaTNanoSeconds);
             }
             if (PacMan.INSTANCE.isEnergized() && !disableEnergizer) {
                 directions = outil.inverse(directions);
             }
-            return outil.nextPos(directions, this, config);
+            return outil.nextPos(directions, this, config, deltaTNanoSeconds);
         }
 
         return pos;
