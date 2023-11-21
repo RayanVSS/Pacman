@@ -84,7 +84,7 @@ public enum Ghost implements Critter {
     @Override
     public double getSpeed(long deltaTNanoSeconds) {
         if (mort) {
-            return 1 * deltaTNanoSeconds * 1E-9;
+            return 4 * deltaTNanoSeconds * 1E-9;
         } else if (disableGhost) {
             return 0;
         } else if (!sortie) {
