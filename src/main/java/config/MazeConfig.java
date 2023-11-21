@@ -55,7 +55,7 @@ public class MazeConfig {
     // simple example with a square shape
     public static MazeConfig makeExample1() {
         return new MazeConfig(MazeLoad.make(),
-                new IntCoordinates(3, 10),
+                new IntCoordinates(7, 7),
                 new IntCoordinates(6, 6),
                 new IntCoordinates(8, 5),
                 new IntCoordinates(6, 5),

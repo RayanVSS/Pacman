@@ -16,7 +16,7 @@ public sealed interface Critter permits Ghost, PacMan {
      */
     default RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
         if (this instanceof Ghost) {
-            return ((Ghost) this).nextPos(deltaTNanoSeconds, config);
+            return ((Ghost) this).nextPos(config);
         }
         return getPos().plus((switch (getDirection()) {
             case NONE -> RealCoordinates.ZERO;

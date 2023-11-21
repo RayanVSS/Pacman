@@ -6,17 +6,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
 import animatefx.animation.Flash;
 import gui.App;
+import lib.FontLoader;
 import lib.State;
+import lib.ElementScaler;
 
 public class MazeWinState implements State {
     private String state_name = "Maze Win State";
     private static final MazeWinState instance = new MazeWinState();
 
-    private final double MAX_FONT_SIZE = 20.0;
-    private Font pixel_font = Font.loadFont(getClass().getResourceAsStream("/font/pixel_font.ttf"), MAX_FONT_SIZE);
-
+    private double MAX_FONT_SIZE = 20.0;
+    private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
     BorderPane win_menu = new BorderPane();
 
     Flash flashWin = new Flash();
@@ -35,6 +37,7 @@ public class MazeWinState implements State {
     }
 
     public void enter() {
+        MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
         Text winText = new Text("Vous avez gagne !");
         winText.setFont(pixel_font);
         winText.setFill(javafx.scene.paint.Color.WHITE);
@@ -55,12 +58,12 @@ public class MazeWinState implements State {
         App.screen.setRoot(win_menu);
     }
 
-    public void process(long deltaT) {
-
-    }
-
     public void exit() {
         waitTime.stop();
         flashWin.stop();
+    }
+
+    public void transitionTo(State s) {
+        
     }
 }

@@ -8,6 +8,7 @@ public enum AppState {
     STARTING_LOGOS(StartingLogosState.getInstance()),
     HOME_SCREEN(HomeScreenState.getInstance()),
     PLAYING(PlayingState.getInstance()),
+    PAUSE(PauseState.getInstance()),
     GAMEOVER(GameOverState.getInstance());
 
     private State current_state;
@@ -26,12 +27,9 @@ public enum AppState {
 
     public void changeState(State s) {
         current_state.exit();
+        current_state.transitionTo(s);
         current_state = s;
         current_state.enter();
-    }
-
-    public void process(long deltaT) {
-        current_state.process(deltaT);
     }
 
 }

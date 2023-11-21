@@ -2,18 +2,20 @@ package model;
 
 import config.MazeConfig;
 import geometry.RealCoordinates;
+import java.time.LocalTime;
 
 public enum Ghost implements Critter {
-    
+
     BLINKY, INKY, PINKY, CLYDE;
 
-    private long temps = 0;
+    private LocalTime temps = LocalTime.now();
     private RealCoordinates initialPos;
     private RealCoordinates pos;
     private Direction direction = Direction.NONE;
     private boolean sortie = false;
     private boolean mort = false;
     private final boolean disableGhost = false;
+    private boolean disableEnergizer = false;
 
     @Override
     public RealCoordinates getPos() {
@@ -51,31 +53,58 @@ public enum Ghost implements Critter {
         this.sortie = sortie;
     }
 
-    public void setTemps(long tp) {
-        this.temps = tp;
+    public void setTemps() {
+        if (mort) {
+            temps = LocalTime.now().plusSeconds(2);
+        } else {
+            if (this == BLINKY) {
+                temps = LocalTime.now().plusSeconds(1);
+            } else if (this == PINKY) {
+                temps = LocalTime.now().plusSeconds(3);
+            } else if (this == INKY) {
+                temps = LocalTime.now().plusSeconds(5);
+            } else {
+                temps = LocalTime.now().plusSeconds(7);
+            }
+        }
+    }
+
+    public void setDisableEnergizer(boolean disableEnergizer) {
+        this.disableEnergizer = disableEnergizer;
+    }
+
+    public boolean getDisableEnergizer() {
+        return disableEnergizer;
+    }
+
+    public boolean isMort() {
+        return mort;
     }
 
     @Override
     public double getSpeed() {
-        if(disableGhost){
+        if (mort) {
+            return 0.1;
+        } else if (disableGhost) {
             return 0;
+        } else if (!sortie) {
+            return 0.05;
+        } else {
+            return 0.04;
         }
-        return 0.04;
     }
 
-    @Override
-    public RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
+    public RealCoordinates nextPos(MazeConfig config) {
         if (mort) {
-            outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
+            outil.animation_mort(this, initialPos, config);
+            if (!mort) {
+                mort = true;
+                setTemps();
+                mort = false;
+            }
         } else if (!sortie) {
-            if (this == BLINKY && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(BLINKY);
-            } else if (this == PINKY && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(PINKY);
-            } else if (this == INKY && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(INKY);
-            } else if (this == CLYDE && deltaTNanoSeconds - temps > 1E7) {
-                sortie = outil.animation_sortie(CLYDE);
+            if (LocalTime.now().getSecond() >= temps.getSecond()) {
+                sortie = outil.animation_sortie(this, config);
             }
         } else {
             Direction[] directions;
@@ -89,7 +118,7 @@ public enum Ghost implements Critter {
             } else {
                 directions = Blinky.nextDirection(BLINKY, PacMan.INSTANCE.getPos());
             }
-            if (PacMan.INSTANCE.isEnergized()) {
+            if (PacMan.INSTANCE.isEnergized() && !disableEnergizer) {
                 directions = outil.inverse(directions);
             }
             return outil.nextPos(directions, this, config);
@@ -98,7 +127,4 @@ public enum Ghost implements Critter {
         return pos;
     }
 
-    public boolean isMort() {
-        return mort;
-    }
 }

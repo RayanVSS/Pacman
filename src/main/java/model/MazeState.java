@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import animatefx.animation.GlowText;
+import animatefx.animation.Shake;
 
 import static model.Ghost.*;
 
@@ -27,7 +28,7 @@ public final class MazeState {
     private final boolean[][] gridState;
 
     private final List<Critter> critters;
-    private static int score;
+    private int score;
 
     private final Map<Critter, RealCoordinates> initialPos;
     private int lives = 3;
@@ -51,6 +52,9 @@ public final class MazeState {
                 CLYDE, config.getClydePos().toRealCoordinates(1.0),
                 PINKY, config.getPinkyPos().toRealCoordinates(1.0));
         resetCritters();
+        for (var ghost : List.of(BLINKY, INKY, PINKY, CLYDE)) {
+            ghost.setInitialPos(initialPos.get(ghost));
+        }
     }
 
     public List<Critter> getCritters() {
@@ -76,8 +80,7 @@ public final class MazeState {
         var nextPos = critter.nextPos(deltaTns, config);
         var curNeighbours = curPos.intNeighbours();
         var nextNeighbours = nextPos.intNeighbours();
-        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) { // the critter would overlap
-                                                                                         // new cells. Do we allow it?
+        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) {
             switch (critter.getDirection()) {
                 case NORTH -> {
                     for (var n : curNeighbours) {
@@ -121,7 +124,6 @@ public final class MazeState {
                 }
             }
         }
-
         if (critter instanceof PacMan) {
             if (config.getCell(critter.getPos().round()).canMoveInDirection(PacmanController.nextDirection)) {
                 switch (PacmanController.nextDirection) {
@@ -178,14 +180,18 @@ public final class MazeState {
             handleWallCollisions(critter, deltaTns);
         }
         PacMan.INSTANCE.handlePacManPoints(this);
-        PacMan.INSTANCE.handleCollisionsWithGhosts(this);
+        if (!PacMan.INSTANCE.isDead)
+            PacMan.INSTANCE.handleCollisionsWithGhosts(this);
+        PacMan.INSTANCE.fin_energizer(this);
         gameisWon();
     }
 
     public void addScore(int increment) {
         score += increment * 10;
-        PlayingState.score_graphics.setText("" + score);
-        new GlowText(PlayingState.score_graphics,javafx.scene.paint.Color.WHITE, javafx.scene.paint.Color.YELLOW).play();
+        PlayingState.getInstance().score_graphics.setText("" + score);
+        new GlowText(PlayingState.getInstance().score_graphics, javafx.scene.paint.Color.WHITE,
+                javafx.scene.paint.Color.YELLOW)
+                .play();
         displayScore();
     }
 
@@ -193,10 +199,10 @@ public final class MazeState {
         System.out.println("Score: " + score);
     }
 
-    public void gameisWon(){
-        for(int i =0; i<gridState.length; i++){
-            for(int j =0; j<gridState[i].length; j++){
-                if(!gridState[i][j]){
+    public void gameisWon() {
+        for (int i = 0; i < gridState.length; i++) {
+            for (int j = 0; j < gridState[i].length; j++) {
+                if (!gridState[i][j]) {
                     return;
                 }
             }
@@ -205,31 +211,53 @@ public final class MazeState {
     }
 
     public void playerLost() {
-        lives--;
-        PlayingState.getInstance().life_graphics_update(lives);
-        if (lives == 0) {
-            System.out.println("Game over!");
-            App.app_state.changeState(GameOverState.getInstance());
-        }
-        System.out.println("Lives: " + lives);
-        resetCritters();
+        Shake shake = new Shake(PlayingState.getInstance().game_root);
+        PacMan.INSTANCE.playDeathAnimation();
+        PlayingState.getInstance().gameView.stop();
+        shake.play();
+        PlayingState.getInstance().canPause = false;
+        shake.setOnFinished(e -> {
+            resetCritters();
+            lives--;
+            PlayingState.getInstance().life_graphics_update(lives);
+            PlayingState.getInstance().canPause = true;
+            System.out.println("shake");
+            System.out.println("Lives: " + lives);
+            PacMan.INSTANCE.isDead = false;
+            if (lives == 1) {
+                PlayingState.getInstance().mediaPlayerNormalMusic.stop();
+                PlayingState.getInstance().mediaPlayerCriticMusic.play();
+            }
+            if (lives <= 0) {
+                System.out.println("Game over!");
+                App.app_state.changeState(GameOverState.getInstance());
+            }
+            System.out.println("Lives: " + lives);
+            if (lives > 0)
+                PlayingState.getInstance().gameView.play();
+        });
+
     }
 
     public void resetCritter(Critter critter) {
-        boolean verif = true;
         critter.setDirection(Direction.NONE);
         if (critter instanceof Ghost) {
-            ((Ghost) critter).setTemps(0);
+            ((Ghost) critter).setTemps();
+            ((Ghost) critter).setMort(false);
             ((Ghost) critter).setSortie(false);
-            if (((Ghost) critter).isSortie()) {
-                ((Ghost) critter).setMort(true);
-                verif = false;
-            }
-        }
-        if (verif) {
+            ((Ghost) critter).setPos(initialPos.get(critter));
+            ((Ghost) critter).setDisableEnergizer(false);
+
+        } else {
             critter.setPos(initialPos.get(critter));
+            ((PacMan) critter).setEnergized(false);
         }
 
+    }
+
+    public void resetGhost(Critter critter) {
+        ((Ghost) critter).setSortie(false);
+        ((Ghost) critter).setDisableEnergizer(true);
     }
 
     private void resetCritters() {
@@ -245,7 +273,7 @@ public final class MazeState {
         return gridState[pos.y()][pos.x()];
     }
 
-    public static int getScore() {
+    public int getScore() {
         return score;
     }
 
@@ -262,7 +290,7 @@ public final class MazeState {
         PlayingState.getInstance().life_graphics_update(l);
     }
 
-    public static void resetScore() {
+    public void resetScore() {
         score = 0;
     }
 }

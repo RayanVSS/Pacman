@@ -2,16 +2,22 @@ package model;
 
 import lib.Vector2D;
 
+import java.time.LocalTime;
+
+import config.Cell;
 import geometry.RealCoordinates;
 
 /**
- * Implements Pac-Man character using singleton pattern. FIXME: check whether singleton is really a good idea.
+ * Implements Pac-Man character using singleton pattern. FIXME: check whether
+ * singleton is really a good idea.
  */
 public final class PacMan implements Critter {
     private Direction direction = Direction.NONE;
-    private Vector2D velocity = new Vector2D(0,0);
+    private Vector2D velocity = new Vector2D(0, 0);
     private RealCoordinates pos;
     private boolean energized;
+    private LocalTime temps;
+    public boolean isDead = false;
 
     private PacMan() {
     }
@@ -43,12 +49,21 @@ public final class PacMan implements Critter {
         this.pos = pos;
     }
 
+    public void setTemps(LocalTime tp) {
+        this.temps = tp;
+    }
+
+    public LocalTime getTemps() {
+        return temps;
+    }
+
     /**
      *
      * @return whether Pac-Man just ate an energizer
      */
     public boolean isEnergized() {
         // TODO handle timeout!
+
         return energized;
     }
 
@@ -56,20 +71,52 @@ public final class PacMan implements Critter {
         this.energized = energized;
     }
 
-    public void setVelocity(){
-        switch (direction){
-            case NONE : velocity.set(0, 0);
-            case NORTH : velocity.set(0,getSpeed());
-            case SOUTH : velocity.set(0, - getSpeed());
-            case WEST : velocity.set(- getSpeed(), 0);
-            case EAST : velocity.set(getSpeed(), 0);
+    public void setVelocity() {
+        switch (direction) {
+            case NONE:
+                velocity.set(0, 0);
+            case NORTH:
+                velocity.set(0, getSpeed());
+            case SOUTH:
+                velocity.set(0, -getSpeed());
+            case WEST:
+                velocity.set(-getSpeed(), 0);
+            case EAST:
+                velocity.set(getSpeed(), 0);
+        }
+    }
+
+    public boolean verif_fin() {
+        return LocalTime.now().getSecond() >= temps.getSecond();
+    }
+
+    public void fin_energizer(MazeState maze) {
+        if (isEnergized() && verif_fin()) {
+            setEnergized(false);
+            for (var critter : maze.getCritters()) {
+                if (critter instanceof Ghost) {
+                    ((Ghost) critter).setDisableEnergizer(false);
+                }
+            }
         }
     }
 
     public void handlePacManPoints(MazeState maze) {
         if (!maze.getGridState(pos.round())) {
-            maze.addScore(1);
-            maze.setGridState(true, pos.round().y(), pos.round().x());
+            if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER) {
+                maze.addScore(10);
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+                setEnergized(true);
+                setTemps(LocalTime.now().plusSeconds(10));
+                for (var critter : maze.getCritters()) {
+                    if (critter instanceof Ghost) {
+                        ((Ghost) critter).setDisableEnergizer(false);
+                    }
+                }
+            } else if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.DOT) {
+                maze.addScore(1);
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+            }
         }
     }
 
@@ -83,12 +130,21 @@ public final class PacMan implements Critter {
     }
 
     private void handleGhostCollision(MazeState maze, Ghost ghost) {
-        if (isEnergized()) {
+        if (isEnergized() && !ghost.getDisableEnergizer()) {
             maze.addScore(10);
-            maze.resetCritter(ghost);
+            ghost.setMort(true);
+            maze.resetGhost(ghost);
         } else {
-            maze.playerLost();
+            if (!isDead)
+                maze.playerLost();
         }
+    }
+
+    public void playDeathAnimation() {
+        System.out.println("PacMan is dead");
+        isDead = true;
+        // Now we need to play the death animation by changing the sprite
+
     }
 
 }
