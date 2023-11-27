@@ -1,8 +1,8 @@
 package model;
 
-import lib.Vector2D;
-
-import java.time.LocalTime;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.animation.KeyFrame;
 
 import config.Cell;
 import geometry.RealCoordinates;
@@ -15,10 +15,11 @@ public final class PacMan implements Critter {
     private Direction direction = Direction.NONE;
     private RealCoordinates pos;
     private boolean energized;
-    private LocalTime temps;
+    private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(7)));
     public boolean isDead = false;
 
     private PacMan() {
+        temps.setCycleCount(1);
     }
 
     public static final PacMan INSTANCE = new PacMan();
@@ -48,14 +49,13 @@ public final class PacMan implements Critter {
         this.pos = pos;
     }
 
-    public void setTemps(LocalTime tp) {
-        this.temps = tp;
+    public double getTemps(){
+        return temps.getCycleDuration().toSeconds();
     }
 
-    public LocalTime getTemps() {
-        return temps;
+    public double getTempsCourant(){
+        return temps.getCurrentTime().toSeconds();
     }
-
     /**
      *
      * @return whether Pac-Man just ate an energizer
@@ -71,7 +71,7 @@ public final class PacMan implements Critter {
     }
 
     public boolean verif_fin() {
-        return LocalTime.now().getSecond() >= temps.getSecond();
+        return temps.getStatus() == Timeline.Status.STOPPED;
     }
 
     public void fin_energizer(MazeState maze) {
@@ -91,7 +91,7 @@ public final class PacMan implements Critter {
                 maze.addScore(10);
                 maze.setGridState(true, pos.round().y(), pos.round().x());
                 setEnergized(true);
-                setTemps(LocalTime.now().plusSeconds(10));
+                temps.play();
                 for (var critter : maze.getCritters()) {
                     if (critter instanceof Ghost) {
                         ((Ghost) critter).setDisableEnergizer(false);

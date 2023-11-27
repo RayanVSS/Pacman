@@ -2,13 +2,11 @@ package model;
 
 import config.MazeConfig;
 import geometry.RealCoordinates;
-import java.time.LocalTime;
 
 public enum Ghost implements Critter {
 
     BLINKY, INKY, PINKY, CLYDE;
 
-    private LocalTime temps = LocalTime.now();
     private RealCoordinates initialPos;
     private RealCoordinates pos;
     private Direction direction = Direction.NONE;
@@ -16,6 +14,31 @@ public enum Ghost implements Critter {
     private boolean mort = false;
     private final boolean disableGhost = false;
     private boolean disableEnergizer = false;
+
+    private long creationTime = System.nanoTime();
+    private int respawnSeconds;
+
+    public void setTemps() {
+        creationTime = System.nanoTime();
+        if (mort) {
+            return;
+        } else {
+            if (this == BLINKY) {
+                respawnSeconds = 1;
+            } else if (this == PINKY) {
+                respawnSeconds = 3;
+            } else if (this == INKY) {
+                respawnSeconds = 5;
+            } else {
+                respawnSeconds = 7;
+            }
+        }
+    }
+
+    public boolean isRespawnTime() {
+        long elapsedSeconds = (System.nanoTime() - creationTime) / 1_000_000_000;
+        return elapsedSeconds >= respawnSeconds;
+    }
 
     @Override
     public RealCoordinates getPos() {
@@ -53,22 +76,6 @@ public enum Ghost implements Critter {
         this.sortie = sortie;
     }
 
-    public void setTemps() {
-        if (mort) {
-            temps = LocalTime.now().plusSeconds(2);
-        } else {
-            if (this == BLINKY) {
-                temps = LocalTime.now().plusSeconds(1);
-            } else if (this == PINKY) {
-                temps = LocalTime.now().plusSeconds(3);
-            } else if (this == INKY) {
-                temps = LocalTime.now().plusSeconds(5);
-            } else {
-                temps = LocalTime.now().plusSeconds(7);
-            }
-        }
-    }
-
     public void setDisableEnergizer(boolean disableEnergizer) {
         this.disableEnergizer = disableEnergizer;
     }
@@ -95,6 +102,8 @@ public enum Ghost implements Critter {
     }
 
     public RealCoordinates nextPos(MazeConfig config, long deltaTNanoSeconds) {
+        long elapsedSeconds = (System.nanoTime() - creationTime) / 1_000_000_000;
+        System.out.println(elapsedSeconds);
         if (mort) {
             outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
             if (!mort) {
@@ -103,7 +112,7 @@ public enum Ghost implements Critter {
                 mort = false;
             }
         } else if (!sortie) {
-            if (LocalTime.now().getSecond() >= temps.getSecond()) {
+            if (isRespawnTime()) {
                 sortie = outil.animation_sortie(this, config, deltaTNanoSeconds);
             }
         } else {
