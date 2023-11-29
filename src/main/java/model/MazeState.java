@@ -80,7 +80,7 @@ public final class MazeState {
         var nextPos = critter.nextPos(deltaTns, config);
         var curNeighbours = curPos.intNeighbours();
         var nextNeighbours = nextPos.intNeighbours();
-        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) {
+        if (!curNeighbours.containsAll(nextNeighbours)) {
             switch (critter.getDirection()) {
                 case NORTH -> {
                     for (var n : curNeighbours) {
