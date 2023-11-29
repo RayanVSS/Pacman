@@ -2,8 +2,8 @@ package config;
 import model.Direction;
 
 public record Cell(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, Cell.Content initialContent) {
-    public enum Content { NOTHING, DOT, ENERGIZER, GHOST_DOOR}
-
+    public enum Content { NOTHING, DOT, ENERGIZER, GHOST_DOOR,ZHONYA}
+    
     // FIXME: all these factories are convenient, but it is not very "economic" to have so many methods!
     public static Cell open(Content c) { return new Cell(false, false, false, false, c); }
     public static Cell closed(Content c) { return new Cell(true, true, false, false, c); }
@@ -27,11 +27,11 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
     public static Cell wTee(Content c) { return new Cell(false, false, false, true, c); }
     // ghost house cells
     public static Cell ghostHouseDoor() { return new Cell(false, false, false, false, Content.GHOST_DOOR); }
-
-    public boolean hasDot(){
-        return initialContent == Content.DOT || initialContent == Content.ENERGIZER;
-    }
     
+    public boolean hasDot(){
+        return initialContent == Content.DOT || initialContent == Content.ENERGIZER || initialContent == Content.ZHONYA;
+    }
+
     public Content getContent() {
         return initialContent;
     }
@@ -39,6 +39,7 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
     public static Cell withContent(String type, String value) {
         Content content = switch (value) {
             case "." -> Content.DOT;
+            case "ZHONYA" -> Content.ZHONYA;
             case "ENERGIZER" -> Content.ENERGIZER;
             default -> Content.NOTHING;
         };

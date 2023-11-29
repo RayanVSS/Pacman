@@ -18,7 +18,7 @@ public final class CritterGraphicsFactory {
     private Image image_mort;
     private Image image_scared;
     private Image image_anim;
-    private Image BLINKY_g;
+    private Image ZON;
     private Map<Critter, Image> images_D,images_G,images_H,images_B;
 
     public CritterGraphicsFactory(double scale) {
@@ -26,7 +26,7 @@ public final class CritterGraphicsFactory {
         image_mort = new Image("ghost_dead.gif", scale * 0.7, scale * 0.7, true, true);
         image_scared = new Image("ghost_scared_haut.gif", scale * 0.7, scale * 0.7, true, true);
         image_anim = new Image("ghost_rainbow_haut.gif", scale * 0.7, scale * 0.7, true, true);
-        BLINKY_g = new Image("ghost_red_gauche.gif", scale * 0.7, scale * 0.7, true, true);
+        ZON = new Image("ghost_zon.png", scale * 0.7, scale * 0.7, true, true);
 
         images_D = Map.of(
                 Ghost.BLINKY, new Image("ghost_red_droite.gif", scale * 0.7, scale * 0.7, true, true),
@@ -98,9 +98,9 @@ public final class CritterGraphicsFactory {
 
 
                     if (PacMan.INSTANCE.isEnergized() && !((Ghost) critter).getDisableEnergizer()
-                            && !((Ghost) critter).isMort()) {
+                            && !((Ghost) critter).isMort() && !PacMan.INSTANCE.getzhonya()) {
                         LocalTime temps = LocalTime.now();
-                        if (PacMan.INSTANCE.getTemps() - PacMan.INSTANCE.getTempsCourant() <= 5) {
+                        if (PacMan.INSTANCE.getTemps() - PacMan.INSTANCE.getTempsCourant() <= 5 ) {
                             image.setImage(image_anim);
                         } else {
                             image.setImage(image_scared);
@@ -108,6 +108,8 @@ public final class CritterGraphicsFactory {
 
                     } else if (((Ghost) critter).isMort()) {
                         image.setImage(image_mort);
+                    }else if (PacMan.INSTANCE.getzhonya()) {
+                        image.setImage(ZON);
                     } else {
                     switch (((Ghost) critter).getDirection()) {
                         case NORTH:

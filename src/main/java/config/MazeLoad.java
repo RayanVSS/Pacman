@@ -2,7 +2,7 @@ package config;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import java.util.Random;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,14 +34,18 @@ public class MazeLoad {
             if (type_list.length() != value_list.length()) {
                 throw new IllegalStateException("Les listes ne sont pas de la même taille");
             }
+            boolean zhonya=false;
             Cell[][] cells = new Cell[type_list.length()][type_list.getJSONArray(0).length()];
-
             for (int i = 0; i < type_list.length(); i++) {
                 JSONArray row_type = type_list.getJSONArray(i);
                 JSONArray row_value = value_list.getJSONArray(i);
                 for (int j = 0; j < row_type.length(); j++) {
                     String type = row_type.getString(j);
                     String value = row_value.getString(j);
+                    if(aleatoire() && value.equals(".") && !zhonya){
+                        value = "ZHONYA";
+                        zhonya=true;
+                    }
                     cells[i][j] = Cell.withContent(type, value);
                 }
             }
@@ -64,5 +68,12 @@ public class MazeLoad {
             System.out.println();
         }
     }
-
+    public static boolean aleatoire() {
+        Random rand = new Random();
+        int n = rand.nextInt(1000);
+        if (n < 10) {
+            return true;
+        }
+        return false;
+    }
 }

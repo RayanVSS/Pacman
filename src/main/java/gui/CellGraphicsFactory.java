@@ -1,5 +1,7 @@
 package gui;
-
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import geometry.IntCoordinates;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -9,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import model.MazeState;
 
 import static config.Cell.Content.DOT;
+import static config.Cell.Content.ZHONYA;
 
 public class CellGraphicsFactory {
     private final double scale;
@@ -23,11 +26,23 @@ public class CellGraphicsFactory {
         group.setTranslateY(pos.y()*scale);
         var cell = state.getConfig().getCell(pos);
         var dot = new Circle();
-        group.getChildren().add(dot);
-        dot.setRadius(switch (cell.initialContent()) { case DOT -> scale/15; case ENERGIZER -> scale/5; case NOTHING -> 0; case GHOST_DOOR -> 0; });
-        dot.setCenterX(scale/2);
-        dot.setCenterY(scale/2);
-        dot.setFill(Color.YELLOW);
+            group.getChildren().add(dot);
+            ImageView zhonya = new ImageView("zon.gif");
+            if(cell.getContent()== ZHONYA){
+                zhonya.setX(scale / 4);
+                zhonya.setY(scale / 4);
+                zhonya.setFitWidth(scale / 2);
+                zhonya.setFitHeight(scale / 2);
+    
+                // Ajoutez l'ImageView à votre groupe
+                group.getChildren().add(zhonya);
+            }
+            else{
+            dot.setRadius(switch (cell.initialContent()) { case DOT -> scale/15; case ENERGIZER -> scale/5; case NOTHING -> 0; case GHOST_DOOR -> 0;case ZHONYA -> 0;});
+            dot.setCenterX(scale/2);
+            dot.setCenterY(scale/2);
+            dot.setFill(Color.YELLOW);
+    }
         if (cell.northWall()) {
             var nWall = new Rectangle();
             //We want to not have an outline of the rectangle with the same color
@@ -80,6 +95,7 @@ public class CellGraphicsFactory {
             @Override
             public void update() {
                 dot.setVisible(!state.getGridState(pos));
+                zhonya.setVisible(!state.getGridState(pos));
             }
 
             @Override

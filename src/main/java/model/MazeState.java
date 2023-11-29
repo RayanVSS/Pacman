@@ -42,7 +42,7 @@ public final class MazeState {
         // Met le gridState à true if si il n'a pas de boule
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                gridState[i][j] = !config.getCell(new IntCoordinates(j, i)).hasDot();
+                gridState[i][j] = !config.getCell(new IntCoordinates(j, i)).hasDot() ;
             }
         }
         initialPos = Map.of(
@@ -183,6 +183,7 @@ public final class MazeState {
         if (!PacMan.INSTANCE.isDead)
             PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         PacMan.INSTANCE.fin_energizer(this);
+        PacMan.INSTANCE.fin_zhonya(this);
         gameisWon();
     }
 

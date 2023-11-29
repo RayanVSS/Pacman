@@ -102,6 +102,9 @@ public enum Ghost implements Critter {
     }
 
     public RealCoordinates nextPos(MazeConfig config, long deltaTNanoSeconds) {
+        if(PacMan.INSTANCE.getzhonya()){
+            return pos;
+        }
         long elapsedSeconds = (System.nanoTime() - creationTime) / 1_000_000_000;
         System.out.println(elapsedSeconds);
         if (mort) {

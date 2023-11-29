@@ -16,6 +16,8 @@ public final class PacMan implements Critter {
     private RealCoordinates pos;
     private boolean energized;
     private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(7)));
+    private boolean iszhonya = false;
+    private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(5)));
     public boolean isDead = false;
 
     private PacMan() {
@@ -47,6 +49,10 @@ public final class PacMan implements Critter {
     @Override
     public void setPos(RealCoordinates pos) {
         this.pos = pos;
+    }
+
+    public boolean getzhonya(){
+        return iszhonya;
     }
 
     public double getTemps(){
@@ -85,6 +91,12 @@ public final class PacMan implements Critter {
         }
     }
 
+    public void fin_zhonya(MazeState maze) {
+        if (iszhonya && temps_zhonya.getStatus() == Timeline.Status.STOPPED) {
+            iszhonya = false;
+        }
+    }
+
     public void handlePacManPoints(MazeState maze) {
         if (!maze.getGridState(pos.round())) {
             if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER) {
@@ -101,13 +113,21 @@ public final class PacMan implements Critter {
                 maze.addScore(1);
                 maze.setGridState(true, pos.round().y(), pos.round().x());
             }
+            else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ZHONYA){
+                maze.addScore(50);
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+                iszhonya = true;
+                temps_zhonya.play();
+
+            }
+           
         }
     }
 
     public void handleCollisionsWithGhosts(MazeState maze) {
         var pacPos = PacMan.INSTANCE.getPos().round();
         for (var critter : maze.getCritters()) {
-            if (critter instanceof Ghost && critter.getPos().round().equals(pacPos) && !((Ghost) critter).isMort()) {
+            if (critter instanceof Ghost && critter.getPos().round().equals(pacPos) && !((Ghost) critter).isMort() && !iszhonya) {
                 handleGhostCollision(maze, (Ghost) critter);
             }
         }
