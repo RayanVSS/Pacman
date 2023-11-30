@@ -26,7 +26,7 @@ public final class CritterGraphicsFactory {
         image_mort = new Image("ghost_dead.gif", scale * 0.7, scale * 0.7, true, true);
         image_scared = new Image("ghost_scared_haut.gif", scale * 0.7, scale * 0.7, true, true);
         image_anim = new Image("ghost_rainbow_haut.gif", scale * 0.7, scale * 0.7, true, true);
-        ZON = new Image("ghost_zon.png", scale * 0.7, scale * 0.7, true, true);
+        ZON = new Image("ghost_zon.gif", scale * 0.7, scale * 0.7, true, true);
 
         images_D = Map.of(
                 Ghost.BLINKY, new Image("ghost_red_droite.gif", scale * 0.7, scale * 0.7, true, true),
