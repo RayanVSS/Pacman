@@ -56,7 +56,7 @@ public class HomeScreenState implements State {
         Label start_button_text = new Label("Appuyer sur Entree !");
         start_button_text.setTextAlignment(TextAlignment.CENTER);
 
-        Image img = new Image(getClass().getResourceAsStream("/start_button_temporaire.png"));
+        Image img = new Image(getClass().getResourceAsStream("/start.gif"));
         ImageView view = new ImageView(img);
 
         view.setFitHeight(ElementScaler.scale(300));
