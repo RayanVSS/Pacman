@@ -94,16 +94,24 @@ public final class PacMan implements Critter {
     public void fin_zhonya(MazeState maze) {
         if (iszhonya && temps_zhonya.getStatus() == Timeline.Status.STOPPED) {
             iszhonya = false;
+            if(isEnergized()){
+                temps.playFrom(Duration.seconds(temps.getCurrentTime().toSeconds()));
+            }
         }
     }
 
     public void handlePacManPoints(MazeState maze) {
         if (!maze.getGridState(pos.round())) {
-            if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER) {
+            if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER ) {
                 maze.addScore(10);
                 maze.setGridState(true, pos.round().y(), pos.round().x());
-                setEnergized(true);
-                temps.play();
+                if(isEnergized()){
+                    temps.playFrom(Duration.seconds(0));
+                }
+                else{
+                    setEnergized(true);
+                    temps.play();
+                }            
                 for (var critter : maze.getCritters()) {
                     if (critter instanceof Ghost) {
                         ((Ghost) critter).setDisableEnergizer(false);
@@ -118,6 +126,9 @@ public final class PacMan implements Critter {
                 maze.setGridState(true, pos.round().y(), pos.round().x());
                 iszhonya = true;
                 temps_zhonya.play();
+                if(isEnergized()){
+                    temps.pause();
+                }
 
             }
            
