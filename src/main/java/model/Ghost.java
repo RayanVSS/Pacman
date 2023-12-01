@@ -128,6 +128,9 @@ public enum Ghost implements Critter {
     // Fonction pour la gestion des déplacements des fantômes
 
     public RealCoordinates nextPos(MazeConfig config, long deltaTNanoSeconds) {
+        if (PacMan.INSTANCE.getzhonya()) {
+            return pos;
+        }
         if (mort) {
             Ghost_Move.animation_mort(this, initialPos, config, deltaTNanoSeconds,exit_pos);
             if (!mort) {
@@ -143,10 +146,7 @@ public enum Ghost implements Critter {
         } 
         else {
             Direction[] directions;
-            if (PacMan.INSTANCE.getzhonya()) {
-                return pos;
-            }
-            else if (PacMan.INSTANCE.isEnergized() && !disableEnergizer) {
+            if (PacMan.INSTANCE.isEnergized() && !disableEnergizer) {
                 directions = Ghost_Move.fuite_ghost(this, PacMan.INSTANCE, deltaTNanoSeconds, config);
             }
             else {
