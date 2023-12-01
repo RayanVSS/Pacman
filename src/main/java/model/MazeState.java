@@ -249,10 +249,10 @@ public final class MazeState {
             ((Ghost) critter).setSortie(false);
             ((Ghost) critter).setPos(initialPos.get(critter));
             ((Ghost) critter).setDisableEnergizer(false);
-
         } else {
             critter.setPos(initialPos.get(critter));
             ((PacMan) critter).setEnergized(false);
+            ((PacMan) critter).resetZhonya();
         }
 
     }

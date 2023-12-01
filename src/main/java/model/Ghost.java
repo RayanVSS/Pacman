@@ -49,7 +49,7 @@ public enum Ghost implements Critter {
     public double getSpeed(long deltaTNanoSeconds) {
         double speed = 4.5*deltaTNanoSeconds*1E-9;
         if (mort) {
-            return 9 * deltaTNanoSeconds * 1E-9;
+            return 7 * deltaTNanoSeconds * 1E-9;
         } else if (disableGhost) {
             return 0;
         } else if (!sortie) {
@@ -113,9 +113,9 @@ public enum Ghost implements Critter {
             } else if (this == PINKY) {
                 respawnSeconds = 3;
             } else if (this == INKY) {
-                respawnSeconds = 5;
+                respawnSeconds = 3;
             } else {
-                respawnSeconds = 7;
+                respawnSeconds = 5;
             }
         }
     }

@@ -1,5 +1,6 @@
 package gui.AppStateMachine;
 
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -9,11 +10,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
+
 import config.MazeConfig;
 import gui.App;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import gui.GameView;
+import gui.GraphicsUpdater;
 import gui.Controller.PacmanController;
 import model.MazeState;
 import lib.FontLoader;
@@ -145,6 +149,22 @@ public class PlayingState extends App implements State {
         gameView.animate();
 
         game.getChildren().add(game_screen);
+    }
+
+    public ArrayList<GraphicsUpdater> getGraphicsUpdaters() {
+        return gameView.getGraphicsUpdaters();
+    }
+
+    public void changeWallToGrey() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.GREY);
+        }
+    }
+
+    public void changeWallToBlue() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.BLUE);
+        }
     }
 
     public void enter() {

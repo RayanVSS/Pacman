@@ -1,11 +1,13 @@
 package model;
 
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 
 import config.Cell;
 import geometry.RealCoordinates;
+import gui.AppStateMachine.PlayingState;
 
 /**
  * Implements Pac-Man character using singleton pattern. FIXME: check whether
@@ -15,7 +17,7 @@ public final class PacMan implements Critter {
     private Direction direction = Direction.NONE;
     private RealCoordinates pos;
     private boolean energized;
-    private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(7)));
+    private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(6)));
     private boolean iszhonya = false;
     private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(5)));
     public boolean isDead = false;
@@ -67,13 +69,18 @@ public final class PacMan implements Critter {
      * @return whether Pac-Man just ate an energizer
      */
     public boolean isEnergized() {
-        // TODO handle timeout!
-
         return energized;
     }
 
     public void setEnergized(boolean energized) {
         this.energized = energized;
+    }
+
+    public void resetZhonya() {
+        if(iszhonya){
+            temps_zhonya.stop();
+            iszhonya = false;
+        }
     }
 
     public boolean verif_fin() {
@@ -94,6 +101,9 @@ public final class PacMan implements Critter {
     public void fin_zhonya(MazeState maze) {
         if (iszhonya && temps_zhonya.getStatus() == Timeline.Status.STOPPED) {
             iszhonya = false;
+            Platform.runLater(() -> {
+                PlayingState.getInstance().changeWallToBlue();
+            });
             if(isEnergized()){
                 temps.playFrom(Duration.seconds(temps.getCurrentTime().toSeconds()));
             }
@@ -123,6 +133,9 @@ public final class PacMan implements Critter {
             }
             else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ZHONYA){
                 maze.addScore(50);
+                Platform.runLater(() -> {
+                    PlayingState.getInstance().changeWallToGrey();
+                });
                 maze.setGridState(true, pos.round().y(), pos.round().x());
                 iszhonya = true;
                 temps_zhonya.play();

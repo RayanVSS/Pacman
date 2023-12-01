@@ -73,6 +73,8 @@ public final class CritterGraphicsFactory {
 
         return new GraphicsUpdater() {
             @Override
+            public void changeColor(javafx.scene.paint.Color color){
+            }
 
             public void update() {
                 image.setTranslateX((critter.getPos().x() + (1 - size) / 2) * scale);
