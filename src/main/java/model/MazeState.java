@@ -54,6 +54,7 @@ public final class MazeState {
         resetCritters();
         for (var ghost : List.of(BLINKY, INKY, PINKY, CLYDE)) {
             ghost.setInitialPos(initialPos.get(ghost));
+            ghost.setExit_pos(config.getExit_pos().toRealCoordinates(1.0));
         }
     }
 

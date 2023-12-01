@@ -7,7 +7,10 @@ public enum Ghost implements Critter {
 
     BLINKY, INKY, PINKY, CLYDE;
 
+    // Variable pour la gestion des fantômes
+
     private RealCoordinates initialPos;
+    private RealCoordinates exit_pos;
     private RealCoordinates pos;
     private Direction direction = Direction.NONE;
     private boolean sortie = false;
@@ -15,8 +18,90 @@ public enum Ghost implements Critter {
     private final boolean disableGhost = false;
     private boolean disableEnergizer = false;
 
+    // Variable pour la gestion des temps
+
     private long creationTime = System.nanoTime();
     private int respawnSeconds;
+
+    // Fonction pour la manipulation des varibles
+
+    @Override
+    public RealCoordinates getPos() {
+        return pos;
+    }
+
+    @Override
+    public void setPos(RealCoordinates newPos) {
+        pos = newPos;
+    }
+
+    @Override
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
+    @Override
+    public double getSpeed(long deltaTNanoSeconds) {
+        double speed = 4.5*deltaTNanoSeconds*1E-9;
+        if (mort) {
+            return 9 * deltaTNanoSeconds * 1E-9;
+        } else if (disableGhost) {
+            return 0;
+        } else if (!sortie) {
+            return 5 * deltaTNanoSeconds * 1E-9;
+        }else if (PacMan.INSTANCE.isEnergized() && !disableEnergizer){ 
+            return speed*0.5;
+        } else {
+            if(this==BLINKY){
+                return speed;
+            }
+            if(this==PINKY){
+                return speed*0.9 ;
+            }
+            if(this==INKY){
+                return speed*0.8;
+            }
+            return speed*0.7;
+        }
+    }
+
+    public boolean isSortie() {
+        return sortie;
+    }
+
+    public void setSortie(boolean sortie) {
+        this.sortie = sortie;
+    }
+
+    public boolean isMort() {
+        return mort;
+    }
+
+    public void setMort(boolean mort) {
+        this.mort = mort;
+    }
+
+    public void setInitialPos(RealCoordinates initialPos) {
+        this.initialPos = initialPos;
+    }
+
+    public void setExit_pos(RealCoordinates exit_pos) {
+        this.exit_pos = exit_pos;
+    }
+
+    public boolean getDisableEnergizer() {
+        return disableEnergizer;
+    }
+   
+    public void setDisableEnergizer(boolean disableEnergizer) {
+        this.disableEnergizer = disableEnergizer;
+    }
+
 
     public void setTemps() {
         creationTime = System.nanoTime();
@@ -39,104 +124,35 @@ public enum Ghost implements Critter {
         long elapsedSeconds = (System.nanoTime() - creationTime) / 1_000_000_000;
         return elapsedSeconds >= respawnSeconds;
     }
-
-    @Override
-    public RealCoordinates getPos() {
-        return pos;
-    }
-
-    public boolean isSortie() {
-        return sortie;
-    }
-
-    @Override
-    public void setPos(RealCoordinates newPos) {
-        pos = newPos;
-    }
-
-    public void setMort(boolean mort) {
-        this.mort = mort;
-    }
-
-    public void setInitialPos(RealCoordinates initialPos) {
-        this.initialPos = initialPos;
-    }
-
-    @Override
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    @Override
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setSortie(boolean sortie) {
-        this.sortie = sortie;
-    }
-
-    public void setDisableEnergizer(boolean disableEnergizer) {
-        this.disableEnergizer = disableEnergizer;
-    }
-
-    public boolean getDisableEnergizer() {
-        return disableEnergizer;
-    }
-
-    public boolean isMort() {
-        return mort;
-    }
-
-    @Override
-    public double getSpeed(long deltaTNanoSeconds) {
-        if (mort) {
-            return 4 * deltaTNanoSeconds * 1E-9;
-        } else if (disableGhost) {
-            return 0;
-        } else if (!sortie) {
-            return 5 * deltaTNanoSeconds * 1E-9;
-        } else {
-            return 4 * deltaTNanoSeconds * 1E-9;
-        }
-    }
+    
+    // Fonction pour la gestion des déplacements des fantômes
 
     public RealCoordinates nextPos(MazeConfig config, long deltaTNanoSeconds) {
-        if(PacMan.INSTANCE.getzhonya()){
-            return pos;
-        }
-        long elapsedSeconds = (System.nanoTime() - creationTime) / 1_000_000_000;
-        System.out.println(elapsedSeconds);
         if (mort) {
-            outil.animation_mort(this, initialPos, config, deltaTNanoSeconds);
+            Ghost_Move.animation_mort(this, initialPos, config, deltaTNanoSeconds,exit_pos);
             if (!mort) {
-                mort = true;
                 setTemps();
-                mort = false;
             }
-        } else if (!sortie) {
+            return pos;
+        } 
+        else if (!sortie) {
             if (isRespawnTime()) {
-                sortie = outil.animation_sortie(this, config, deltaTNanoSeconds);
+                Ghost_Move.animation_sortie(this, config, deltaTNanoSeconds,exit_pos);
             }
-        } else {
+            return pos;
+        } 
+        else {
             Direction[] directions;
-
-            if (this == PINKY) {
-                directions = Pinky.nextDirection(PINKY, PacMan.INSTANCE, deltaTNanoSeconds);
-            } else if (this == CLYDE) {
-                directions = Clyde.nextDirection(CLYDE, PacMan.INSTANCE, config, deltaTNanoSeconds);
-            } else if (this == INKY) {
-                directions = Inky.nextDirection(BLINKY, INKY, PacMan.INSTANCE, deltaTNanoSeconds);
-            } else {
-                directions = Blinky.nextDirection(BLINKY, PacMan.INSTANCE.getPos(), deltaTNanoSeconds);
+            if (PacMan.INSTANCE.getzhonya()) {
+                return pos;
             }
-            if (PacMan.INSTANCE.isEnergized() && !disableEnergizer) {
-                directions = outil.inverse(directions);
+            else if (PacMan.INSTANCE.isEnergized() && !disableEnergizer) {
+                directions = Ghost_Move.fuite_ghost(this, PacMan.INSTANCE, deltaTNanoSeconds, config);
             }
-            return outil.nextPos(directions, this, config, deltaTNanoSeconds);
+            else {
+                directions = Ghost_Direction.nextDirection(this, PacMan.INSTANCE,config, deltaTNanoSeconds);
+            }
+            return Ghost_Move.nextPos(directions, this, config, deltaTNanoSeconds);
         }
-
-        return pos;
     }
-
 }
