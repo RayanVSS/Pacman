@@ -216,6 +216,10 @@ public final class PacMan implements Critter {
         var pacPos = PacMan.INSTANCE.getPos().round();
         for (var critter : maze.getCritters()) {
             if (critter instanceof Ghost && critter.getPos().round().equals(pacPos) && !((Ghost) critter).isMort() && !iszhonya) {
+                Platform.runLater(() -> {
+                    PlayingState.getInstance().changeWallToBlue();
+                });
+                maze.setGridState(true, pos.round().y(), pos.round().x());
                 handleGhostCollision(maze, (Ghost) critter);
             }
         }
@@ -227,6 +231,7 @@ public final class PacMan implements Critter {
             ghost.setMort(true);
             maze.resetGhost(ghost);
         } else {
+
             if (!isDead)
                 maze.playerLost();
         }
