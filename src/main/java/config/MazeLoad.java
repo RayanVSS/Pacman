@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class MazeLoad {
-    public static Cell[][] make() {
+    public Cell[][] make() {
         // load a maze from a json file
         String file = "src/main/java/config/maze.json";
 

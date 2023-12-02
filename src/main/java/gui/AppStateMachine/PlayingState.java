@@ -116,8 +116,6 @@ public class PlayingState extends App implements State {
         game_screen.setStyle("-fx-background-color: black;");
 
         maze = new MazeState(MazeConfig.makeExample1());
-        maze.resetScore();
-        maze.setLives(3);
 
         score_graphics = createScoreGraphics();
         life_graphics_update(maze.getLives());

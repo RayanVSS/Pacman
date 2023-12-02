@@ -21,7 +21,7 @@ public enum Ghost implements Critter {
     // Variable pour la gestion des temps
 
     private long creationTime = System.nanoTime();
-    private int respawnSeconds;
+    private double respawnSeconds;
 
     // Fonction pour la manipulation des varibles
 
@@ -109,9 +109,9 @@ public enum Ghost implements Critter {
             return;
         } else {
             if (this == BLINKY) {
-                respawnSeconds = 1;
+                respawnSeconds = 0.1;
             } else if (this == PINKY) {
-                respawnSeconds = 3;
+                respawnSeconds = 2;
             } else if (this == INKY) {
                 respawnSeconds = 3;
             } else {

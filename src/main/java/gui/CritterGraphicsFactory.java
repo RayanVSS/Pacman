@@ -102,7 +102,7 @@ public final class CritterGraphicsFactory {
                     if (PacMan.INSTANCE.isEnergized() && !((Ghost) critter).getDisableEnergizer()
                             && !((Ghost) critter).isMort() && !PacMan.INSTANCE.getzhonya()) {
                         LocalTime temps = LocalTime.now();
-                        if (PacMan.INSTANCE.getTemps() - PacMan.INSTANCE.getTempsCourant() <= 5 ) {
+                        if (PacMan.INSTANCE.getTemps() - PacMan.INSTANCE.getTempsCourant() <= 2 ) {
                             image.setImage(image_anim);
                         } else {
                             image.setImage(image_scared);

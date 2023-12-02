@@ -17,9 +17,9 @@ public final class PacMan implements Critter {
     private Direction direction = Direction.NONE;
     private RealCoordinates pos;
     private boolean energized;
-    private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(6)));
+    private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(5)));
     private boolean iszhonya = false;
-    private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(5)));
+    private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(3)));
     public boolean isDead = false;
 
     private PacMan() {
