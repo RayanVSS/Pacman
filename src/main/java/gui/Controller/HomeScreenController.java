@@ -12,6 +12,9 @@ public class HomeScreenController {
             App.app_state.changeState(PlayingState.getInstance());
             System.out.println("Vous avez appuyé sur ENTER"); 
         }
+        if(event.getCode().equals(KeyCode.ESCAPE)){
+            System.exit(0);
+        }
         else{
 
         }

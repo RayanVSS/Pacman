@@ -117,6 +117,16 @@ public class HomeScreenState implements State {
             }
         });
         start_menu.getChildren().add(name_field);
+
+        // text echap to exit
+        Text echap_text = new Text("ECHAP pour quitter");
+        echap_text.setFont(pixel_font);
+        echap_text.setTextAlignment(TextAlignment.LEFT);
+        echap_text.setFill(javafx.scene.paint.Color.DARKRED);
+        start_menu.setBottom(echap_text);
+        BorderPane.setAlignment(echap_text, Pos.BOTTOM_LEFT);
+
+
         var homeScreenController = new HomeScreenController();
         App.screen.setOnKeyPressed(homeScreenController::keyPressedHandler);
         App.screen.setOnMouseClicked(new EventHandler<Event>() {
