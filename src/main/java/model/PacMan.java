@@ -19,8 +19,11 @@ public final class PacMan implements Critter {
     private boolean energized;
     private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(5)));
     private boolean iszhonya = false;
-    private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(3)));
+    private boolean isvitesseP = false;
+    private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(5)));
+    private Timeline temps_vitesseP = new Timeline(new KeyFrame(Duration.seconds(3)));
     public boolean isDead = false;
+
 
     private PacMan() {
         temps.setCycleCount(1);
@@ -35,9 +38,8 @@ public final class PacMan implements Critter {
 
     @Override
     public double getSpeed(long deltaTNanoSeconds) {
-        return isEnergized() ? 6 *deltaTNanoSeconds * 1E-9 : 4 * deltaTNanoSeconds * 1E-9;
+        return isvitesseP ? 7 *deltaTNanoSeconds * 1E-9 : (isEnergized() ? 6 *deltaTNanoSeconds * 1E-9 : 4 * deltaTNanoSeconds * 1E-9);
     }
-
     @Override
     public Direction getDirection() {
         return direction;
@@ -64,6 +66,14 @@ public final class PacMan implements Critter {
     public double getTempsCourant(){
         return temps.getCurrentTime().toSeconds();
     }
+
+    public Double getTempsZhonya(){
+        return temps_zhonya.getCycleDuration().toSeconds();
+    }
+
+    public Double getTempsCourantZhonya(){
+        return temps_zhonya.getCurrentTime().toSeconds();
+    }
     /**
      *
      * @return whether Pac-Man just ate an energizer
@@ -80,6 +90,13 @@ public final class PacMan implements Critter {
         if(iszhonya){
             temps_zhonya.stop();
             iszhonya = false;
+        }
+    }
+
+    public void resetVitesseP() {
+        if(isvitesseP){
+            temps_vitesseP.stop();
+            isvitesseP = false;
         }
     }
 
@@ -107,6 +124,15 @@ public final class PacMan implements Critter {
             if(isEnergized()){
                 temps.playFrom(Duration.seconds(temps.getCurrentTime().toSeconds()));
             }
+        }
+    }
+
+    public void fin_vitesseP(MazeState maze) {
+        if (isvitesseP && temps_vitesseP.getStatus() == Timeline.Status.STOPPED) {
+            isvitesseP = false;
+            Platform.runLater(() -> {
+                PlayingState.getInstance().changeWallToBlue();
+            });
         }
     }
 
@@ -143,8 +169,16 @@ public final class PacMan implements Critter {
                     temps.pause();
                 }
 
+        } else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseP){
+            maze.addScore(50);
+            Platform.runLater(() -> {
+                PlayingState.getInstance().changeWallToBlueViolet();
+            });
+            maze.setGridState(true, pos.round().y(), pos.round().x());
+            isvitesseP = true;
+            temps_vitesseP.play();
+
             }
-           
         }
     }
 

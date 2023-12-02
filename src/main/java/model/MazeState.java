@@ -185,6 +185,7 @@ public final class MazeState {
             PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         PacMan.INSTANCE.fin_energizer(this);
         PacMan.INSTANCE.fin_zhonya(this);
+        PacMan.INSTANCE.fin_vitesseP(this);
         gameisWon();
     }
 
@@ -248,11 +249,12 @@ public final class MazeState {
             ((Ghost) critter).setMort(false);
             ((Ghost) critter).setSortie(false);
             ((Ghost) critter).setPos(initialPos.get(critter));
-            ((Ghost) critter).setDisableEnergizer(true);
+            ((Ghost) critter).setDisableEnergizer(false);
         } else {
             critter.setPos(initialPos.get(critter));
             ((PacMan) critter).setEnergized(false);
             ((PacMan) critter).resetZhonya();
+            ((PacMan) critter).resetVitesseP();
         }
 
     }

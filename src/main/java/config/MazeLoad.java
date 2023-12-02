@@ -35,20 +35,28 @@ public class MazeLoad {
                 throw new IllegalStateException("Les listes ne sont pas de la même taille");
             }
             boolean zhonya=false;
+            Boolean vitesseP=false;
             Cell[][] cells = new Cell[type_list.length()][type_list.getJSONArray(0).length()];
+
+
             for (int i = 0; i < type_list.length(); i++) {
                 JSONArray row_type = type_list.getJSONArray(i);
                 JSONArray row_value = value_list.getJSONArray(i);
+            
                 for (int j = 0; j < row_type.length(); j++) {
                     String type = row_type.getString(j);
                     String value = row_value.getString(j);
-                    if(aleatoire() && value.equals(".") && !zhonya){
+            
+                    if (aleatoire() && value.equals(".") && !zhonya) {
                         value = "ZHONYA";
-                        zhonya=true;
+                        zhonya = true;
+                    } else if (aleatoire() && value.equals(".") && !vitesseP) {
+                        value = "vitesseP";
+                        vitesseP = true;
                     }
+            
                     cells[i][j] = Cell.withContent(type, value);
-                }
-            }
+                }}
                 //print(cells);
                 return cells;
         } catch (IOException e) {

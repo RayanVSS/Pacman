@@ -13,6 +13,7 @@ import model.MazeState;
 
 import static config.Cell.Content.DOT;
 import static config.Cell.Content.ZHONYA;
+import static config.Cell.Content.vitesseP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +33,22 @@ public class CellGraphicsFactory {
         var dot = new Circle();
         group.getChildren().add(dot);
         ImageView zhonya = new ImageView("zon.gif");
+        ImageView vitessePImage = new ImageView("boots.gif");
         if (cell.getContent() == ZHONYA) {
             zhonya.setX(scale / 4);
             zhonya.setY(scale / 4);
             zhonya.setFitWidth(scale / 2);
             zhonya.setFitHeight(scale / 2);
-
             // Ajoutez l'ImageView à votre groupe
             group.getChildren().add(zhonya);
+        } else if(cell.getContent() == vitesseP){
+            vitessePImage.setX(scale / 4);
+            vitessePImage.setY(scale / 4);
+            vitessePImage.setFitWidth(scale /1.5);
+            vitessePImage.setFitHeight(scale /1.5);
+
+            // Ajoutez l'ImageView à votre groupe
+            group.getChildren().add(vitessePImage);        
         } else {
             dot.setRadius(switch (cell.initialContent()) {
                 case DOT -> scale / 15;
@@ -47,6 +56,7 @@ public class CellGraphicsFactory {
                 case NOTHING -> 0;
                 case GHOST_DOOR -> 0;
                 case ZHONYA -> 0;
+                case vitesseP -> 0;
             });
             dot.setCenterX(scale / 2);
             dot.setCenterY(scale / 2);
@@ -105,6 +115,7 @@ public class CellGraphicsFactory {
             public void update() {
                 dot.setVisible(!state.getGridState(pos));
                 zhonya.setVisible(!state.getGridState(pos));
+                vitessePImage.setVisible(!state.getGridState(pos));
             }
 
             @Override
