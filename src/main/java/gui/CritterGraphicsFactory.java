@@ -8,7 +8,6 @@ import model.Critter;
 import model.Ghost;
 import model.PacMan;
 import java.util.Map;
-import java.time.LocalTime;
 
 public final class CritterGraphicsFactory {
     private final double scale;
