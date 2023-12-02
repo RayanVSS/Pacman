@@ -20,8 +20,10 @@ public final class PacMan implements Critter {
     private Timeline temps = new Timeline(new KeyFrame(Duration.seconds(5)));
     private boolean iszhonya = false;
     private boolean isvitesseP = false;
-    private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(5)));
+    private boolean isvitesseM = false;
+    private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(3)));
     private Timeline temps_vitesseP = new Timeline(new KeyFrame(Duration.seconds(3)));
+    private Timeline temps_vitesseM = new Timeline(new KeyFrame(Duration.seconds(3)));
     public boolean isDead = false;
 
 
@@ -81,6 +83,9 @@ public final class PacMan implements Critter {
     public boolean isEnergized() {
         return energized;
     }
+    public boolean isvitesseM() {
+        return isvitesseM;
+    }
 
     public void setEnergized(boolean energized) {
         this.energized = energized;
@@ -97,6 +102,13 @@ public final class PacMan implements Critter {
         if(isvitesseP){
             temps_vitesseP.stop();
             isvitesseP = false;
+        }
+    }
+
+    public void resetVitesseM() {
+        if(isvitesseM){
+            temps_vitesseM.stop();
+            isvitesseM = false;
         }
     }
 
@@ -136,6 +148,15 @@ public final class PacMan implements Critter {
         }
     }
 
+    public void fin_vitesseM(MazeState maze) {
+        if (isvitesseM && temps_vitesseM.getStatus() == Timeline.Status.STOPPED) {
+            isvitesseM = false;
+            Platform.runLater(() -> {
+                PlayingState.getInstance().changeWallToBlue();
+            });
+        }
+    }
+
     public void handlePacManPoints(MazeState maze) {
         if (!maze.getGridState(pos.round())) {
             if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER ) {
@@ -160,7 +181,7 @@ public final class PacMan implements Critter {
             else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ZHONYA){
                 maze.addScore(50);
                 Platform.runLater(() -> {
-                    PlayingState.getInstance().changeWallToGrey();
+                    PlayingState.getInstance().changeWallToKhaki();
                 });
                 maze.setGridState(true, pos.round().y(), pos.round().x());
                 iszhonya = true;
@@ -172,13 +193,22 @@ public final class PacMan implements Critter {
         } else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseP){
             maze.addScore(50);
             Platform.runLater(() -> {
-                PlayingState.getInstance().changeWallToBlueViolet();
+                PlayingState.getInstance().changeWallToRoyalBlue();
             });
             maze.setGridState(true, pos.round().y(), pos.round().x());
             isvitesseP = true;
             temps_vitesseP.play();
 
             }
+            else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseM){
+                maze.addScore(50);
+                Platform.runLater(() -> {
+                    PlayingState.getInstance().changeWallToRed();
+                });
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+                isvitesseM = true;
+                temps_vitesseM.play();
+                }
         }
     }
 

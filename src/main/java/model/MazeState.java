@@ -186,6 +186,7 @@ public final class MazeState {
         PacMan.INSTANCE.fin_energizer(this);
         PacMan.INSTANCE.fin_zhonya(this);
         PacMan.INSTANCE.fin_vitesseP(this);
+        PacMan.INSTANCE.fin_vitesseM(this);
         gameisWon();
     }
 
@@ -255,6 +256,7 @@ public final class MazeState {
             ((PacMan) critter).setEnergized(false);
             ((PacMan) critter).resetZhonya();
             ((PacMan) critter).resetVitesseP();
+            ((PacMan) critter).resetVitesseM();
         }
 
     }

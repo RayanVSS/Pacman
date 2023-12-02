@@ -111,7 +111,7 @@ public final class CritterGraphicsFactory {
                     } else if (((Ghost) critter).isMort()) {
                         image.setImage(image_mort);
                     }else if (PacMan.INSTANCE.getzhonya()) {
-                        if (PacMan.INSTANCE.getTempsZhonya() - PacMan.INSTANCE.getTempsCourantZhonya() <= 2 ) {
+                        if (PacMan.INSTANCE.getTempsZhonya() - PacMan.INSTANCE.getTempsCourantZhonya() <= 1.5 ) {
                             image.setImage(ZONF);
                         } else {
                             image.setImage(ZOND);

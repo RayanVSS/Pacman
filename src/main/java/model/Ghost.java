@@ -56,6 +56,8 @@ public enum Ghost implements Critter {
             return 5 * deltaTNanoSeconds * 1E-9;
         }else if (PacMan.INSTANCE.isEnergized() && !disableEnergizer){ 
             return speed*0.5;
+        }else if (PacMan.INSTANCE.isvitesseM()){
+            return speed*0.2;
         } else {
             if(this==BLINKY){
                 return speed;

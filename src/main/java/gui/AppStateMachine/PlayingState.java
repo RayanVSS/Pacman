@@ -153,9 +153,9 @@ public class PlayingState extends App implements State {
         return gameView.getGraphicsUpdaters();
     }
 
-    public void changeWallToGrey() {
+    public void changeWallToKhaki() {
         for (var updater : getGraphicsUpdaters()) {
-            updater.changeColor(javafx.scene.paint.Color.GREY);
+            updater.changeColor(javafx.scene.paint.Color.KHAKI);
         }
     }
 
@@ -165,9 +165,15 @@ public class PlayingState extends App implements State {
         }
     }
 
-    public void changeWallToBlueViolet() {
+    public void changeWallToRoyalBlue() {
         for (var updater : getGraphicsUpdaters()) {
-            updater.changeColor(javafx.scene.paint.Color.BLUEVIOLET);
+            updater.changeColor(javafx.scene.paint.Color.ROYALBLUE);
+        }
+    }
+
+    public void changeWallToRed() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.RED);
         }
     }
 
