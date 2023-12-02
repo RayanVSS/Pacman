@@ -12,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 import model.MazeState;
 
 import static config.Cell.Content.DOT;
+import static config.Cell.Content.HEAL;
 import static config.Cell.Content.ZHONYA;
 import static config.Cell.Content.vitesseP;
 import static config.Cell.Content.vitesseM;
@@ -36,6 +37,7 @@ public class CellGraphicsFactory {
         ImageView zhonya = new ImageView("zon.gif");
         ImageView vitessePImage = new ImageView("boots.gif");
         ImageView vitesseMImage = new ImageView("bootsM.gif");
+        ImageView healImage = new ImageView("vie.gif");
         if (cell.getContent() == ZHONYA) {
             zhonya.setX(scale / 4);
             zhonya.setY(scale / 4);
@@ -57,6 +59,13 @@ public class CellGraphicsFactory {
             vitesseMImage.setFitHeight(scale /1.5);
             // Ajoutez l'ImageView à votre groupe
             group.getChildren().add(vitesseMImage);  
+        } else if (cell.getContent() == HEAL) { 
+            healImage.setX(scale / 4);
+            healImage.setY(scale / 4);
+            healImage.setFitWidth(scale /2);
+            healImage.setFitHeight(scale /2);
+            // Ajoutez l'ImageView à votre groupe
+            group.getChildren().add(healImage);
         } else {
             dot.setRadius(switch (cell.initialContent()) {
                 case DOT -> scale / 15;
@@ -66,6 +75,7 @@ public class CellGraphicsFactory {
                 case ZHONYA -> 0;
                 case vitesseP -> 0;
                 case vitesseM -> 0;
+                case HEAL -> 0;
             });
             dot.setCenterX(scale / 2);
             dot.setCenterY(scale / 2);
@@ -126,6 +136,7 @@ public class CellGraphicsFactory {
                 zhonya.setVisible(!state.getGridState(pos));
                 vitessePImage.setVisible(!state.getGridState(pos));
                 vitesseMImage.setVisible(!state.getGridState(pos));
+                healImage.setVisible(!state.getGridState(pos));
             }
 
             @Override

@@ -209,6 +209,11 @@ public final class PacMan implements Critter {
                 isvitesseM = true;
                 temps_vitesseM.play();
                 }
+        else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.HEAL){
+            maze.addScore(50);
+            maze.setGridState(true, pos.round().y(), pos.round().x());
+            maze.setLives(maze.getLives()+1);
+            }
         }
     }
 
