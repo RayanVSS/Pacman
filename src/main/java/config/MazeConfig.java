@@ -65,7 +65,7 @@ public class MazeConfig {
                 new IntCoordinates(8, 5),
                 new IntCoordinates(6, 5),
                 new IntCoordinates(8, 6),
-                new IntCoordinates(7, 4)
+                new IntCoordinates(7, 2)
         );
     }
 }

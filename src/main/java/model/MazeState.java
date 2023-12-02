@@ -248,7 +248,7 @@ public final class MazeState {
             ((Ghost) critter).setMort(false);
             ((Ghost) critter).setSortie(false);
             ((Ghost) critter).setPos(initialPos.get(critter));
-            ((Ghost) critter).setDisableEnergizer(false);
+            ((Ghost) critter).setDisableEnergizer(true);
         } else {
             critter.setPos(initialPos.get(critter));
             ((PacMan) critter).setEnergized(false);

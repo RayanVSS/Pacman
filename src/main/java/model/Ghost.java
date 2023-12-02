@@ -115,7 +115,7 @@ public enum Ghost implements Critter {
             } else if (this == INKY) {
                 respawnSeconds = 3;
             } else {
-                respawnSeconds = 5;
+                respawnSeconds = 4;
             }
         }
     }
