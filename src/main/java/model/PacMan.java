@@ -199,7 +199,7 @@ public final class PacMan implements Critter {
             isvitesseP = true;
             temps_vitesseP.play();
 
-            }
+            /* }
             else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseM){
                 maze.addScore(50);
                 Platform.runLater(() -> {
@@ -213,8 +213,10 @@ public final class PacMan implements Critter {
             maze.addScore(50);
             maze.setGridState(true, pos.round().y(), pos.round().x());
             maze.setLives(maze.getLives()+1);
+            */
             }
-        }
+        
+    }
     }
 
     public void handleCollisionsWithGhosts(MazeState maze) {

@@ -36,8 +36,8 @@ public class MazeLoad {
             }
             boolean zhonya=false;
             Boolean vitesseP=false;
-            boolean vitesseM=false;
-            boolean heal=false;
+            // boolean vitesseM=false;
+            // boolean heal=false;
             Cell[][] cells = new Cell[type_list.length()][type_list.getJSONArray(0).length()];
 
 
@@ -55,13 +55,16 @@ public class MazeLoad {
                     } else if (aleatoire() && value.equals(".") && !vitesseP) {
                         value = "vitesseP";
                         vitesseP = true;
-                    } else if (aleatoire() && value.equals(".") && !vitesseM) {
+                     }
+                     /*
+                     else if (aleatoire() && value.equals(".") && !vitesseM) {
                         value = "vitesseM";
                         vitesseM = true;
                     } else if (aleatoire() && value.equals(".") && !heal) {
                         value = "HEAL";
                         heal = true;
                     }
+                    */
                     cells[i][j] = Cell.withContent(type, value);
                 }}
                 //print(cells);
