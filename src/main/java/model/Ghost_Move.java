@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Random;
 import config.MazeConfig;
 import geometry.RealCoordinates;
 

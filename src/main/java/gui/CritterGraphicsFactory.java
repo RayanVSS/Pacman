@@ -1,7 +1,5 @@
 package gui;
 
-import static model.Ghost.BLINKY;
-
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -101,7 +99,6 @@ public final class CritterGraphicsFactory {
 
                     if (PacMan.INSTANCE.isEnergized() && !((Ghost) critter).getDisableEnergizer()
                             && !((Ghost) critter).isMort() && !PacMan.INSTANCE.getzhonya()) {
-                        LocalTime temps = LocalTime.now();
                         if (PacMan.INSTANCE.getTemps() - PacMan.INSTANCE.getTempsCourant() <= 2 ) {
                             image.setImage(image_anim);
                         } else {

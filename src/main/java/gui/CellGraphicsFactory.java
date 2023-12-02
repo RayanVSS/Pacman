@@ -1,24 +1,18 @@
 package gui;
 
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import geometry.IntCoordinates;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import model.MazeState;
 
-import static config.Cell.Content.DOT;
 // import static config.Cell.Content.HEAL;
 import static config.Cell.Content.ZHONYA;
 import static config.Cell.Content.vitesseP;
 // import static config.Cell.Content.vitesseM;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CellGraphicsFactory {
     private final double scale;

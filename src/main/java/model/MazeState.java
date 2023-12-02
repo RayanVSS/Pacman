@@ -6,8 +6,6 @@ import geometry.RealCoordinates;
 import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
-import javafx.scene.control.Cell;
-import javafx.scene.effect.Glow;
 import gui.AppStateMachine.GameOverState;
 import gui.AppStateMachine.MazeWinState;
 

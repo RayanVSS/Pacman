@@ -1,6 +1,5 @@
 package gui.AppStateMachine;
 
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;

@@ -1,7 +1,6 @@
 package gui.Controller;
 
 import model.Direction;
-import model.MazeState;
 import model.PacMan;
 import gui.AppStateMachine.PlayingState;
 import javafx.scene.input.KeyEvent;
@@ -11,7 +10,6 @@ import gui.AppStateMachine.PauseState;
 public class PacmanController {
     public static Direction currentDirection = Direction.NONE;
     public static Direction nextDirection = Direction.NONE;
-    private MazeState config = PlayingState.getInstance().maze;
 
     public void keyPressedHandler(KeyEvent event) {
         // if is echap

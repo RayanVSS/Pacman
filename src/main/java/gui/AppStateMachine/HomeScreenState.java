@@ -16,7 +16,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.control.TextField;
-import javafx.stage.Screen;
 import lib.FontLoader;
 
 import animatefx.animation.Bounce;

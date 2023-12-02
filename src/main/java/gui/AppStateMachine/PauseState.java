@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
 import lib.State;
-import model.MazeState;
 
 public class PauseState implements State{
 
