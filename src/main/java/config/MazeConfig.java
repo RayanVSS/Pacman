@@ -3,6 +3,8 @@ package config;
 import geometry.IntCoordinates;
 
 public class MazeConfig {
+    private static MazeLoad mazeLoad = new MazeLoad();
+
     public MazeConfig(Cell[][] grid, IntCoordinates pacManPos, IntCoordinates blinkyPos, IntCoordinates pinkyPos,
                       IntCoordinates inkyPos, IntCoordinates clydePos ,IntCoordinates exit_pos) {
         this.grid = new Cell[grid.length][grid[0].length];
@@ -59,7 +61,7 @@ public class MazeConfig {
 
     // simple example with a square shape
     public static MazeConfig makeExample1() {
-        return new MazeConfig(new MazeLoad().make(),
+        return new MazeConfig(mazeLoad.make(),
                 new IntCoordinates(7, 7),
                 new IntCoordinates(6, 6),
                 new IntCoordinates(8, 5),
