@@ -1,5 +1,6 @@
 package gui.AppStateMachine;
 
+import javafx.scene.paint.Color;
 import lib.FontLoader;
 import gui.App;
 import javafx.scene.control.Button;
@@ -14,13 +15,15 @@ public class PauseState implements State{
 
     private static final int MAX_FONT_SIZE = 100;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
-    private Font text_font = FontLoader.getPixelFont(30);
+    private Font text_font = FontLoader.getPixelFont(22);
 
     private static final PauseState instance = new PauseState();
-    private boolean relaunch = false;
+    public static boolean relaunch = false;
 
-    private final String IDLE_BUTTON_STYLE = "-fx-text-fill: white;";
-    private final String HOVERED_BUTTON_STYLE = "-fx-text-fill: red;";
+    private final String IDLE_BUTTON_STYLE = "-fx-background-color: black; -fx-border-color: yellow; -fx-border-radius: 2px; -fx-border-width: 5px; -fx-text-fill: yellow;";
+    private final String IDLE_QUIT_BUTTON_STYLE = "-fx-background-color: black; -fx-border-color: red; -fx-border-radius: 2px; -fx-border-width: 5px; -fx-text-fill: red;";
+    private final String HOVERED_BUTTON_STYLE = "-fx-background-color: #B1B100; -fx-border-color: #B1B100; -fx-border-radius: 10px; -fx-border-width: 5px; -fx-text-fill: black;";
+    private final String HOVERED_QUIT_BUTTON_STYLE = "-fx-background-color: #C70039; -fx-border-color: #C70039; -fx-border-radius: 10px; -fx-border-width: 5px; -fx-text-fill: black;";
 
     private PauseState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -38,12 +41,15 @@ public class PauseState implements State{
         // texte pause
         Label pause_label = new Label("Pause");
         pause_label.setFont(pixel_font);
-        pause_label.setStyle("-fx-text-fill: white;");
+        pause_label.setStyle("-fx-text-fill: yellow;");
         PlayingState.getInstance().game.getChildren().add(pause_label);
+
         // bouton reprendre le jeu 
-        Button resume_button = new Button("Reprendre");
+        Button resume_button = new Button("P : Reprendre");
         resume_button.setFont(text_font);
+
         resume_button.setStyle(IDLE_BUTTON_STYLE);
+
         resume_button.setTranslateY(150);
         resume_button.setTranslateX(-200);
         resume_button.setOnMouseEntered(e -> resume_button.setStyle(HOVERED_BUTTON_STYLE));
@@ -53,8 +59,10 @@ public class PauseState implements State{
             System.out.println("resume");
         });
         PlayingState.getInstance().game.getChildren().add(resume_button);
+
+
         // bouton quitter recommencer
-        Button restart_button = new Button("Recommencer");
+        Button restart_button = new Button("R : Recommencer");
         restart_button.setFont(text_font);
         restart_button.setStyle(IDLE_BUTTON_STYLE);
         restart_button.setTranslateY(150);
@@ -67,10 +75,15 @@ public class PauseState implements State{
             System.out.println("restart");
         });
         PlayingState.getInstance().game.getChildren().add(restart_button);
+
         // bouton quitter
-        Button quit_button = new Button("Quitter");
+        Button quit_button = new Button("Q : Quitter");
         quit_button.setFont(text_font);
-        quit_button.setStyle("-fx-text-fill: red;");
+
+        quit_button.setStyle(IDLE_QUIT_BUTTON_STYLE);
+        quit_button.setOnMouseEntered(e -> quit_button.setStyle(HOVERED_QUIT_BUTTON_STYLE));
+        quit_button.setOnMouseExited(e -> quit_button.setStyle(IDLE_QUIT_BUTTON_STYLE));
+
         quit_button.setTranslateY(250);
         quit_button.setTranslateX(0);
         quit_button.setOnAction(e -> {
