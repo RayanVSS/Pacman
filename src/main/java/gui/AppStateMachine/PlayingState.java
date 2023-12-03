@@ -7,8 +7,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import config.MazeConfig;
@@ -89,7 +91,6 @@ public class PlayingState extends App implements State {
 
     public void life_graphics_update(int lives) {
         life_graphics.getChildren().clear(); // Efface les vies précédentes
-
         for (int i = 0; i < lives; i++) {
             Image img = new Image(getClass().getResourceAsStream("/pixel_pacman_icon.png"));
             ImageView view = new ImageView(img);

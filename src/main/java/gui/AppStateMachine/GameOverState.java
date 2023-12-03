@@ -2,6 +2,7 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.GameOverController;
+import javafx.scene.paint.Color;
 import lib.ElementScaler;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -193,13 +194,16 @@ public class GameOverState implements State {
                 });
             });
             slideInScoreNumber6.setOnFinished(e7 -> {
-                Text pressEnter = new Text("Appuyez sur Entree pour rejouer");
+                Text pressEnter = new Text("Appuyez sur 'Enter' pour rejouer\nAppuyez sur 'Echap' pour quitter");
                 pressEnter.setOpacity(0);
                 pressEnter.setTextAlignment(TextAlignment.CENTER);
                 pressEnter.setFont(pixel_font);
                 pressEnter.setFill(javafx.scene.paint.Color.WHITE);
+
                 restart_menu.getChildren().add(pressEnter);
+
                 pressEnter.setTranslateY(ElementScaler.scale(150));
+
                 SlideInLeft slideInLeft = new SlideInLeft(pressEnter);
                 slideInLeft.setCycleCount(1);
                 slideInLeft.play();
