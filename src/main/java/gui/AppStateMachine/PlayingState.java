@@ -59,6 +59,7 @@ public class PlayingState extends App implements State {
 
     private double MAX_FONT_SIZE = 30.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
+    private Font pixel_little_font = FontLoader.getPixelFont(20);
 
     private static final PlayingState instance = new PlayingState();
 
@@ -95,8 +96,8 @@ public class PlayingState extends App implements State {
             Image img = new Image(getClass().getResourceAsStream("/pixel_pacman_icon.png"));
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
-            view.setFitHeight(ElementScaler.scale(50));
-            view.setFitWidth(ElementScaler.scale(50));
+            view.setFitHeight(ElementScaler.scale(25));
+            view.setFitWidth(ElementScaler.scale(25));
 
             Label lifeLabel = new Label();
             lifeLabel.setGraphic(view);
@@ -141,8 +142,26 @@ public class PlayingState extends App implements State {
         // Ajoutez life_graphics en bas du BorderPane
         game_screen.setBottom(life_graphics);
 
+        Text lifeText = new Text("Vie: ");
+        lifeText.setFill(javafx.scene.paint.Color.WHITE);
+        lifeText.setFont(pixel_font);
+
+        HBox bottomBox = new HBox(lifeText, life_graphics);
+        game_screen.setBottom(bottomBox);
+
+
         // Ajoutez score_graphics en haut du BorderPane
-        game_screen.setTop(score_graphics);
+        Text pauseText = new Text("Echap : Pause");
+        pauseText.setFill(javafx.scene.paint.Color.YELLOW);
+        pauseText.setFont(pixel_little_font);
+
+        BorderPane topBox = new BorderPane();
+        topBox.setLeft(score_graphics);
+        topBox.setRight(pauseText);
+        topBox.setPadding(new javafx.geometry.Insets(5));
+
+        game_screen.setTop(topBox);
+    
 
         gameView.animate();
 
