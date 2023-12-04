@@ -3,7 +3,7 @@ package model;
 import geometry.RealCoordinates;
 
 public class Inky {
-    public static Direction[] nextDirection(Ghost INKY, Ghost BLINKY, Critter PacMan) {
+    public static Direction[] nextDirection(Ghost INKY, Ghost BLINKY, Critter PacMan, long deltaTNanoSeconds) {
         RealCoordinates pacManPos = PacMan.getPos();
         RealCoordinates inkyPos = INKY.getPos();
         RealCoordinates blinkyPos = BLINKY.getPos();
@@ -25,14 +25,14 @@ public class Inky {
 
         for (Direction dir : possibleDirections) {
             RealCoordinates newPos = inkyPos
-                    .plus(outil.DirectionToRealCoordinates(dir).times(INKY.getSpeed()));
+                    .plus(Ghost_tools.DirectionToRealCoordinates(dir).times(INKY.getSpeed(deltaTNanoSeconds)));
 
-            double distance = outil.distance(newPos, targetPos);
+            double distance = Ghost_tools.distance(newPos, targetPos);
             tabDistance[i] = distance;
             i++;
         }
 
-        return outil.tri(possibleDirections, tabDistance);
+        return Ghost_tools.tri(possibleDirections, tabDistance);
     }
 
 }

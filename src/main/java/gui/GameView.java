@@ -80,4 +80,8 @@ public class GameView {
     public double getTileSize() {
         return gameRoot.getWidth() / maze.getWidth();
     }
+
+    public ArrayList<GraphicsUpdater> getGraphicsUpdaters() {
+        return (ArrayList<GraphicsUpdater>) graphicsUpdaters;
+    }
 }
