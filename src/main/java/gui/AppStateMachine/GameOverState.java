@@ -194,7 +194,7 @@ public class GameOverState implements State {
                 });
             });
             slideInScoreNumber6.setOnFinished(e7 -> {
-                Text pressEnter = new Text("Appuyez sur 'Enter' pour rejouer\nAppuyez sur 'Echap' pour quitter");
+                Text pressEnter = new Text("Appuyez sur ENTREE pour rejouer\nAppuyez sur ECHAP pour quitter");
                 pressEnter.setOpacity(0);
                 pressEnter.setTextAlignment(TextAlignment.CENTER);
                 pressEnter.setFont(pixel_font);
