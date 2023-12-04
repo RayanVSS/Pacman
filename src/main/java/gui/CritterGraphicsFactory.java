@@ -94,8 +94,6 @@ public final class CritterGraphicsFactory {
                     }
                 }
                 if (critter instanceof Ghost) {
-
-
                     if (PacMan.INSTANCE.isEnergized() && !((Ghost) critter).getDisableEnergizer()
                             && !((Ghost) critter).isMort() && !PacMan.INSTANCE.getzhonya()) {
                         if (PacMan.INSTANCE.getTemps() - PacMan.INSTANCE.getTempsCourant() <= 2 ) {
@@ -103,7 +101,6 @@ public final class CritterGraphicsFactory {
                         } else {
                             image.setImage(image_scared);
                         }
-
                     } else if (((Ghost) critter).isMort()) {
                         image.setImage(image_mort);
                     }else if (PacMan.INSTANCE.getzhonya()) {

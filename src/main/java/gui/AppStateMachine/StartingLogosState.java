@@ -18,10 +18,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.scene.effect.GaussianBlur;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
+import animatefx.animation.Flash;
 import animatefx.animation.FadeIn;
 import animatefx.animation.FadeOut;
 import animatefx.animation.Tada;
@@ -47,6 +49,11 @@ public class StartingLogosState implements State {
 
     private double MAX_FONT_SIZE = 30.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
+
+    private Text skipText = new Text("Appuyez sur entree pour passer");
+
+
+    private Flash skipTextFlash = new Flash(skipText);
 
     private StartingLogosState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -421,6 +428,14 @@ public class StartingLogosState implements State {
     }
 
     public void enter() {
+        skipText.setTextAlignment(javafx.scene.text.TextAlignment.LEFT);
+        skipText.setFill(javafx.scene.paint.Color.WHITE);
+        skipText.setFont(FontLoader.getPixelFont(ElementScaler.scale(20)));
+        skipText.setTranslateY(App.pStage.getHeight() / 2 - 50);
+        starting_logos.getChildren().add(skipText);
+        skipTextFlash.setCycleCount(Timeline.INDEFINITE);
+        skipTextFlash.setSpeed(0.5);
+        skipTextFlash.play();
         MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
         mediaPlayer.setStartTime(Duration.seconds(1));
         mediaPlayer.play();
@@ -468,6 +483,7 @@ public class StartingLogosState implements State {
     }
 
     public void exit() {
+        skipTextFlash.stop();
         starting_logos.getChildren().clear();
         mediaPlayer.stop();
         App.screen.setOnMouseClicked(null);

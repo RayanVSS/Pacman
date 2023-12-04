@@ -1,6 +1,5 @@
 package gui.AppStateMachine;
 
-import javafx.scene.paint.Color;
 import lib.FontLoader;
 import gui.App;
 import javafx.scene.control.Button;
@@ -77,7 +76,7 @@ public class PauseState implements State{
         PlayingState.getInstance().game.getChildren().add(restart_button);
 
         // bouton quitter
-        Button quit_button = new Button("Q : Quitter");
+        Button quit_button = new Button("Q/A : Quitter");
         quit_button.setFont(text_font);
 
         quit_button.setStyle(IDLE_QUIT_BUTTON_STYLE);
