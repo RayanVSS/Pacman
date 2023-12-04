@@ -24,7 +24,7 @@ public class HomeScreenState implements State {
     private static final HomeScreenState instance = new HomeScreenState();
     private String musicFileName = "/ost/Carl-Orff-O-Fortuna-_-Carmina-Burana.wav";
     private Media media = new Media(getClass().getResource(musicFileName).toString());
-    public MediaPlayer mediaPlayer = new MediaPlayer(media);
+    private MediaPlayer mediaPlayer = new MediaPlayer(media);
     private String userName = "Player";
     private Label gameName = new Label("Pacman \n Dawn");
     private GlowText glowText = new GlowText(gameName, javafx.scene.paint.Color.WHITE,
@@ -48,6 +48,10 @@ public class HomeScreenState implements State {
 
     public void setUserName(String name){
         userName = name;
+    }
+
+    public MediaPlayer getMediaPlayer(){
+        return mediaPlayer;
     }
 
     public Pane createStartLogo(){

@@ -181,7 +181,7 @@ public final class MazeState {
     }
 
     public void update(Long deltaTns) {
-        if (!PacMan.INSTANCE.isDead)
+        if (!PacMan.INSTANCE.isDead())
             PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         for (var critter : critters) {
             handleWallCollisions(critter, deltaTns);
@@ -236,7 +236,7 @@ public final class MazeState {
             PlayingState.getInstance().canPause = true;
             System.out.println("shake");
             System.out.println("Lives: " + lives);
-            PacMan.INSTANCE.isDead = false;
+            PacMan.INSTANCE.setDead(false);
             if (lives == 1) {
                 PlayingState.getInstance().mediaPlayerNormalMusic.stop();
                 PlayingState.getInstance().mediaPlayerCriticMusic.play();
@@ -263,6 +263,7 @@ public final class MazeState {
         } else {
             critter.setPos(initialPos.get(critter));
             ((PacMan) critter).setEnergized(false);
+            ((PacMan)critter).resetEnergizer();
             ((PacMan) critter).resetZhonya();
             ((PacMan) critter).resetVitesseP();
             ((PacMan) critter).resetVitesseM();

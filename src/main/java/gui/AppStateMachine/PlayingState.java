@@ -111,6 +111,9 @@ public class PlayingState extends App implements State {
         game_root.getChildren().clear();
         BorderPane game_screen = new BorderPane();
         mediaPlayerNormalMusic.setCycleCount(MediaPlayer.INDEFINITE);
+
+        if(HomeScreenState.getInstance().getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING)
+            HomeScreenState.getInstance().getMediaPlayer().stop();
         mediaPlayerNormalMusic.play();
         BorderPane root = new BorderPane();
 

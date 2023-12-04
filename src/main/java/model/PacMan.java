@@ -27,7 +27,7 @@ public final class PacMan implements Critter {
     private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(3)));
     private Timeline temps_vitesseP = new Timeline(new KeyFrame(Duration.seconds(3)));
     private Timeline temps_vitesseM = new Timeline(new KeyFrame(Duration.seconds(3)));
-    public boolean isDead = false;
+    private boolean isDead = false;
 
     private MediaPlayer mediaPlayerTimeStop;
 
@@ -96,6 +96,14 @@ public final class PacMan implements Critter {
         return energized;
     }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        this.isDead = dead;
+    }
+
     public void resume(){
         if(temps.getStatus() == Timeline.Status.PAUSED){
             temps.playFrom(Duration.seconds(temps.getCurrentTime().toSeconds()));
@@ -140,11 +148,25 @@ public final class PacMan implements Critter {
         }
     }
 
+    public void resetEnergizer() {
+        if(energized){
+            temps.stop();
+            energized = false;
+        }
+    }
+
     public void resetVitesseM() {
         if(isvitesseM){
             temps_vitesseM.stop();
             isvitesseM = false;
         }
+    }
+
+    public void resetAll() {
+        resetEnergizer();
+        resetZhonya();
+        resetVitesseP();
+        resetVitesseM();
     }
 
     public boolean verif_fin() {

@@ -103,6 +103,11 @@ public class PauseState implements State{
                 PlayingState.getInstance().mediaPlayerNormalMusic.stop();
             if(PlayingState.getInstance().mediaPlayerCriticMusic.getStatus().equals(javafx.scene.media.MediaPlayer.Status.PLAYING))
             PlayingState.getInstance().mediaPlayerCriticMusic.stop();
+            for(Critter c : PlayingState.getInstance().maze.getCritters()){
+                if(c instanceof model.PacMan){
+                    ((model.PacMan) c).resetAll();
+                }
+            }
             PlayingState.getInstance().initializeMaze();
             relaunch = false;
             return;

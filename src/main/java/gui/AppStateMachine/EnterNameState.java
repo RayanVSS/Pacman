@@ -187,7 +187,7 @@ public class EnterNameState implements State {
 
     public void transitionTo(State s) {
         if (s instanceof PlayingState) {
-            HomeScreenState.getInstance().mediaPlayer.stop();
+            HomeScreenState.getInstance().getMediaPlayer().stop();
             PlayingState.getInstance().initializeMaze();
         }
     }
