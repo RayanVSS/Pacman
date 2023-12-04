@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Text;
 import gui.Controller.EnterNameController;
@@ -23,7 +24,7 @@ public class EnterNameState implements State {
     private static final EnterNameState instance = new EnterNameState();
 
     private BorderPane enter_name_menu = new BorderPane();
-    private Font pixel_font = FontLoader.getPixelFont(20);
+    private Font pixel_font = FontLoader.getPixelFont(15);
     private String userName = "Player";
 
     private EnterNameState() {
@@ -44,15 +45,12 @@ public class EnterNameState implements State {
         start_button.setMaxWidth(App.screen.getWidth());
 
         start_button.setStyle("-fx-background-color: black");
-        Label start_button_text = new Label("Appuyer sur Entree pour lancer une partie"  + "\n"  + "apres avoir tapper votre nom !");
+        Label start_button_text = new Label(
+                "Appuyer sur Entree pour lancer une partie" + "\n" + "apres avoir tapper votre nom !");
         start_button_text.setTextAlignment(TextAlignment.CENTER);
 
         Image img = new Image(getClass().getResourceAsStream("/start.gif"));
         ImageView view = new ImageView(img);
-
-        view.setFitHeight(ElementScaler.scale(500));
-        view.setFitWidth(ElementScaler.scale(600));
-        view.setPreserveRatio(true);
 
         start_button_text.setFont(pixel_font);
         start_button_text.setTextFill(javafx.scene.paint.Color.WHITE);
@@ -65,18 +63,29 @@ public class EnterNameState implements State {
     }
 
     public void enter() {
+        pixel_font = FontLoader.getPixelFont(ElementScaler.scale(15));
+
+        System.out.println(ElementScaler.scale(12));
         App.screen.setOnKeyPressed(null);
         enter_name_menu.setStyle("-fx-background-color: black;");
         // We want to add at the top of the screen a field to type our name
-        Label name_label = new Label("Entrez votre nom : ");
+        Label typeName = new Label("Entrez votre nom :");
+        typeName.setFont(pixel_font);
+        typeName.setTextFill(javafx.scene.paint.Color.WHITE);
+        typeName.setTextAlignment(TextAlignment.CENTER);
+        Label name_label = new Label(userName);
         name_label.setFont(pixel_font);
         name_label.setTextFill(javafx.scene.paint.Color.WHITE);
-        name_label.setTextAlignment(TextAlignment.CENTER);
-        enter_name_menu.setTop(name_label);
-        BorderPane.setAlignment(name_label, Pos.TOP_CENTER);
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
         TextField name_field = new TextField();
         name_field.setStyle("-fx-text-alignment: center; -fx-text-fill: white;");
         name_field.setAlignment(Pos.CENTER);
+        Label error_label = new Label();
+        error_label.setFont(pixel_font);
+        error_label.setTextFill(javafx.scene.paint.Color.RED);
+        error_label.setTextAlignment(TextAlignment.CENTER);
+        vbox.getChildren().addAll(typeName ,name_label, error_label);
         name_field.textProperty().addListener((observable, oldValue, newValue) -> {
             // We want to limit the size of the name to 8 characters max and to not allow
             // special characters and if the character is uppercase we want to put it in
@@ -85,8 +94,10 @@ public class EnterNameState implements State {
                 name_field.setText(oldValue);
                 // We want to display a message to the user to tell him that he can't use
                 // special characters
-                name_label.setText("Entrez votre nom : " + "\n" + userName + "\n" + "Caractere speciaux interdits");
+                error_label.setText("Caracteres speciaux non acceptes !");
+                name_label.setText(userName);
             } else {
+                error_label.setText("");
                 if (newValue.matches(
                         ".*[A-Z].*")) {
                     newValue = newValue.toLowerCase();
@@ -94,9 +105,11 @@ public class EnterNameState implements State {
                 System.out.println(newValue);
                 userName = newValue;
                 name_field.setText(userName);
-                name_label.setText("Entrez votre nom : " + "\n" + userName);
+                name_label.setText(userName);
             }
         });
+
+        enter_name_menu.setTop(vbox);
         enter_name_menu.getChildren().add(name_field);
 
         Text cancel_text = new Text("ECHAP pour annuler");
