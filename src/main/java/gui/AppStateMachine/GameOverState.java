@@ -37,6 +37,8 @@ public class GameOverState implements State {
     }
 
     public void enter() {
+        App.screen.setOnKeyPressed(null);
+        restart_menu.getChildren().clear(); // Clear any added Texts when entering the state
         BorderPane gameOverPane = new BorderPane();
         gameOverPane.setMinSize(App.screen.getWidth(), App.screen.getHeight());
         restart_menu.getChildren().add(gameOverPane);
@@ -80,14 +82,17 @@ public class GameOverState implements State {
 
         Text scoreNumber1 = new Text("1. " + LeaderBoard.getScores().get(0).toString());
         slideInScoreNumber1.setNode(scoreNumber1);
+        slideInScoreNumber1.setSpeed(2);
         scoreNumber1.setOpacity(0);
 
         Text scoreNumber2 = new Text("2. " + LeaderBoard.getScores().get(1).toString());
         slideInScoreNumber2.setNode(scoreNumber2);
+        slideInScoreNumber2.setSpeed(2);
         scoreNumber2.setOpacity(0);
 
         Text scoreNumber3 = new Text("3. " + LeaderBoard.getScores().get(2).toString());
         slideInScoreNumber3.setNode(scoreNumber3);
+        slideInScoreNumber3.setSpeed(2);
         scoreNumber3.setOpacity(0);
 
         Text scoreNumber4 = new Text("4. " + LeaderBoard.getScores().get(3).toString());
@@ -96,10 +101,12 @@ public class GameOverState implements State {
 
         Text scoreNumber5 = new Text("5. " + LeaderBoard.getScores().get(4).toString());
         slideInScoreNumber5.setNode(scoreNumber5);
+        slideInScoreNumber5.setSpeed(2);
         scoreNumber5.setOpacity(0);
 
         Text scoreNumber6 = new Text("6. " + LeaderBoard.getScores().get(5).toString());
         slideInScoreNumber6.setNode(scoreNumber6);
+        slideInScoreNumber6.setSpeed(2);
         scoreNumber6.setOpacity(0);
 
         slideInLeftLeaderBoard.setOnFinished(e -> {
@@ -192,13 +199,16 @@ public class GameOverState implements State {
                 });
             });
             slideInScoreNumber6.setOnFinished(e7 -> {
-                Text pressEnter = new Text("Appuyez sur Entree pour rejouer");
+                Text pressEnter = new Text("Appuyez sur ENTREE pour rejouer\nAppuyez sur ECHAP pour quitter");
                 pressEnter.setOpacity(0);
                 pressEnter.setTextAlignment(TextAlignment.CENTER);
                 pressEnter.setFont(pixel_font);
                 pressEnter.setFill(javafx.scene.paint.Color.WHITE);
+
                 restart_menu.getChildren().add(pressEnter);
+
                 pressEnter.setTranslateY(ElementScaler.scale(150));
+
                 SlideInLeft slideInLeft = new SlideInLeft(pressEnter);
                 slideInLeft.setCycleCount(1);
                 slideInLeft.play();

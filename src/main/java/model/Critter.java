@@ -8,7 +8,7 @@ public sealed interface Critter permits Ghost, PacMan {
 
     Direction getDirection();
 
-    double getSpeed();
+    double getSpeed(long deltaTNanoSeconds);
 
     /**
      * @param deltaTNanoSeconds time since the last update in nanoseconds
@@ -16,7 +16,7 @@ public sealed interface Critter permits Ghost, PacMan {
      */
     default RealCoordinates nextPos(long deltaTNanoSeconds, MazeConfig config) {
         if (this instanceof Ghost) {
-            return ((Ghost) this).nextPos(config);
+            return ((Ghost) this).nextPos(config, deltaTNanoSeconds);
         }
         return getPos().plus((switch (getDirection()) {
             case NONE -> RealCoordinates.ZERO;
@@ -24,7 +24,7 @@ public sealed interface Critter permits Ghost, PacMan {
             case EAST -> RealCoordinates.EAST_UNIT;
             case SOUTH -> RealCoordinates.SOUTH_UNIT;
             case WEST -> RealCoordinates.WEST_UNIT;
-        }).times(getSpeed() * deltaTNanoSeconds * 1E-9));
+        }).times(getSpeed(deltaTNanoSeconds)));
     };
 
     void setPos(RealCoordinates realCoordinates);

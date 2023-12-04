@@ -7,6 +7,7 @@ import lib.State;
 public enum AppState {
     STARTING_LOGOS(StartingLogosState.getInstance()),
     HOME_SCREEN(HomeScreenState.getInstance()),
+    ENTER_NAME(EnterNameState.getInstance()),
     PLAYING(PlayingState.getInstance()),
     PAUSE(PauseState.getInstance()),
     GAMEOVER(GameOverState.getInstance());
