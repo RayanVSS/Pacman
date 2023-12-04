@@ -21,7 +21,8 @@ import lib.FontLoader;
 
 public class EnterNameState implements State {
     BorderPane start_button = new BorderPane();
-    Text buttonText = new Text();
+    Text buttonText1 = new Text();
+    Text buttonText2 = new Text();
 
     Image img = new Image(getClass().getResourceAsStream("/start.gif"));
     ImageView view = new ImageView(img);
@@ -106,14 +107,16 @@ public class EnterNameState implements State {
 
                 start_button.setCenter(beforeImageView);
                 canPlay = false;
-                buttonText.setText("");
+                buttonText1.setText("");
+                buttonText2.setText("");
             } 
             
             if (newValue.length() < 3){
 
                 start_button.setCenter(beforeImageView);
                 canPlay = false;
-                buttonText.setText("");
+                buttonText1.setText("");
+                buttonText2.setText("");
             }
 
             if(newValue.matches(".*[^a-zA-Z].*")){
@@ -134,7 +137,8 @@ public class EnterNameState implements State {
 
                 if(userName.length() >= 3){
                     canPlay = true;
-                    buttonText.setText("Appuyez sur Enter");
+                    buttonText1.setText("Appuyez sur Entree");
+                    buttonText2.setText("pour lancer le jeu");
                     start_button.setCenter(view);
                 }
 
@@ -147,11 +151,13 @@ public class EnterNameState implements State {
             }
         });
 
-        buttonText.setFill(javafx.scene.paint.Color.WHITE);
-        buttonText.setFont(pixel_font);
+        buttonText1.setFill(javafx.scene.paint.Color.WHITE);
+        buttonText1.setFont(pixel_font);
 
-        
-        VBox buttonVBox = new VBox(createStartButton(), buttonText);
+        buttonText2.setFill(javafx.scene.paint.Color.WHITE);
+        buttonText2.setFont(pixel_font);
+
+        VBox buttonVBox = new VBox(createStartButton(), buttonText1, buttonText2);
         buttonVBox.setAlignment(Pos.CENTER);
 
         HBox mainContainer = new HBox(vbox, buttonVBox);
