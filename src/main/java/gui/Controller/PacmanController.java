@@ -6,6 +6,7 @@ import model.PacMan;
 import gui.AppStateMachine.PlayingState;
 import javafx.scene.input.KeyEvent;
 import gui.App;
+import gui.AppStateMachine.AppState;
 import gui.AppStateMachine.PauseState;
 
 public class PacmanController {
@@ -40,7 +41,7 @@ public class PacmanController {
         }
 
         //Si le joueur se trouve dans le menu pause et qu'il appuie sur Q
-        if(event.getCode() == KeyCode.A && PauseState.getInstance() == App.app_state.getState()){
+        if(event.getCode() == KeyCode.A && PauseState.getInstance() == App.app_state.getState() || event.getCode() == KeyCode.Q && PauseState.getInstance() == App.app_state.getState()){
             System.exit(0);
         }
 
