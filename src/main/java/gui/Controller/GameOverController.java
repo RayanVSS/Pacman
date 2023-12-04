@@ -12,8 +12,9 @@ public class GameOverController {
             App.app_state.changeState(PlayingState.getInstance());
             System.out.println("Vous avez appuyé sur ENTER");
         }
-        else{
 
+        if (event.getCode() == KeyCode.ESCAPE){
+            System.exit(0);
         }
     }
 

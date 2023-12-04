@@ -37,6 +37,7 @@ public class MazeWinState implements State {
     }
 
     public void enter() {
+        App.screen.setOnKeyPressed(null);
         MAX_FONT_SIZE = ElementScaler.scale(MAX_FONT_SIZE);
         Text winText = new Text("Vous avez gagne !");
         winText.setFont(pixel_font);

@@ -10,7 +10,7 @@ import model.Critter;
 import model.Ghost;
 import model.PacMan;
 import java.util.Map;
-import java.time.LocalTime;
+import java.util.HashMap;
 
 public final class CritterGraphicsFactory {
     private final double scale;
@@ -18,52 +18,66 @@ public final class CritterGraphicsFactory {
     private Image image_mort;
     private Image image_scared;
     private Image image_anim;
-    private Image BLINKY_g;
-    private Map<Critter, Image> images_D,images_G,images_H,images_B;
+    private Image ZONF, ZOND;
+    private Map<Critter, String> images_D, images_G, images_H, images_B;
+    // Stockez les images déjà chargées dans un cache
+    private HashMap<String, Image> imageCache = new HashMap<>();
 
     public CritterGraphicsFactory(double scale) {
         this.scale = scale;
-        image_mort = new Image("ghost_dead.gif", scale * 0.7, scale * 0.7, true, true);
-        image_scared = new Image("ghost_scared_haut.gif", scale * 0.7, scale * 0.7, true, true);
-        image_anim = new Image("ghost_rainbow_haut.gif", scale * 0.7, scale * 0.7, true, true);
-        BLINKY_g = new Image("ghost_red_gauche.gif", scale * 0.7, scale * 0.7, true, true);
+
+        image_mort = loadImage("ghost_dead.gif");
+        image_scared = loadImage("ghost_scared_haut.gif");
+        image_anim = loadImage("ghost_rainbow_haut.gif");
+        ZONF = loadImage("ghost_zon.gif");
+        ZOND = loadImage("ghost_zon.png");
 
         images_D = Map.of(
-                Ghost.BLINKY, new Image("ghost_red_droite.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.CLYDE, new Image("ghost_yellow_droite.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.INKY, new Image("ghost_blue_droite.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.PINKY, new Image("ghost_purple_droite.gif", scale * 0.7, scale * 0.7, true, true));
+                Ghost.BLINKY, "ghost_red_droite.gif",
+                Ghost.CLYDE, "ghost_yellow_droite.gif",
+                Ghost.INKY, "ghost_blue_droite.gif",
+                Ghost.PINKY, "ghost_purple_droite.gif");
 
         images_G = Map.of(
-                Ghost.BLINKY, new Image("ghost_red_gauche.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.CLYDE, new Image("ghost_yellow_gauche.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.INKY, new Image("ghost_blue_gauche.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.PINKY, new Image("ghost_purple_gauche.gif", scale * 0.7, scale * 0.7, true, true));
-        
-        images_H = Map.of(
-                Ghost.BLINKY, new Image("ghost_red_haut.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.CLYDE, new Image("ghost_yellow_haut.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.INKY, new Image("ghost_blue_haut.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.PINKY, new Image("ghost_purple_haut.gif", scale * 0.7, scale * 0.7, true, true));
+                Ghost.BLINKY, "ghost_red_gauche.gif",
+                Ghost.CLYDE, "ghost_yellow_gauche.gif",
+                Ghost.INKY, "ghost_blue_gauche.gif",
+                Ghost.PINKY, "ghost_purple_gauche.gif");
 
+        images_H = Map.of(
+                Ghost.BLINKY, "ghost_red_haut.gif",
+                Ghost.CLYDE, "ghost_yellow_haut.gif",
+                Ghost.INKY, "ghost_blue_haut.gif",
+                Ghost.PINKY, "ghost_purple_haut.gif");
 
         images_B = Map.of(
-                Ghost.BLINKY, new Image("ghost_red_bas.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.CLYDE, new Image("ghost_yellow_bas.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.INKY, new Image("ghost_blue_bas.gif", scale * 0.7, scale * 0.7, true, true),
-                Ghost.PINKY, new Image("ghost_purple_bas.gif", scale * 0.7, scale * 0.7, true, true));
+                Ghost.BLINKY, "ghost_red_bas.gif",
+                Ghost.CLYDE, "ghost_yellow_bas.gif",
+                Ghost.INKY, "ghost_blue_bas.gif",
+                Ghost.PINKY, "ghost_purple_bas.gif");
     }
-    
+
+    private Image loadImage(String filename) {
+        // Vérifiez si l'image est déjà dans le cache
+        if (imageCache.containsKey(filename)) {
+            return imageCache.get(filename);
+        }
+
+        // Sinon, chargez l'image en arrière plan et mettez-la en cache
+        Image image = new Image(filename, scale * 0.7, scale * 0.7, true, true, true);
+        imageCache.put(filename, image);
+        return image;
+    }
 
     public GraphicsUpdater makeGraphics(Critter critter) {
         var size = 0.7;
         var url = "pac-man-fortnite.gif";
         if (critter instanceof Ghost) {
             url = switch ((Ghost) critter) {
-                case BLINKY -> "ghost_red_droite.gif";
-                case CLYDE -> "ghost_yellow_droite.gif";
-                case INKY -> "ghost_blue_droite.gif";
-                case PINKY -> "ghost_purple_droite.gif";
+                case BLINKY -> images_D.get(Ghost.BLINKY);
+                case CLYDE -> images_D.get(Ghost.CLYDE);
+                case INKY -> images_D.get(Ghost.INKY);
+                case PINKY -> images_D.get(Ghost.PINKY);
             };
 
         }
@@ -73,6 +87,8 @@ public final class CritterGraphicsFactory {
 
         return new GraphicsUpdater() {
             @Override
+            public void changeColor(javafx.scene.paint.Color color) {
+            }
 
             public void update() {
                 image.setTranslateX((critter.getPos().x() + (1 - size) / 2) * scale);
@@ -95,34 +111,36 @@ public final class CritterGraphicsFactory {
                     }
                 }
                 if (critter instanceof Ghost) {
-
-
                     if (PacMan.INSTANCE.isEnergized() && !((Ghost) critter).getDisableEnergizer()
-                            && !((Ghost) critter).isMort()) {
-                        LocalTime temps = LocalTime.now();
-                        if (PacMan.INSTANCE.getTemps().getSecond() - temps.getSecond() <= 5) {
+                            && !((Ghost) critter).isMort() && !PacMan.INSTANCE.getzhonya()) {
+                        if (PacMan.INSTANCE.getTemps() - PacMan.INSTANCE.getTempsCourant() <= 2) {
                             image.setImage(image_anim);
                         } else {
                             image.setImage(image_scared);
                         }
-
                     } else if (((Ghost) critter).isMort()) {
                         image.setImage(image_mort);
+                    } else if (PacMan.INSTANCE.getzhonya()) {
+                        if (PacMan.INSTANCE.getTempsZhonya() - PacMan.INSTANCE.getTempsCourantZhonya() <= 1.5) {
+                            image.setImage(ZONF);
+                        } else {
+                            image.setImage(ZOND);
+                        }
                     } else {
-                    switch (((Ghost) critter).getDirection()) {
-                        case NORTH:
-                        image.setImage(images_H.get(critter));
-                            break;
-                        case EAST:
-                        image.setImage(images_D.get(critter));                        
-                            break;
-                        case WEST:
-                        image.setImage(images_G.get(critter));
-                            break;
-                        case SOUTH:
-                        image.setImage(images_B.get(critter));
-                            break;
-                    }
+                        switch (((Ghost) critter).getDirection()) {
+                            case NORTH:
+                                image.setImage(loadImage(images_H.get(critter)));
+                                break;
+                            case EAST:
+                                image.setImage(loadImage(images_D.get(critter)));
+                                break;
+                            case WEST:
+                                image.setImage(loadImage(images_G.get(critter)));
+                                break;
+                            case SOUTH:
+                                image.setImage(loadImage(images_B.get(critter)));
+                                break;
+                        }
 
                     }
                 }

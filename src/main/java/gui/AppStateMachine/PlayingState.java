@@ -7,14 +7,19 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+
+import java.util.ArrayList;
 
 import config.MazeConfig;
 import gui.App;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import gui.GameView;
+import gui.GraphicsUpdater;
 import gui.Controller.PacmanController;
+import model.Critter;
 import model.MazeState;
 import lib.FontLoader;
 import lib.State;
@@ -54,6 +59,7 @@ public class PlayingState extends App implements State {
 
     private double MAX_FONT_SIZE = 30.0;
     private Font pixel_font = FontLoader.getPixelFont(MAX_FONT_SIZE);
+    private Font pixel_little_font = FontLoader.getPixelFont(20);
 
     private static final PlayingState instance = new PlayingState();
 
@@ -86,13 +92,12 @@ public class PlayingState extends App implements State {
 
     public void life_graphics_update(int lives) {
         life_graphics.getChildren().clear(); // Efface les vies précédentes
-
         for (int i = 0; i < lives; i++) {
             Image img = new Image(getClass().getResourceAsStream("/pixel_pacman_icon.png"));
             ImageView view = new ImageView(img);
             view.setPreserveRatio(true);
-            view.setFitHeight(ElementScaler.scale(50));
-            view.setFitWidth(ElementScaler.scale(50));
+            view.setFitHeight(ElementScaler.scale(25));
+            view.setFitWidth(ElementScaler.scale(25));
 
             Label lifeLabel = new Label();
             lifeLabel.setGraphic(view);
@@ -106,14 +111,15 @@ public class PlayingState extends App implements State {
         game_root.getChildren().clear();
         BorderPane game_screen = new BorderPane();
         mediaPlayerNormalMusic.setCycleCount(MediaPlayer.INDEFINITE);
+
+        if(HomeScreenState.getInstance().getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING)
+            HomeScreenState.getInstance().getMediaPlayer().stop();
         mediaPlayerNormalMusic.play();
         BorderPane root = new BorderPane();
 
         game_screen.setStyle("-fx-background-color: black;");
 
         maze = new MazeState(MazeConfig.makeExample1());
-        maze.resetScore();
-        maze.setLives(3);
 
         score_graphics = createScoreGraphics();
         life_graphics_update(maze.getLives());
@@ -139,12 +145,58 @@ public class PlayingState extends App implements State {
         // Ajoutez life_graphics en bas du BorderPane
         game_screen.setBottom(life_graphics);
 
+        Text lifeText = new Text("Vie: ");
+        lifeText.setFill(javafx.scene.paint.Color.WHITE);
+        lifeText.setFont(pixel_font);
+
+        HBox bottomBox = new HBox(lifeText, life_graphics);
+        game_screen.setBottom(bottomBox);
+
+
         // Ajoutez score_graphics en haut du BorderPane
-        game_screen.setTop(score_graphics);
+        Text pauseText = new Text("Echap : Pause");
+        pauseText.setFill(javafx.scene.paint.Color.YELLOW);
+        pauseText.setFont(pixel_little_font);
+
+        BorderPane topBox = new BorderPane();
+        topBox.setLeft(score_graphics);
+        topBox.setRight(pauseText);
+        topBox.setPadding(new javafx.geometry.Insets(5));
+
+        game_screen.setTop(topBox);
+    
 
         gameView.animate();
 
         game.getChildren().add(game_screen);
+    }
+
+    public ArrayList<GraphicsUpdater> getGraphicsUpdaters() {
+        return gameView.getGraphicsUpdaters();
+    }
+
+    public void changeWallToKhaki() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.KHAKI);
+        }
+    }
+
+    public void changeWallToBlue() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.BLUE);
+        }
+    }
+
+    public void changeWallToRoyalBlue() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.ROYALBLUE);
+        }
+    }
+
+    public void changeWallToRed() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.RED);
+        }
     }
 
     public void enter() {
@@ -162,6 +214,14 @@ public class PlayingState extends App implements State {
             if (mediaPlayerCriticMusic.getStatus() == MediaPlayer.Status.PLAYING)
                 mediaPlayerCriticMusic.stop();
             game.getChildren().clear();
+        }
+
+        if (s instanceof PauseState){
+            for(Critter c : maze.getCritters()){
+                if(c instanceof model.PacMan){
+                    ((model.PacMan) c).pause();
+                }
+            }
         }
     }
 }

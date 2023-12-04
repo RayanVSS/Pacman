@@ -3,8 +3,10 @@ package config;
 import geometry.IntCoordinates;
 
 public class MazeConfig {
+    private static MazeLoad mazeLoad = new MazeLoad();
+
     public MazeConfig(Cell[][] grid, IntCoordinates pacManPos, IntCoordinates blinkyPos, IntCoordinates pinkyPos,
-                      IntCoordinates inkyPos, IntCoordinates clydePos) {
+                      IntCoordinates inkyPos, IntCoordinates clydePos ,IntCoordinates exit_pos) {
         this.grid = new Cell[grid.length][grid[0].length];
         for (int i = 0; i < getHeight(); i++) {
             if (getWidth() >= 0) System.arraycopy(grid[i], 0, this.grid[i], 0, getHeight());
@@ -14,10 +16,11 @@ public class MazeConfig {
         this.inkyPos = inkyPos;
         this.pinkyPos = pinkyPos;
         this.clydePos = clydePos;
+        this.exit_pos = exit_pos;
     }
 
     private final Cell[][] grid;
-    private final IntCoordinates pacManPos, blinkyPos, pinkyPos, inkyPos, clydePos;
+    private final IntCoordinates pacManPos, blinkyPos, pinkyPos, inkyPos, clydePos, exit_pos;
 
     public IntCoordinates getPacManPos() {
         return pacManPos;
@@ -39,6 +42,10 @@ public class MazeConfig {
         return clydePos;
     }
 
+    public IntCoordinates getExit_pos() {
+        return exit_pos;
+    }
+
     public int getWidth() {
         return grid[0].length;
     }
@@ -54,12 +61,13 @@ public class MazeConfig {
 
     // simple example with a square shape
     public static MazeConfig makeExample1() {
-        return new MazeConfig(MazeLoad.make(),
+        return new MazeConfig(mazeLoad.make(),
                 new IntCoordinates(7, 7),
                 new IntCoordinates(6, 6),
                 new IntCoordinates(8, 5),
                 new IntCoordinates(6, 5),
-                new IntCoordinates(8, 6)
+                new IntCoordinates(8, 6),
+                new IntCoordinates(7, 4)
         );
     }
 }

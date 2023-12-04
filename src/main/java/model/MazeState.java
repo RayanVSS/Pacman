@@ -6,8 +6,7 @@ import geometry.RealCoordinates;
 import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
-import javafx.scene.control.Cell;
-import javafx.scene.effect.Glow;
+import javafx.scene.media.Media;
 import gui.AppStateMachine.GameOverState;
 import gui.AppStateMachine.MazeWinState;
 
@@ -33,7 +32,12 @@ public final class MazeState {
     private final Map<Critter, RealCoordinates> initialPos;
     private int lives = 3;
 
+    private Media mediaDeath = new Media(getClass().getResource("/sounds/explosion.mp3").toString());
+    private javafx.scene.media.MediaPlayer mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
+
     public MazeState(MazeConfig config) {
+        if(mediaPlayerDeath != null)
+        mediaPlayerDeath.setCycleCount(1);
         this.config = config;
         height = config.getHeight();
         width = config.getWidth();
@@ -42,7 +46,7 @@ public final class MazeState {
         // Met le gridState à true if si il n'a pas de boule
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                gridState[i][j] = !config.getCell(new IntCoordinates(j, i)).hasDot();
+                gridState[i][j] = !config.getCell(new IntCoordinates(j, i)).hasDot() ;
             }
         }
         initialPos = Map.of(
@@ -54,6 +58,7 @@ public final class MazeState {
         resetCritters();
         for (var ghost : List.of(BLINKY, INKY, PINKY, CLYDE)) {
             ghost.setInitialPos(initialPos.get(ghost));
+            ghost.setExit_pos(config.getExit_pos().toRealCoordinates(1.0));
         }
     }
 
@@ -80,7 +85,7 @@ public final class MazeState {
         var nextPos = critter.nextPos(deltaTns, config);
         var curNeighbours = curPos.intNeighbours();
         var nextNeighbours = nextPos.intNeighbours();
-        if (!curNeighbours.containsAll(nextNeighbours) && !(critter instanceof Ghost)) {
+        if (!curNeighbours.containsAll(nextNeighbours)) {
             switch (critter.getDirection()) {
                 case NORTH -> {
                     for (var n : curNeighbours) {
@@ -176,13 +181,19 @@ public final class MazeState {
     }
 
     public void update(Long deltaTns) {
+        if (!PacMan.INSTANCE.isDead())
+            PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         for (var critter : critters) {
             handleWallCollisions(critter, deltaTns);
         }
         PacMan.INSTANCE.handlePacManPoints(this);
-        if (!PacMan.INSTANCE.isDead)
+        if (!PacMan.INSTANCE.isDead())
             PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         PacMan.INSTANCE.fin_energizer(this);
+        PacMan.INSTANCE.fin_energizer(this);
+        PacMan.INSTANCE.fin_zhonya(this);
+        PacMan.INSTANCE.fin_vitesseP(this);
+        PacMan.INSTANCE.fin_vitesseM(this);
         gameisWon();
     }
 
@@ -223,7 +234,7 @@ public final class MazeState {
             PlayingState.getInstance().canPause = true;
             System.out.println("shake");
             System.out.println("Lives: " + lives);
-            PacMan.INSTANCE.isDead = false;
+            PacMan.INSTANCE.setDead(false);
             if (lives == 1) {
                 PlayingState.getInstance().mediaPlayerNormalMusic.stop();
                 PlayingState.getInstance().mediaPlayerCriticMusic.play();
@@ -247,10 +258,13 @@ public final class MazeState {
             ((Ghost) critter).setSortie(false);
             ((Ghost) critter).setPos(initialPos.get(critter));
             ((Ghost) critter).setDisableEnergizer(false);
-
         } else {
             critter.setPos(initialPos.get(critter));
             ((PacMan) critter).setEnergized(false);
+            ((PacMan)critter).resetEnergizer();
+            ((PacMan) critter).resetZhonya();
+            ((PacMan) critter).resetVitesseP();
+            ((PacMan) critter).resetVitesseM();
         }
 
     }
