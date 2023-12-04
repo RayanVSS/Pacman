@@ -175,12 +175,12 @@ public final class MazeState {
     }
 
     public void update(Long deltaTns) {
+        if (!PacMan.INSTANCE.isDead)
+            PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         for (var critter : critters) {
             handleWallCollisions(critter, deltaTns);
         }
         PacMan.INSTANCE.handlePacManPoints(this);
-        if (!PacMan.INSTANCE.isDead)
-            PacMan.INSTANCE.handleCollisionsWithGhosts(this);
         PacMan.INSTANCE.fin_energizer(this);
         PacMan.INSTANCE.fin_zhonya(this);
         PacMan.INSTANCE.fin_vitesseP(this);
