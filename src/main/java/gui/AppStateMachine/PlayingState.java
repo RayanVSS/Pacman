@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import gui.GameView;
 import gui.GraphicsUpdater;
 import gui.Controller.PacmanController;
+import model.Critter;
 import model.MazeState;
 import lib.FontLoader;
 import lib.State;
@@ -210,6 +211,14 @@ public class PlayingState extends App implements State {
             if (mediaPlayerCriticMusic.getStatus() == MediaPlayer.Status.PLAYING)
                 mediaPlayerCriticMusic.stop();
             game.getChildren().clear();
+        }
+
+        if (s instanceof PauseState){
+            for(Critter c : maze.getCritters()){
+                if(c instanceof model.PacMan){
+                    ((model.PacMan) c).pause();
+                }
+            }
         }
     }
 }

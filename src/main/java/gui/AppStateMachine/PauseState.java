@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
 import lib.State;
+import model.Critter;
 
 public class PauseState implements State{
 
@@ -107,6 +108,11 @@ public class PauseState implements State{
             return;
         }
         if(s instanceof PlayingState){
+            for(Critter c : PlayingState.getInstance().maze.getCritters()){
+                if(c instanceof model.PacMan){
+                    ((model.PacMan) c).resume();
+                }
+            }
             PlayingState.getInstance().gameView.animate();
         }
     }

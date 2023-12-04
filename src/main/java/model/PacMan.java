@@ -84,6 +84,29 @@ public final class PacMan implements Critter {
     public boolean isEnergized() {
         return energized;
     }
+
+    public void resume(){
+        if(temps.getStatus() == Timeline.Status.PAUSED){
+            temps.playFrom(Duration.seconds(temps.getCurrentTime().toSeconds()));
+        }
+        if(temps_zhonya.getStatus() == Timeline.Status.PAUSED){
+            temps_zhonya.playFrom(Duration.seconds(temps_zhonya.getCurrentTime().toSeconds()));
+        }
+        if(temps_vitesseP.getStatus() == Timeline.Status.PAUSED){
+            temps_vitesseP.playFrom(Duration.seconds(temps_vitesseP.getCurrentTime().toSeconds()));
+        }
+        if(temps_vitesseM.getStatus() == Timeline.Status.PAUSED){
+            temps_vitesseM.playFrom(Duration.seconds(temps_vitesseM.getCurrentTime().toSeconds()));
+        }
+    }
+
+    public void pause(){
+        temps.pause();
+        temps_zhonya.pause();
+        temps_vitesseP.pause();
+        temps_vitesseM.pause();
+    }
+
     public boolean isvitesseM() {
         return isvitesseM;
     }
