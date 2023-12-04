@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
@@ -19,20 +20,28 @@ import lib.ElementScaler;
 import lib.FontLoader;
 
 public class EnterNameState implements State {
+    BorderPane start_button = new BorderPane();
+    Text buttonText = new Text();
+
     Image img = new Image(getClass().getResourceAsStream("/start.gif"));
     ImageView view = new ImageView(img);
 
     Image beforeImage =new Image(getClass().getResourceAsStream("/start_gris_png.png"));
     ImageView beforeImageView = new ImageView(beforeImage);
 
+    public static boolean canPlay = false;
 
     private String state_name = "EnterName State";
 
     private static final EnterNameState instance = new EnterNameState();
 
     private BorderPane enter_name_menu = new BorderPane();
+
     private Font pixel_font = FontLoader.getPixelFont(15);
-    private String userName = "Player";
+    private Font pixel_mid_font = FontLoader.getPixelFont(12);
+    private Font pixel_little_font = FontLoader.getPixelFont(10);
+
+    private String userName = "";
 
     private EnterNameState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -47,9 +56,8 @@ public class EnterNameState implements State {
     }
 
     private Pane createStartButton() {
-        BorderPane start_button = new BorderPane();
-        start_button.setMaxHeight(App.screen.getHeight() / 2);
-        start_button.setMaxWidth(App.screen.getWidth());
+        start_button.setMaxHeight(App.screen.getHeight() / 4);
+        start_button.setMaxWidth(App.screen.getWidth() / 4);
 
         start_button.setStyle("-fx-background-color: black");
 
@@ -60,6 +68,8 @@ public class EnterNameState implements State {
     }
 
     public void enter() {
+        userName = "";
+        
         pixel_font = FontLoader.getPixelFont(ElementScaler.scale(15));
 
         System.out.println(ElementScaler.scale(12));
@@ -78,8 +88,8 @@ public class EnterNameState implements State {
         TextField name_field = new TextField();
         name_field.setStyle("-fx-text-alignment: center; -fx-text-fill: white;");
         name_field.setAlignment(Pos.CENTER);
-        Label error_label = new Label();
-        error_label.setFont(pixel_font);
+        Label error_label = new Label("Entree un nom avec au moins 3 caracteres");
+        error_label.setFont(pixel_little_font);
         error_label.setTextFill(javafx.scene.paint.Color.RED);
         error_label.setTextAlignment(TextAlignment.CENTER);
         vbox.getChildren().addAll(typeName ,name_label, error_label);
@@ -87,13 +97,33 @@ public class EnterNameState implements State {
             // We want to limit the size of the name to 8 characters max and to not allow
             // special characters and if the character is uppercase we want to put it in
             // lowercase
-            if (newValue.length() > 8 || newValue.matches(".*[^a-zA-Z].*")) {
+            if (newValue.length() > 8) {
                 name_field.setText(oldValue);
+                newValue = oldValue;
                 // We want to display a message to the user to tell him that he can't use
                 // special characters
-                error_label.setText("Caracteres speciaux non acceptes !");
                 name_label.setText(userName);
-            } else {
+
+                start_button.setCenter(beforeImageView);
+                canPlay = false;
+                buttonText.setText("");
+            } 
+            
+            if (newValue.length() < 3){
+
+                start_button.setCenter(beforeImageView);
+                canPlay = false;
+                buttonText.setText("");
+            }
+
+            if(newValue.matches(".*[^a-zA-Z].*")){
+                name_field.setText(oldValue);
+                error_label.setText("Caracteres non valide");
+                name_label.setText(userName);
+            }
+            
+            
+            else {
                 error_label.setText("");
                 if (newValue.matches(
                         ".*[A-Z].*")) {
@@ -101,12 +131,33 @@ public class EnterNameState implements State {
                 }
                 System.out.println(newValue);
                 userName = newValue;
+
+                if(userName.length() >= 3){
+                    canPlay = true;
+                    buttonText.setText("Appuyez sur Enter");
+                    start_button.setCenter(view);
+                }
+
+                if(userName.length() < 3){
+                    error_label.setText("Entrer un nom avec au moins 3 caracteres");
+                }
+
                 name_field.setText(userName);
                 name_label.setText(userName);
             }
         });
 
-        enter_name_menu.setTop(vbox);
+        buttonText.setFill(javafx.scene.paint.Color.WHITE);
+        buttonText.setFont(pixel_font);
+
+        
+        VBox buttonVBox = new VBox(createStartButton(), buttonText);
+        buttonVBox.setAlignment(Pos.CENTER);
+
+        HBox mainContainer = new HBox(vbox, buttonVBox);
+        mainContainer.setPadding(new javafx.geometry.Insets(10));
+        mainContainer.setAlignment(Pos.CENTER);
+
         enter_name_menu.getChildren().add(name_field);
 
         Text cancel_text = new Text("ECHAP pour annuler");
@@ -115,7 +166,7 @@ public class EnterNameState implements State {
         cancel_text.setTextAlignment(TextAlignment.LEFT);
         enter_name_menu.setBottom(cancel_text);
 
-        enter_name_menu.setCenter(createStartButton());
+        enter_name_menu.setCenter(mainContainer);
 
         EnterNameController controller = new EnterNameController();
         App.screen.setOnKeyPressed(controller::keyPressedHandler);

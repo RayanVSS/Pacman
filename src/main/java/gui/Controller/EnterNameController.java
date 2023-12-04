@@ -1,6 +1,7 @@
 package gui.Controller;
 
 import gui.App;
+import gui.AppStateMachine.EnterNameState;
 import gui.AppStateMachine.HomeScreenState;
 import gui.AppStateMachine.PlayingState;
 import javafx.scene.input.KeyCode;
@@ -9,7 +10,7 @@ import javafx.scene.input.KeyEvent;
 public class EnterNameController {
     
     public void keyPressedHandler(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER)) {
+        if (event.getCode().equals(KeyCode.ENTER) && EnterNameState.canPlay) {
             App.app_state.changeState(PlayingState.getInstance());
             System.out.println("Vous avez appuyé sur ENTER"); 
         }
