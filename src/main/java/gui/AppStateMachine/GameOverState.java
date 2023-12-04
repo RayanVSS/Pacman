@@ -2,7 +2,6 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.GameOverController;
-import javafx.scene.paint.Color;
 import lib.ElementScaler;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -82,14 +81,17 @@ public class GameOverState implements State {
 
         Text scoreNumber1 = new Text("1. " + LeaderBoard.getScores().get(0).toString());
         slideInScoreNumber1.setNode(scoreNumber1);
+        slideInScoreNumber1.setSpeed(2);
         scoreNumber1.setOpacity(0);
 
         Text scoreNumber2 = new Text("2. " + LeaderBoard.getScores().get(1).toString());
         slideInScoreNumber2.setNode(scoreNumber2);
+        slideInScoreNumber2.setSpeed(2);
         scoreNumber2.setOpacity(0);
 
         Text scoreNumber3 = new Text("3. " + LeaderBoard.getScores().get(2).toString());
         slideInScoreNumber3.setNode(scoreNumber3);
+        slideInScoreNumber3.setSpeed(2);
         scoreNumber3.setOpacity(0);
 
         Text scoreNumber4 = new Text("4. " + LeaderBoard.getScores().get(3).toString());
@@ -98,10 +100,12 @@ public class GameOverState implements State {
 
         Text scoreNumber5 = new Text("5. " + LeaderBoard.getScores().get(4).toString());
         slideInScoreNumber5.setNode(scoreNumber5);
+        slideInScoreNumber5.setSpeed(2);
         scoreNumber5.setOpacity(0);
 
         Text scoreNumber6 = new Text("6. " + LeaderBoard.getScores().get(5).toString());
         slideInScoreNumber6.setNode(scoreNumber6);
+        slideInScoreNumber6.setSpeed(2);
         scoreNumber6.setOpacity(0);
 
         slideInLeftLeaderBoard.setOnFinished(e -> {

@@ -49,7 +49,7 @@ public enum Ghost implements Critter {
     public double getSpeed(long deltaTNanoSeconds) {
         double speed = 4.5*deltaTNanoSeconds*1E-9;
         if (mort) {
-            return 7 * deltaTNanoSeconds * 1E-9;
+            return 6 * deltaTNanoSeconds * 1E-9;
         } else if (disableGhost) {
             return 0;
         } else if (!sortie) {
@@ -140,7 +140,7 @@ public enum Ghost implements Critter {
             }
             return pos;
         } 
-        else if (!sortie) {
+        else if (!sortie && !mort) {
             if (isRespawnTime()) {
                 Ghost_Move.animation_sortie(this, config, deltaTNanoSeconds,exit_pos);
             }

@@ -21,6 +21,7 @@ public final class PacMan implements Critter {
     private boolean iszhonya = false;
     private boolean isvitesseP = false;
     private boolean isvitesseM = false;
+    private final double COLLISION_THRESHOLD = 0.5;
     private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(3)));
     private Timeline temps_vitesseP = new Timeline(new KeyFrame(Duration.seconds(3)));
     private Timeline temps_vitesseM = new Timeline(new KeyFrame(Duration.seconds(3)));
@@ -220,14 +221,18 @@ public final class PacMan implements Critter {
     }
 
     public void handleCollisionsWithGhosts(MazeState maze) {
-        var pacPos = PacMan.INSTANCE.getPos().round();
+        var pacPos = PacMan.INSTANCE.getPos();
         for (var critter : maze.getCritters()) {
-            if (critter instanceof Ghost && critter.getPos().round().equals(pacPos) && !((Ghost) critter).isMort() && !iszhonya) {
-                Platform.runLater(() -> {
-                    PlayingState.getInstance().changeWallToBlue();
-                });
-                maze.setGridState(true, pos.round().y(), pos.round().x());
-                handleGhostCollision(maze, (Ghost) critter);
+            if (critter instanceof Ghost && !((Ghost) critter).isMort() && !iszhonya) {
+                var ghostPos = critter.getPos();
+                double distance = Math.sqrt(Math.pow(pacPos.x() - ghostPos.x(), 2) + Math.pow(pacPos.y() - ghostPos.y(), 2));
+                if (distance < COLLISION_THRESHOLD) {
+                    Platform.runLater(() -> {
+                        PlayingState.getInstance().changeWallToBlue();
+                    });
+                    maze.setGridState(true, pos.round().y(), pos.round().x());
+                    handleGhostCollision(maze, (Ghost) critter);
+                }
             }
         }
     }
@@ -238,7 +243,6 @@ public final class PacMan implements Critter {
             ghost.setMort(true);
             maze.resetGhost(ghost);
         } else {
-
             if (!isDead)
                 maze.playerLost();
         }

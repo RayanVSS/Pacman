@@ -5,6 +5,8 @@ import geometry.RealCoordinates;
 
 public class Ghost_Move{
 
+    private static final double COLLISION_THRESHOLD = 2;
+
     // Fonction pour les déplacements des fantômes dans le jeu 
 
     public static RealCoordinates nextPos(Direction[] d, Ghost g, MazeConfig config, long delaTimeNanoSeconds) {
@@ -79,12 +81,14 @@ public class Ghost_Move{
 
     public static void animation_mort(Ghost g, RealCoordinates initialPos, MazeConfig config, long deltaTNanoSeconds, RealCoordinates exit_pos) {
         RealCoordinates ghost_Pos = g.getPos();
-        if (ghost_Pos.x() >= exit_pos.x()-0.1 && ghost_Pos.x() <= exit_pos.x()+0.1 && ghost_Pos.y() >= exit_pos.y()-0.1 && ghost_Pos.y() <= exit_pos.y()+0.1) {
+        double distance = Math.sqrt(Math.pow(ghost_Pos.x() - exit_pos.x(), 2) + Math.pow(ghost_Pos.y() - exit_pos.y(), 2));
+    
+        if (distance < COLLISION_THRESHOLD) {
             g.setPos(initialPos);
             g.setMort(false);
         } else {
             Direction[] directions = Ghost_Direction.nextDirection_Blinky(g, exit_pos, deltaTNanoSeconds);
             g.setPos(nextPos(directions, g, config, deltaTNanoSeconds));
         }
-    }
+            }
 }

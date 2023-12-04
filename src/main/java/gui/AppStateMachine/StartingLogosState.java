@@ -177,6 +177,7 @@ public class StartingLogosState implements State {
             for (ImageView ghost : ghosts) {
                 ghost.setVisible(false);
                 starting_logos.getChildren().add(ghost);
+                skipText.toFront();
             }
             Timeline zizi = new Timeline(new KeyFrame(Duration.seconds(0.2), event2 -> {
                 for (ImageView ghost : ghosts) {
