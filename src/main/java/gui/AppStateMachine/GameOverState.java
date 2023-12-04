@@ -37,6 +37,7 @@ public class GameOverState implements State {
     }
 
     public void enter() {
+        App.screen.setOnKeyPressed(null);
         restart_menu.getChildren().clear(); // Clear any added Texts when entering the state
         BorderPane gameOverPane = new BorderPane();
         gameOverPane.setMinSize(App.screen.getWidth(), App.screen.getHeight());
