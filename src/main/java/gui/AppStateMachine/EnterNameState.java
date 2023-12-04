@@ -22,6 +22,9 @@ public class EnterNameState implements State {
     Image img = new Image(getClass().getResourceAsStream("/start.gif"));
     ImageView view = new ImageView(img);
 
+    Image beforeImage =new Image(getClass().getResourceAsStream("/start_gris_png.png"));
+    ImageView beforeImageView = new ImageView(beforeImage);
+
 
     private String state_name = "EnterName State";
 
@@ -51,7 +54,7 @@ public class EnterNameState implements State {
         start_button.setStyle("-fx-background-color: black");
 
 
-        start_button.setCenter(view);
+        start_button.setCenter(beforeImageView);
 
         return start_button;
     }
