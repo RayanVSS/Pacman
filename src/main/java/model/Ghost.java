@@ -92,6 +92,10 @@ public enum Ghost implements Critter {
         this.initialPos = initialPos;
     }
 
+    public boolean getSortie(){
+        return sortie;
+    }
+
     public void setExit_pos(RealCoordinates exit_pos) {
         this.exit_pos = exit_pos;
     }

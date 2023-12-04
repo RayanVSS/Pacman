@@ -223,7 +223,7 @@ public final class PacMan implements Critter {
     public void handleCollisionsWithGhosts(MazeState maze) {
         var pacPos = PacMan.INSTANCE.getPos();
         for (var critter : maze.getCritters()) {
-            if (critter instanceof Ghost && !((Ghost) critter).isMort() && !iszhonya) {
+            if (critter instanceof Ghost && !((Ghost) critter).isMort() && !iszhonya && ((Ghost) critter).getSortie()) {
                 var ghostPos = critter.getPos();
                 double distance = Math.sqrt(Math.pow(pacPos.x() - ghostPos.x(), 2) + Math.pow(pacPos.y() - ghostPos.y(), 2));
                 if (distance < COLLISION_THRESHOLD) {
