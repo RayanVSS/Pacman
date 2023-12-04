@@ -2,6 +2,8 @@ package model;
 
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 
@@ -27,8 +29,17 @@ public final class PacMan implements Critter {
     private Timeline temps_vitesseM = new Timeline(new KeyFrame(Duration.seconds(3)));
     public boolean isDead = false;
 
+    private MediaPlayer mediaPlayerTimeStop;
 
     private PacMan() {
+        try {
+            String path = "/sounds/dio-time-stop.mp3";
+            mediaPlayerTimeStop = new MediaPlayer(new Media(getClass().getResource(path).toString()));
+            mediaPlayerTimeStop.setCycleCount(1);
+        } catch (Exception e) {
+            System.out.println("Erreur de lecture du fichier audio de time stop");
+            e.printStackTrace();
+        }
         temps.setCycleCount(1);
     }
 
@@ -204,6 +215,8 @@ public final class PacMan implements Critter {
             }
             else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ZHONYA){
                 maze.addScore(50);
+                if(mediaPlayerTimeStop != null)
+                mediaPlayerTimeStop.play();
                 Platform.runLater(() -> {
                     PlayingState.getInstance().changeWallToKhaki();
                 });

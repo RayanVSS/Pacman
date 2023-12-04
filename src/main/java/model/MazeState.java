@@ -6,6 +6,7 @@ import geometry.RealCoordinates;
 import gui.App;
 import gui.AppStateMachine.PlayingState;
 import gui.Controller.PacmanController;
+import javafx.scene.media.Media;
 import gui.AppStateMachine.GameOverState;
 import gui.AppStateMachine.MazeWinState;
 
@@ -31,7 +32,12 @@ public final class MazeState {
     private final Map<Critter, RealCoordinates> initialPos;
     private int lives = 3;
 
+    private Media mediaDeath = new Media(getClass().getResource("/sounds/explosion.mp3").toString());
+    private javafx.scene.media.MediaPlayer mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
+
     public MazeState(MazeConfig config) {
+        if(mediaPlayerDeath != null)
+        mediaPlayerDeath.setCycleCount(1);
         this.config = config;
         height = config.getHeight();
         width = config.getWidth();
@@ -213,6 +219,11 @@ public final class MazeState {
     }
 
     public void playerLost() {
+        if(mediaPlayerDeath != null){
+            mediaPlayerDeath.stop();
+            mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
+            mediaPlayerDeath.play();
+        }
         Shake shake = new Shake(PlayingState.getInstance().game_root);
         PacMan.INSTANCE.playDeathAnimation();
         PlayingState.getInstance().gameView.stop();
