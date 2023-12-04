@@ -19,6 +19,10 @@ import lib.ElementScaler;
 import lib.FontLoader;
 
 public class EnterNameState implements State {
+    Image img = new Image(getClass().getResourceAsStream("/start.gif"));
+    ImageView view = new ImageView(img);
+
+
     private String state_name = "EnterName State";
 
     private static final EnterNameState instance = new EnterNameState();
@@ -45,19 +49,9 @@ public class EnterNameState implements State {
         start_button.setMaxWidth(App.screen.getWidth());
 
         start_button.setStyle("-fx-background-color: black");
-        Label start_button_text = new Label(
-                "Appuyer sur Entree pour lancer une partie" + "\n" + "apres avoir tapper votre nom !");
-        start_button_text.setTextAlignment(TextAlignment.CENTER);
 
-        Image img = new Image(getClass().getResourceAsStream("/start.gif"));
-        ImageView view = new ImageView(img);
-
-        start_button_text.setFont(pixel_font);
-        start_button_text.setTextFill(javafx.scene.paint.Color.WHITE);
 
         start_button.setCenter(view);
-        start_button.setBottom(start_button_text);
-        BorderPane.setAlignment(start_button_text, Pos.BOTTOM_CENTER);
 
         return start_button;
     }
