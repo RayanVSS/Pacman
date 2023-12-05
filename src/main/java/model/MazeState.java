@@ -223,7 +223,11 @@ public final class MazeState {
 
     public void playerLost() {
         Shake shake = new Shake(PlayingState.getInstance().game_root);
-        PacMan.INSTANCE.playDeathAnimation();
+        if(mediaPlayerDeath != null){
+            mediaPlayerDeath.stop();
+            mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
+            mediaPlayerDeath.play();
+        }
         PlayingState.getInstance().gameView.stop();
         shake.play();
         PlayingState.getInstance().canPause = false;

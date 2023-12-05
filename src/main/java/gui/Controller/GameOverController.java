@@ -1,6 +1,7 @@
 package gui.Controller;
 
 import gui.App;
+import gui.AppStateMachine.HomeScreenState;
 import gui.AppStateMachine.PlayingState;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,6 +16,10 @@ public class GameOverController {
 
         if (event.getCode() == KeyCode.ESCAPE){
             System.exit(0);
+        }
+
+        if(event.getCode() == KeyCode.M){
+            App.app_state.changeState(HomeScreenState.getInstance());
         }
     }
 

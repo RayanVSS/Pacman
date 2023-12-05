@@ -237,8 +237,12 @@ public final class PacMan implements Critter {
             }
             else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ZHONYA){
                 maze.addScore(50);
-                if(mediaPlayerTimeStop != null)
-                mediaPlayerTimeStop.play();
+                if(mediaPlayerTimeStop != null){
+                    mediaPlayerTimeStop.stop();
+                    mediaPlayerTimeStop = new javafx.scene.media.MediaPlayer(new Media(getClass().getResource("/sounds/dio-time-stop.mp3").toString()));
+                    mediaPlayerTimeStop.setCycleCount(1);
+                    mediaPlayerTimeStop.play();
+                }
                 Platform.runLater(() -> {
                     PlayingState.getInstance().changeWallToKhaki();
                 });

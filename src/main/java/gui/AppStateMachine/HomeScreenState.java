@@ -13,17 +13,11 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.control.TextField;
-import javafx.stage.Screen;
-import lib.FontLoader;
-
-import animatefx.animation.Bounce;
 import lib.FontLoader;
 
 import animatefx.animation.BounceIn;
 import animatefx.animation.GlowText;
 import lib.State;
-import lib.ElementScaler;
 
 public class HomeScreenState implements State {
     private String state_name = "Home Screen State";
@@ -73,7 +67,7 @@ public class HomeScreenState implements State {
         glowText.setCycleCount(GlowText.INDEFINITE);
         glowText.play();
 
-        Text instructions = new Text("Appuyer sur ENTREE pour debuter !");
+        Text instructions = new Text("Appuyez sur ENTREE pour debuter !");
         instructions.setFont(pixel_font);
         instructions.setTextAlignment(TextAlignment.CENTER);
         instructions.setFill(javafx.scene.paint.Color.WHITE);
@@ -107,36 +101,6 @@ public class HomeScreenState implements State {
         BorderPane.setAlignment(echap_text, Pos.BOTTOM_LEFT);
 
 
-        // We want to add at the top of the screen a field to type our name
-        Label name_label = new Label("Entrez votre nom : ");
-        name_label.setFont(pixel_font);
-        name_label.setTextFill(javafx.scene.paint.Color.WHITE);
-        name_label.setTextAlignment(TextAlignment.CENTER);
-        start_menu.setTop(name_label);
-        BorderPane.setAlignment(name_label, Pos.TOP_CENTER);
-        TextField name_field = new TextField();
-        name_field.setStyle("-fx-text-alignment: center; -fx-text-fill: white;");
-        name_field.setAlignment(Pos.CENTER);
-        name_field.textProperty().addListener((observable, oldValue, newValue) -> {
-            //We want to limit the size of the name to 8 characters max and to not allow special characters and if the character is uppercase we want to put it in lowercase
-            if(newValue.length() > 8 || newValue.matches(".*[^a-zA-Z].*")){
-                name_field.setText(oldValue);
-                //We want to display a message to the user to tell him that he can't use special characters
-                name_label.setText("Entrez votre nom : " + "\n" + userName + "\n" + "Caractere speciaux interdits");
-            }
-            else{
-                if(newValue.matches(
-                    ".*[A-Z].*"
-                )){
-                    newValue = newValue.toLowerCase();
-                }
-                System.out.println(newValue);   
-                userName = newValue;
-                name_field.setText(userName);
-                name_label.setText("Entrez votre nom : " + "\n" + userName);
-            }
-        });
-        start_menu.getChildren().add(name_field);
         var homeScreenController = new HomeScreenController();
         App.screen.setOnKeyPressed(homeScreenController::keyPressedHandler);
         App.screen.setOnMouseClicked(new EventHandler<Event>() {
