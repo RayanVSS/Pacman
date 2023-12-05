@@ -38,6 +38,7 @@ public class MazeLoad {
             Boolean vitesseP=false;
             boolean vitesseM=false;
             boolean heal=false;
+            boolean TeteDeMort=false;
             Cell[][] cells = new Cell[type_list.length()][type_list.getJSONArray(0).length()];
 
 
@@ -63,6 +64,9 @@ public class MazeLoad {
                     } else if (aleatoire() && value.equals(".") && !heal) {
                         value = "HEAL";
                         heal = true;
+                    } else if (aleatoire() && value.equals(".") && !TeteDeMort) {
+                        value = "TeteDeMort";
+                        TeteDeMort = true;
                     }
                 
                     cells[i][j] = Cell.withContent(type, value);
@@ -88,7 +92,7 @@ public class MazeLoad {
     }
     public static boolean aleatoire() {
         Random rand = new Random();
-        int n = rand.nextInt(200);
+        int n = rand.nextInt(100);
         if (n < 1) {
             return true;
         }

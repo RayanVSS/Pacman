@@ -2,8 +2,7 @@ package config;
 import model.Direction;
 
 public record Cell(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, Cell.Content initialContent) {
-    public enum Content { NOTHING, DOT, ENERGIZER, GHOST_DOOR,ZHONYA,vitesseP,
-        vitesseM,HEAL
+    public enum Content { NOTHING, DOT, ENERGIZER, GHOST_DOOR,ZHONYA,vitesseP,vitesseM,HEAL,TeteDeMort
     };
     
     // FIXME: all these factories are convenient, but it is not very "economic" to have so many methods!
@@ -32,7 +31,7 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
     
     public boolean hasDot(){
         return initialContent == Content.DOT || initialContent == Content.ENERGIZER || initialContent == Content.ZHONYA|| initialContent == Content.vitesseP 
-        || initialContent == Content.vitesseM|| initialContent == Content.HEAL
+        || initialContent == Content.vitesseM|| initialContent == Content.HEAL || initialContent == Content.TeteDeMort
         ;  
     }
     public Content getContent() {
@@ -46,6 +45,7 @@ public record Cell(boolean northWall, boolean eastWall, boolean southWall, boole
             case "vitesseP" -> Content.vitesseP;
             case "vitesseM" -> Content.vitesseM;
             case "HEAL" -> Content.HEAL;
+            case "TeteDeMort" -> Content.TeteDeMort;
             case "ENERGIZER" -> Content.ENERGIZER;
             default -> Content.NOTHING;
         };

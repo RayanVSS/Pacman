@@ -199,6 +199,12 @@ public class PlayingState extends App implements State {
         }
     }
 
+    public void changeWallToGray() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.GREY);
+        }
+    }
+
     public void enter() {
         App.screen.setRoot(game);
     }

@@ -7,6 +7,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 
+import javax.print.DocFlavor.STRING;
+
 import config.Cell;
 import geometry.RealCoordinates;
 import gui.AppStateMachine.PlayingState;
@@ -23,19 +25,25 @@ public final class PacMan implements Critter {
     private boolean iszhonya = false;
     private boolean isvitesseP = false;
     private boolean isvitesseM = false;
+    private Boolean isTeteDeMort = false;
     private final double COLLISION_THRESHOLD = 0.5;
     private Timeline temps_zhonya = new Timeline(new KeyFrame(Duration.seconds(3)));
     private Timeline temps_vitesseP = new Timeline(new KeyFrame(Duration.seconds(3)));
     private Timeline temps_vitesseM = new Timeline(new KeyFrame(Duration.seconds(3)));
+    private Timeline temps_TeteDeMort = new Timeline(new KeyFrame(Duration.seconds(1)));
     private boolean isDead = false;
 
     private MediaPlayer mediaPlayerTimeStop;
+    private MediaPlayer mediaPlayerThanos;
 
     private PacMan() {
         try {
             String path = "/sounds/dio-time-stop.mp3";
+            String thanos = "/sounds/thanos.mp3";
             mediaPlayerTimeStop = new MediaPlayer(new Media(getClass().getResource(path).toString()));
             mediaPlayerTimeStop.setCycleCount(1);
+            mediaPlayerThanos = new MediaPlayer(new Media(getClass().getResource(thanos).toString()));
+            mediaPlayerThanos.setCycleCount(1);
         } catch (Exception e) {
             System.out.println("Erreur de lecture du fichier audio de time stop");
             e.printStackTrace();
@@ -117,6 +125,9 @@ public final class PacMan implements Critter {
         if(temps_vitesseM.getStatus() == Timeline.Status.PAUSED){
             temps_vitesseM.playFrom(Duration.seconds(temps_vitesseM.getCurrentTime().toSeconds()));
         }
+        if(temps_TeteDeMort.getStatus() == Timeline.Status.PAUSED){
+            temps_TeteDeMort.playFrom(Duration.seconds(temps_TeteDeMort.getCurrentTime().toSeconds()));
+        }
     }
 
     public void pause(){
@@ -124,6 +135,7 @@ public final class PacMan implements Critter {
         temps_zhonya.pause();
         temps_vitesseP.pause();
         temps_vitesseM.pause();
+        temps_TeteDeMort.pause();
     }
 
     public boolean isvitesseM() {
@@ -162,11 +174,19 @@ public final class PacMan implements Critter {
         }
     }
 
+    public void resetTeteDeMort() {
+        if(isTeteDeMort){
+            temps_TeteDeMort.stop();
+            isTeteDeMort = false;
+        }
+    }
+
     public void resetAll() {
         resetEnergizer();
         resetZhonya();
         resetVitesseP();
         resetVitesseM();
+        resetTeteDeMort();
     }
 
     public boolean verif_fin() {
@@ -208,6 +228,15 @@ public final class PacMan implements Critter {
     public void fin_vitesseM(MazeState maze) {
         if (isvitesseM && temps_vitesseM.getStatus() == Timeline.Status.STOPPED) {
             isvitesseM = false;
+            Platform.runLater(() -> {
+                PlayingState.getInstance().changeWallToBlue();
+            });
+        }
+    }
+
+    public void fin_TeteDeMort(MazeState maze) {
+        if (isTeteDeMort && temps_TeteDeMort.getStatus() == Timeline.Status.STOPPED) {
+            isTeteDeMort = false;
             Platform.runLater(() -> {
                 PlayingState.getInstance().changeWallToBlue();
             });
@@ -273,6 +302,22 @@ public final class PacMan implements Critter {
             maze.setGridState(true, pos.round().y(), pos.round().x());
             maze.setLives(maze.getLives()+1);
             
+            }
+        else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.TeteDeMort){
+            maze.addScore(50);
+            maze.setGridState(true, pos.round().y(), pos.round().x());
+            isTeteDeMort = true;
+            temps_TeteDeMort.play();
+            Platform.runLater(() -> {
+                    PlayingState.getInstance().changeWallToGray();
+                });
+                if(mediaPlayerThanos != null)
+                mediaPlayerThanos.play();
+            for (var critter : maze.getCritters()) {
+                if (critter instanceof Ghost) {
+                    ((Ghost) critter).setMort(true);
+                    maze.resetGhost((Ghost) critter);
+                }}
             }
         
     }
