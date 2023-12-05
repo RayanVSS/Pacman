@@ -7,6 +7,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 
+import static config.Cell.Content.vitesseP;
+
 import javax.print.DocFlavor.STRING;
 
 import config.Cell;
@@ -76,6 +78,11 @@ public final class PacMan implements Critter {
     public void setPos(RealCoordinates pos) {
         this.pos = pos;
     }
+
+    public boolean ActifBonus(){
+        return iszhonya || isvitesseP|| isvitesseM || isTeteDeMort;
+    }
+
 
     public boolean getzhonya(){
         return iszhonya;
@@ -207,9 +214,11 @@ public final class PacMan implements Critter {
     public void fin_zhonya(MazeState maze) {
         if (iszhonya && temps_zhonya.getStatus() == Timeline.Status.STOPPED) {
             iszhonya = false;
+            if (!ActifBonus()) {
             Platform.runLater(() -> {
                 PlayingState.getInstance().changeWallToBlue();
             });
+        }
             if(isEnergized()){
                 temps.playFrom(Duration.seconds(temps.getCurrentTime().toSeconds()));
             }
@@ -219,28 +228,31 @@ public final class PacMan implements Critter {
     public void fin_vitesseP(MazeState maze) {
         if (isvitesseP && temps_vitesseP.getStatus() == Timeline.Status.STOPPED) {
             isvitesseP = false;
+            if (!ActifBonus()) {
             Platform.runLater(() -> {
                 PlayingState.getInstance().changeWallToBlue();
             });
-        }
+        }}
     }
 
     public void fin_vitesseM(MazeState maze) {
         if (isvitesseM && temps_vitesseM.getStatus() == Timeline.Status.STOPPED) {
             isvitesseM = false;
+            if (!ActifBonus()) {
             Platform.runLater(() -> {
                 PlayingState.getInstance().changeWallToBlue();
             });
-        }
+        }}
     }
 
     public void fin_TeteDeMort(MazeState maze) {
         if (isTeteDeMort && temps_TeteDeMort.getStatus() == Timeline.Status.STOPPED) {
             isTeteDeMort = false;
+            if (!ActifBonus()) {
             Platform.runLater(() -> {
                 PlayingState.getInstance().changeWallToBlue();
             });
-        }
+        }}
     }
 
     public void handlePacManPoints(MazeState maze) {
