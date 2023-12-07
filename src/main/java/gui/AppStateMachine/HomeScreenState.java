@@ -2,8 +2,6 @@ package gui.AppStateMachine;
 
 import gui.App;
 import gui.Controller.HomeScreenController;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -79,6 +77,8 @@ public class HomeScreenState implements State {
     }
 
     public void enter() {
+        App.screen.setOnKeyPressed(null);
+        App.screen.setOnMouseClicked(null);
         start_menu.getChildren().clear();
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setStartTime(javafx.util.Duration.seconds(25));
@@ -100,18 +100,15 @@ public class HomeScreenState implements State {
         start_menu.setBottom(echap_text);
         BorderPane.setAlignment(echap_text, Pos.BOTTOM_LEFT);
 
+        Text r_text = new Text("R pour supprimer les scores");
+        r_text.setFont(pixel_font);
+        r_text.setTextAlignment(TextAlignment.LEFT);
+        r_text.setFill(javafx.scene.paint.Color.DARKRED);
+        start_menu.setTop(r_text);
+        BorderPane.setAlignment(r_text, Pos.TOP_RIGHT);
 
         var homeScreenController = new HomeScreenController();
         App.screen.setOnKeyPressed(homeScreenController::keyPressedHandler);
-        App.screen.setOnMouseClicked(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                if (event.getEventType().equals(javafx.scene.input.MouseEvent.MOUSE_CLICKED)) {
-                    App.app_state.changeState(PlayingState.getInstance());
-                }
-            }
-        });
-
         App.screen.setRoot(start_menu);
     }
 
