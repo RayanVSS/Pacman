@@ -218,7 +218,7 @@ public final class MazeState {
                 }
             }
         }
-        App.app_state.changeState(MazeWinState.getInstance());
+        PlayingState.getInstance().nextLevel();
     }
 
     public void playerLost() {
@@ -310,5 +310,10 @@ public final class MazeState {
 
     public void resetScore() {
         score = 0;
+    }
+
+    public void setScore(int s) {
+        score = s;
+        PlayingState.getInstance().score_graphics.setText("" + score);
     }
 }
