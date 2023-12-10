@@ -173,14 +173,6 @@ public class PlayingState extends App implements State {
         topBox.setPadding(new javafx.geometry.Insets(5));
 
         game_screen.setTop(topBox);
-    
-
-        BorderPane topBox = new BorderPane();
-        topBox.setLeft(score_graphics);
-        topBox.setRight(pauseText);
-        topBox.setPadding(new javafx.geometry.Insets(5));
-
-        game_screen.setTop(topBox);
 
         game.getChildren().add(game_screen);
         Text levelText = new Text("Niveau " + level);
@@ -196,34 +188,6 @@ public class PlayingState extends App implements State {
             canPause = true;
         });
         intro.play();
-    }
-
-    public ArrayList<GraphicsUpdater> getGraphicsUpdaters() {
-        return gameView.getGraphicsUpdaters();
-    }
-
-    public void changeWallToKhaki() {
-        for (var updater : getGraphicsUpdaters()) {
-            updater.changeColor(javafx.scene.paint.Color.KHAKI);
-        }
-    }
-
-    public void changeWallToBlue() {
-        for (var updater : getGraphicsUpdaters()) {
-            updater.changeColor(javafx.scene.paint.Color.BLUE);
-        }
-    }
-
-    public void changeWallToRoyalBlue() {
-        for (var updater : getGraphicsUpdaters()) {
-            updater.changeColor(javafx.scene.paint.Color.ROYALBLUE);
-        }
-    }
-
-    public void changeWallToRed() {
-        for (var updater : getGraphicsUpdaters()) {
-            updater.changeColor(javafx.scene.paint.Color.RED);
-        }
     }
 
     public ArrayList<GraphicsUpdater> getGraphicsUpdaters() {
