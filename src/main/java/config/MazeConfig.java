@@ -7,7 +7,7 @@ public class MazeConfig {
     private static MazeLoad mazeLoad = new MazeLoad();
 
     public MazeConfig(Cell[][] grid, IntCoordinates pacManPos, IntCoordinates blinkyPos, IntCoordinates pinkyPos,
-            IntCoordinates inkyPos, IntCoordinates clydePos, IntCoordinates exit_pos) {
+                      IntCoordinates inkyPos, IntCoordinates clydePos ,IntCoordinates exit_pos) {
         this.grid = new Cell[grid.length][grid[0].length];
         for (int i = 0; i < getHeight(); i++) {
             if (getWidth() >= 0)

@@ -13,6 +13,8 @@ import animatefx.animation.BounceIn;
 
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+
 import config.MazeConfig;
 import gui.App;
 import javafx.scene.image.Image;
@@ -121,12 +123,16 @@ public class PlayingState extends App implements State {
         game_screen.setStyle("-fx-background-color: black;");
 
         int previousScore = 0;
+        int previousLives = 3;
 
-        if(maze != null && nextLevel)
+        if(maze != null && nextLevel){
             previousScore = maze.getScore();
-        nextLevel = false;
+            previousLives = maze.getLives();
+            nextLevel = false;
+        }
         maze = new MazeState(MazeConfig.makeMaze(level));
         maze.setScore(previousScore);
+        maze.setLives(previousLives);
 
         score_graphics = createScoreGraphics();
         life_graphics_update(maze.getLives());
@@ -158,6 +164,7 @@ public class PlayingState extends App implements State {
 
         HBox bottomBox = new HBox(lifeText, life_graphics);
         game_screen.setBottom(bottomBox);
+
 
         // Ajoutez score_graphics en haut du BorderPane
         Text pauseText = new Text("Echap : Pause");
@@ -212,6 +219,12 @@ public class PlayingState extends App implements State {
     public void changeWallToRed() {
         for (var updater : getGraphicsUpdaters()) {
             updater.changeColor(javafx.scene.paint.Color.RED);
+        }
+    }
+
+    public void changeWallToGray() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.GREY);
         }
     }
 
