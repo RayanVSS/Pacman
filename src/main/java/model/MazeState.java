@@ -36,8 +36,15 @@ public final class MazeState {
     private javafx.scene.media.MediaPlayer mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
 
     public MazeState(MazeConfig config) {
-        if(mediaPlayerDeath != null)
-        mediaPlayerDeath.setCycleCount(1);
+        if(mediaPlayerDeath != null){
+            mediaPlayerDeath.setCycleCount(1);
+            mediaPlayerDeath.setOnEndOfMedia(() -> {
+                mediaPlayerDeath.stop();
+                mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
+                mediaPlayerDeath.seek(javafx.util.Duration.ZERO);
+                mediaPlayerDeath.setCycleCount(1);
+            });
+        }
         this.config = config;
         height = config.getHeight();
         width = config.getWidth();
@@ -194,6 +201,7 @@ public final class MazeState {
         PacMan.INSTANCE.fin_zhonya(this);
         PacMan.INSTANCE.fin_vitesseP(this);
         PacMan.INSTANCE.fin_vitesseM(this);
+        PacMan.INSTANCE.fin_TeteDeMort(this);
         gameisWon();
     }
 
@@ -224,13 +232,12 @@ public final class MazeState {
     public void playerLost() {
         Shake shake = new Shake(PlayingState.getInstance().game_root);
         if(mediaPlayerDeath != null){
-            mediaPlayerDeath.stop();
-            mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
             mediaPlayerDeath.play();
         }
         PlayingState.getInstance().gameView.stop();
         shake.play();
         PlayingState.getInstance().canPause = false;
+        PacMan.INSTANCE.setDead(true);
         shake.setOnFinished(e -> {
             resetCritters();
             lives--;
@@ -269,6 +276,7 @@ public final class MazeState {
             ((PacMan) critter).resetZhonya();
             ((PacMan) critter).resetVitesseP();
             ((PacMan) critter).resetVitesseM();
+            ((PacMan) critter).resetTeteDeMort();
         }
 
     }

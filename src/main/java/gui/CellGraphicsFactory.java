@@ -23,13 +23,15 @@ public class CellGraphicsFactory {
     private ImageView vitessePImage ;
     private ImageView vitesseMImage;
     private ImageView healImage;
+    private ImageView TeteDeMortImage;
 
     public CellGraphicsFactory(double scale) {
         this.scale = scale;
         zhonya = new ImageView("zon.gif");
         vitessePImage = new ImageView("boots.gif");
         vitesseMImage = new ImageView("bootsM.gif");
-         healImage = new ImageView("vie.gif");
+        healImage = new ImageView("vie.gif");
+        TeteDeMortImage = new ImageView("TeteDeMort.gif");
     }
 
     public GraphicsUpdater makeGraphics(MazeState state, IntCoordinates pos) {
@@ -69,6 +71,13 @@ public class CellGraphicsFactory {
             healImage.setFitHeight(scale /2);
             // Ajoutez l'ImageView à votre groupe
             group.getChildren().add(healImage);
+        } else if (cell.getContent() == Cell.Content.TeteDeMort) {
+            TeteDeMortImage.setX(scale / 4);
+            TeteDeMortImage.setY(scale / 4);
+            TeteDeMortImage.setFitWidth(scale /2);
+            TeteDeMortImage.setFitHeight(scale /2);
+            // Ajoutez l'ImageView à votre groupe
+            group.getChildren().add(TeteDeMortImage);
             
         } else {
             dot.setRadius(switch (cell.initialContent()) {
@@ -80,6 +89,7 @@ public class CellGraphicsFactory {
                 case vitesseP -> 0;
                 case vitesseM -> 0;
                 case HEAL -> 0;
+                case TeteDeMort -> 0;
             });
             dot.setCenterX(scale / 2);
             dot.setCenterY(scale / 2);

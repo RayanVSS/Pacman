@@ -13,6 +13,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import lib.FontLoader;
 
+import animatefx.animation.Bounce;
+import lib.FontLoader;
+
 import animatefx.animation.BounceIn;
 import animatefx.animation.GlowText;
 import lib.State;
