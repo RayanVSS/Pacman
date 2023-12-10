@@ -123,12 +123,16 @@ public class PlayingState extends App implements State {
         game_screen.setStyle("-fx-background-color: black;");
 
         int previousScore = 0;
+        int previousLives = 3;
 
-        if(maze != null && nextLevel)
+        if(maze != null && nextLevel){
             previousScore = maze.getScore();
-        nextLevel = false;
+            previousLives = maze.getLives();
+            nextLevel = false;
+        }
         maze = new MazeState(MazeConfig.makeMaze(level));
         maze.setScore(previousScore);
+        maze.setLives(previousLives);
 
         score_graphics = createScoreGraphics();
         life_graphics_update(maze.getLives());

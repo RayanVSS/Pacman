@@ -44,7 +44,25 @@ public final class PacMan implements Critter {
             String thanos = "/sounds/thanos.mp3";
             mediaPlayerTimeStop = new MediaPlayer(new Media(getClass().getResource(path).toString()));
             mediaPlayerTimeStop.setCycleCount(1);
+            mediaPlayerTimeStop.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    mediaPlayerTimeStop.stop();
+                    mediaPlayerTimeStop = new MediaPlayer(new Media(getClass().getResource(path).toString()));
+                    mediaPlayerTimeStop.setCycleCount(1);
+                    mediaPlayerTimeStop.seek(Duration.ZERO);
+                }
+            });
             mediaPlayerThanos = new MediaPlayer(new Media(getClass().getResource(thanos).toString()));
+            mediaPlayerThanos.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    mediaPlayerThanos.stop();
+                    mediaPlayerThanos = new MediaPlayer(new Media(getClass().getResource(thanos).toString()));
+                    mediaPlayerThanos.setCycleCount(1);
+                    mediaPlayerThanos.seek(Duration.ZERO);
+                }
+            });
             mediaPlayerThanos.setCycleCount(1);
         } catch (Exception e) {
             System.out.println("Erreur de lecture du fichier audio de time stop");
@@ -359,7 +377,7 @@ public final class PacMan implements Critter {
             maze.resetGhost(ghost);
         } else {
             if (!isDead)
-                maze.playerLost();
+            maze.playerLost();
         }
     }
 
