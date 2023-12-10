@@ -219,12 +219,16 @@ public final class MazeState {
                 }
             }
         }
-        App.app_state.changeState(MazeWinState.getInstance());
+        PlayingState.getInstance().nextLevel();
     }
 
     public void playerLost() {
         Shake shake = new Shake(PlayingState.getInstance().game_root);
-        PacMan.INSTANCE.playDeathAnimation();
+        if(mediaPlayerDeath != null){
+            mediaPlayerDeath.stop();
+            mediaPlayerDeath = new javafx.scene.media.MediaPlayer(mediaDeath);
+            mediaPlayerDeath.play();
+        }
         PlayingState.getInstance().gameView.stop();
         shake.play();
         PlayingState.getInstance().canPause = false;
@@ -308,5 +312,10 @@ public final class MazeState {
 
     public void resetScore() {
         score = 0;
+    }
+
+    public void setScore(int s) {
+        score = s;
+        PlayingState.getInstance().score_graphics.setText("" + score);
     }
 }

@@ -9,9 +9,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class MazeLoad {
-    public Cell[][] make() {
+    public Cell[][] make(int level) {
         // load a maze from a json file
-        String file = "src/main/java/config/maze.json";
+        String file = "src/main/java/config/maze1.json";
+        switch (level) {
+            case 1:
+                file = "src/main/java/config/maze1.json";
+                break;
+            default:
+                break;
+        }
 
         try {
             String content = new String(Files.readAllBytes(Paths.get(file)));

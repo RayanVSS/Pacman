@@ -9,6 +9,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import animatefx.animation.BounceIn;
+
+import java.util.ArrayList;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,8 @@ public class PlayingState extends App implements State {
     public BorderPane game_root = new BorderPane();
 
     public boolean canPause = true;
+    private boolean nextLevel = false;
+    public int level = 1;
 
     private String musicFileName = "/ost/epic-hybrid.mp3";
     private Media mediaNormalMusic = new Media(getClass().getResource(musicFileName).toString());
@@ -65,8 +70,6 @@ public class PlayingState extends App implements State {
 
     public MazeState maze;
     public GameView gameView;
-
-    public int bestScore = 0;
 
     private PlayingState() {
         // Constructeur privé pour empêcher la création d'autres instances
@@ -119,7 +122,13 @@ public class PlayingState extends App implements State {
 
         game_screen.setStyle("-fx-background-color: black;");
 
-        maze = new MazeState(MazeConfig.makeExample1());
+        int previousScore = 0;
+
+        if(maze != null && nextLevel)
+            previousScore = maze.getScore();
+        nextLevel = false;
+        maze = new MazeState(MazeConfig.makeMaze(level));
+        maze.setScore(previousScore);
 
         score_graphics = createScoreGraphics();
         life_graphics_update(maze.getLives());
@@ -166,9 +175,55 @@ public class PlayingState extends App implements State {
         game_screen.setTop(topBox);
     
 
-        gameView.animate();
+        BorderPane topBox = new BorderPane();
+        topBox.setLeft(score_graphics);
+        topBox.setRight(pauseText);
+        topBox.setPadding(new javafx.geometry.Insets(5));
+
+        game_screen.setTop(topBox);
 
         game.getChildren().add(game_screen);
+        Text levelText = new Text("Niveau " + level);
+        levelText.setFill(javafx.scene.paint.Color.WHITE);
+        levelText.setFont(pixel_font);
+        game.getChildren().add(levelText);
+        BounceIn intro = new BounceIn(game_root);
+        canPause = false;
+        intro.setOnFinished(e -> {
+            intro.stop();
+            game.getChildren().remove(levelText);
+            gameView.animate();
+            canPause = true;
+        });
+        intro.play();
+    }
+
+    public ArrayList<GraphicsUpdater> getGraphicsUpdaters() {
+        return gameView.getGraphicsUpdaters();
+    }
+
+    public void changeWallToKhaki() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.KHAKI);
+        }
+    }
+
+    public void changeWallToBlue() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.BLUE);
+        }
+    }
+
+    public void changeWallToRoyalBlue() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.ROYALBLUE);
+        }
+    }
+
+    public void changeWallToRed() {
+        for (var updater : getGraphicsUpdaters()) {
+            updater.changeColor(javafx.scene.paint.Color.RED);
+        }
     }
 
     public ArrayList<GraphicsUpdater> getGraphicsUpdaters() {
@@ -211,6 +266,14 @@ public class PlayingState extends App implements State {
 
     public void exit() {
         gameView.stop();
+    }
+
+    public void nextLevel(){
+        nextLevel = true;
+        level++;
+        gameView.stop();
+        game.getChildren().clear();
+        initializeMaze();
     }
 
     public void transitionTo(State s) {

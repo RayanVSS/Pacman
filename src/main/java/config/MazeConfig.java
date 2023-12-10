@@ -1,6 +1,7 @@
 package config;
 
 import geometry.IntCoordinates;
+import gui.AppStateMachine.PlayingState;
 
 public class MazeConfig {
     private static MazeLoad mazeLoad = new MazeLoad();
@@ -9,7 +10,8 @@ public class MazeConfig {
                       IntCoordinates inkyPos, IntCoordinates clydePos ,IntCoordinates exit_pos) {
         this.grid = new Cell[grid.length][grid[0].length];
         for (int i = 0; i < getHeight(); i++) {
-            if (getWidth() >= 0) System.arraycopy(grid[i], 0, this.grid[i], 0, getHeight());
+            if (getWidth() >= 0)
+                System.arraycopy(grid[i], 0, this.grid[i], 0, getHeight());
         }
         this.pacManPos = pacManPos;
         this.blinkyPos = blinkyPos;
@@ -58,16 +60,23 @@ public class MazeConfig {
         return grid[Math.floorMod(pos.y(), getHeight())][Math.floorMod(pos.x(), getWidth())];
     }
 
+    public static MazeConfig makeMaze(int level) {
+        switch (level) {
+            case 1:
+                return makeLevel1();
+            default:
+                PlayingState.getInstance().level = 1;
+                return makeLevel1();
+        }
+    }
 
-    // simple example with a square shape
-    public static MazeConfig makeExample1() {
-        return new MazeConfig(mazeLoad.make(),
+    public static MazeConfig makeLevel1() {
+        return new MazeConfig(mazeLoad.make(1),
                 new IntCoordinates(7, 7),
                 new IntCoordinates(6, 6),
                 new IntCoordinates(8, 5),
                 new IntCoordinates(6, 5),
                 new IntCoordinates(8, 6),
-                new IntCoordinates(7, 4)
-        );
+                new IntCoordinates(7, 4));
     }
 }
