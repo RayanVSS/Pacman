@@ -64,6 +64,24 @@ public class MazeConfig {
         switch (level) {
             case 1:
                 return makeLevel1();
+            case 2:
+                return makeLevel1();
+            case 3:
+                return makeLevel1();
+            case 4:
+                return makeLevel1();
+            case 5:
+                return makeLevel1();
+            case 6:
+                return makeLevel1();
+            case 7:
+                return makeLevel1();
+            case 8:
+                return makeLevel1();
+            case 9:
+                return makeLevel1();
+            case 10:
+                return makeLevel1();
             default:
                 PlayingState.getInstance().level = 1;
                 return makeLevel1();

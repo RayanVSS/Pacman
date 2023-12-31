@@ -13,7 +13,7 @@ public class MazeLoad {
         // load a maze from a json file
         String file = "src/main/java/config/maze1.json";
         switch (level) {
-            case 1:
+            case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10:
                 file = "src/main/java/config/maze1.json";
                 break;
             default:

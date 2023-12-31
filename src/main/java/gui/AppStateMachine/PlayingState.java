@@ -236,6 +236,10 @@ public class PlayingState extends App implements State {
         gameView.stop();
     }
 
+    public int getLevel(){
+        return level;
+    }
+
     public void nextLevel(){
         nextLevel = true;
         level++;

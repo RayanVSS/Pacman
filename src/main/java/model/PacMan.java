@@ -80,7 +80,7 @@ public final class PacMan implements Critter {
 
     @Override
     public double getSpeed(long deltaTNanoSeconds) {
-        return isvitesseP ? 7 *deltaTNanoSeconds * 1E-9 : (isEnergized() ? 6 *deltaTNanoSeconds * 1E-9 : 4 * deltaTNanoSeconds * 1E-9);
+        return isvitesseP ? 7 *deltaTNanoSeconds * 1E-9 : (isEnergized() ? 6 *deltaTNanoSeconds * 1E-9 : 4.5 * deltaTNanoSeconds * 1E-9);
     }
     @Override
     public Direction getDirection() {
