@@ -83,7 +83,6 @@ public class MazeConfig {
             case 10:
                 return makeLevel1();
             default:
-                PlayingState.getInstance().level = 1;
                 return makeLevel1();
         }
     }
