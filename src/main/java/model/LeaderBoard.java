@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -36,8 +37,8 @@ public class LeaderBoard implements Serializable {
         }
 
         public static void loadScores() {
-            String filename = "src/main/resources/save/scores.ser";
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            InputStream is = LeaderBoardIO.class.getResourceAsStream("/save/scores.ser");
+            try (ObjectInputStream ois = new ObjectInputStream(is)) {
                 Object obj = ois.readObject();
                 if (obj instanceof ArrayList<?>) {
                     ArrayList<?> list = (ArrayList<?>) obj;
