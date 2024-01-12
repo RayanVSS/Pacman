@@ -80,7 +80,7 @@ public final class PacMan implements Critter {
 
     @Override
     public double getSpeed(long deltaTNanoSeconds) {
-        return isvitesseP ? 7 *deltaTNanoSeconds * 1E-9 : (isEnergized() ? 6 *deltaTNanoSeconds * 1E-9 : 4 * deltaTNanoSeconds * 1E-9);
+        return isvitesseP ? 7 *deltaTNanoSeconds * 1E-9 : (isEnergized() ? 6 *deltaTNanoSeconds * 1E-9 : 4.5 * deltaTNanoSeconds * 1E-9);
     }
     @Override
     public Direction getDirection() {
@@ -332,6 +332,22 @@ public final class PacMan implements Critter {
                     PlayingState.getInstance().mediaPlayerNormalMusic.play();
 
                 }
+            }
+        else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.TeteDeMort){
+            maze.addScore(50);
+            maze.setGridState(true, pos.round().y(), pos.round().x());
+            isTeteDeMort = true;
+            temps_TeteDeMort.play();
+            Platform.runLater(() -> {
+                    PlayingState.getInstance().changeWallToGray();
+                });
+                if(mediaPlayerThanos != null)
+                mediaPlayerThanos.play();
+            for (var critter : maze.getCritters()) {
+                if (critter instanceof Ghost) {
+                    ((Ghost) critter).setMort(true);
+                    maze.resetGhost((Ghost) critter);
+                }}
             }
         else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.TeteDeMort){
             maze.addScore(50);

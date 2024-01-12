@@ -3,6 +3,7 @@ package model;
 import config.MazeConfig;
 import geometry.RealCoordinates;
 import java.time.LocalTime;
+import gui.AppStateMachine.PlayingState;
 
 public enum Ghost implements Critter {
 
@@ -48,28 +49,30 @@ public enum Ghost implements Critter {
 
     @Override
     public double getSpeed(long deltaTNanoSeconds) {
-        double speed = 4.5*deltaTNanoSeconds*1E-9;
+        PlayingState playingState = PlayingState.getInstance();
+        double level = playingState.level;
+        double speed = 4*deltaTNanoSeconds*1E-9;
         if (mort) {
             return 5 * deltaTNanoSeconds * 1E-9;
         } else if (disableGhost) {
             return 0;
         } else if (!sortie) {
             return 5 * deltaTNanoSeconds * 1E-9;
-        }else if (PacMan.INSTANCE.isEnergized() && !disableEnergizer){ 
+        }else if (PacMan.INSTANCE.isEnergized() && !disableEnergizer && !PacMan.INSTANCE.isvitesseM()) { 
             return speed*0.5;
         }else if (PacMan.INSTANCE.isvitesseM()){
             return speed*0.2;
         } else {
             if(this==BLINKY){
-                return speed;
+                return speed*(level/20+1);
             }
             if(this==PINKY){
-                return speed*0.9 ;
+                return speed*0.9*(level/20+1) ;
             }
             if(this==INKY){
-                return speed*0.8;
+                return speed*0.8*(level/20+1);
             }
-            return speed*0.7;
+            return speed*0.7*(level/20+1);
         }
     }
 
