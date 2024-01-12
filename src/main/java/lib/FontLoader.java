@@ -11,6 +11,7 @@ public class FontLoader {
             pixel_font = Font.loadFont(fontStream, 20.0);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Erreur lors du chargement de la police de caractère");
         }
     }
 

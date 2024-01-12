@@ -28,6 +28,12 @@ public class MazeLoad {
             default:
                 break;
         }
+        // On veut acceder au fichir json dans resources
+        String content = new BufferedReader(new InputStreamReader(path))
+                .lines()
+                .collect(Collectors.joining("\n"));
+        JSONObject json = new JSONObject(content);
+        JSONArray maze = json.getJSONArray("maze");
 
         String content = new BufferedReader(new InputStreamReader(path)).lines()
                 .collect(Collectors.joining("\n"));

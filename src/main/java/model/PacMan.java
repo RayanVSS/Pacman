@@ -137,17 +137,17 @@ public final class PacMan implements Critter {
         this.isDead = dead;
     }
 
-    public void resume(){
-        if(temps.getStatus() == Timeline.Status.PAUSED){
+    public void resume() {
+        if (temps.getStatus() == Timeline.Status.PAUSED) {
             temps.playFrom(Duration.seconds(temps.getCurrentTime().toSeconds()));
         }
-        if(temps_zhonya.getStatus() == Timeline.Status.PAUSED){
+        if (temps_zhonya.getStatus() == Timeline.Status.PAUSED) {
             temps_zhonya.playFrom(Duration.seconds(temps_zhonya.getCurrentTime().toSeconds()));
         }
-        if(temps_vitesseP.getStatus() == Timeline.Status.PAUSED){
+        if (temps_vitesseP.getStatus() == Timeline.Status.PAUSED) {
             temps_vitesseP.playFrom(Duration.seconds(temps_vitesseP.getCurrentTime().toSeconds()));
         }
-        if(temps_vitesseM.getStatus() == Timeline.Status.PAUSED){
+        if (temps_vitesseM.getStatus() == Timeline.Status.PAUSED) {
             temps_vitesseM.playFrom(Duration.seconds(temps_vitesseM.getCurrentTime().toSeconds()));
         }
         if(temps_TeteDeMort.getStatus() == Timeline.Status.PAUSED){
@@ -155,7 +155,7 @@ public final class PacMan implements Critter {
         }
     }
 
-    public void pause(){
+    public void pause() {
         temps.pause();
         temps_zhonya.pause();
         temps_vitesseP.pause();
@@ -172,28 +172,28 @@ public final class PacMan implements Critter {
     }
 
     public void resetZhonya() {
-        if(iszhonya){
+        if (iszhonya) {
             temps_zhonya.stop();
             iszhonya = false;
         }
     }
 
     public void resetVitesseP() {
-        if(isvitesseP){
+        if (isvitesseP) {
             temps_vitesseP.stop();
             isvitesseP = false;
         }
     }
 
     public void resetEnergizer() {
-        if(energized){
+        if (energized) {
             temps.stop();
             energized = false;
         }
     }
 
     public void resetVitesseM() {
-        if(isvitesseM){
+        if (isvitesseM) {
             temps_vitesseM.stop();
             isvitesseM = false;
         }
@@ -275,16 +275,15 @@ public final class PacMan implements Critter {
 
     public void handlePacManPoints(MazeState maze) {
         if (!maze.getGridState(pos.round())) {
-            if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER ) {
+            if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ENERGIZER) {
                 maze.addScore(10);
                 maze.setGridState(true, pos.round().y(), pos.round().x());
-                if(isEnergized()){
+                if (isEnergized()) {
                     temps.playFrom(Duration.seconds(0));
-                }
-                else{
+                } else {
                     setEnergized(true);
                     temps.play();
-                }            
+                }
                 for (var critter : maze.getCritters()) {
                     if (critter instanceof Ghost) {
                         ((Ghost) critter).setDisableEnergizer(false);
@@ -293,8 +292,7 @@ public final class PacMan implements Critter {
             } else if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.DOT) {
                 maze.addScore(1);
                 maze.setGridState(true, pos.round().y(), pos.round().x());
-            }
-            else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ZHONYA){
+            } else if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.ZHONYA) {
                 maze.addScore(50);
                 if(mediaPlayerTimeStop != null)
                 mediaPlayerTimeStop.play();
@@ -304,21 +302,20 @@ public final class PacMan implements Critter {
                 maze.setGridState(true, pos.round().y(), pos.round().x());
                 iszhonya = true;
                 temps_zhonya.play();
-                if(isEnergized()){
+                if (isEnergized()) {
                     temps.pause();
                 }
 
-        } else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseP){
-            maze.addScore(50);
-            Platform.runLater(() -> {
-                PlayingState.getInstance().changeWallToRoyalBlue();
-            });
-            maze.setGridState(true, pos.round().y(), pos.round().x());
-            isvitesseP = true;
-            temps_vitesseP.play();
+            } else if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseP) {
+                maze.addScore(50);
+                Platform.runLater(() -> {
+                    PlayingState.getInstance().changeWallToRoyalBlue();
+                });
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+                isvitesseP = true;
+                temps_vitesseP.play();
 
-            }
-            else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseM){
+            } else if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.vitesseM) {
                 maze.addScore(50);
                 Platform.runLater(() -> {
                     PlayingState.getInstance().changeWallToRed();
@@ -326,12 +323,31 @@ public final class PacMan implements Critter {
                 maze.setGridState(true, pos.round().y(), pos.round().x());
                 isvitesseM = true;
                 temps_vitesseM.play();
+            } else if (maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.HEAL) {
+                maze.addScore(50);
+                maze.setGridState(true, pos.round().y(), pos.round().x());
+                maze.setLives(maze.getLives() + 1);
+                if (maze.getLives() > 1) {
+                    PlayingState.getInstance().mediaPlayerCriticMusic.stop();
+                    PlayingState.getInstance().mediaPlayerNormalMusic.play();
+
                 }
-        else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.HEAL){
+            }
+        else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.TeteDeMort){
             maze.addScore(50);
             maze.setGridState(true, pos.round().y(), pos.round().x());
-            maze.setLives(maze.getLives()+1);
-            
+            isTeteDeMort = true;
+            temps_TeteDeMort.play();
+            Platform.runLater(() -> {
+                    PlayingState.getInstance().changeWallToGray();
+                });
+                if(mediaPlayerThanos != null)
+                mediaPlayerThanos.play();
+            for (var critter : maze.getCritters()) {
+                if (critter instanceof Ghost) {
+                    ((Ghost) critter).setMort(true);
+                    maze.resetGhost((Ghost) critter);
+                }}
             }
         else if(maze.getConfig().getCell(pos.round()).getContent() == Cell.Content.TeteDeMort){
             maze.addScore(50);
