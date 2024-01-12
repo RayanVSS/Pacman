@@ -109,6 +109,7 @@ public class PauseState implements State{
                     ((model.PacMan) c).resetAll();
                 }
             }
+            PlayingState.getInstance().level = 10;
             PlayingState.getInstance().initializeMaze();
             relaunch = false;
             return;

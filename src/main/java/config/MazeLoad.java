@@ -11,21 +11,28 @@ import java.io.InputStreamReader;
 public class MazeLoad {
     public Cell[][] make(int level) {
         // load a maze from a json file
-        InputStream path = getClass().getResourceAsStream("/maze1.json");
+        InputStream path = null;
         switch (level) {
             case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
                 path = getClass().getResourceAsStream("/maze1.json");
                 break;
             default:
                 break;
         }
         // On veut acceder au fichir json dans resources
-        String content = new BufferedReader(new InputStreamReader(path))
-                .lines()
+        String content = new BufferedReader(new InputStreamReader(path)).lines()
                 .collect(Collectors.joining("\n"));
         JSONObject json = new JSONObject(content);
         JSONArray maze = json.getJSONArray("maze");
-
         JSONArray type_list = maze.getJSONArray(0);
         JSONArray value_list = maze.getJSONArray(1);
 

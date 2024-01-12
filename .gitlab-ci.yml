@@ -13,7 +13,7 @@ build:
   stage: build
   image: gradle:8.3.0-jdk17
   script:
-    - ./gradlew build
+    - ./gradlew shadowJar
   only:
     - master
     - develop

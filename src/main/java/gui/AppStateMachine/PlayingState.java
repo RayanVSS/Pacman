@@ -135,7 +135,7 @@ public class PlayingState extends App implements State {
         maze = new MazeState(MazeConfig.makeMaze(level));
         maze.setScore(previousScore);
         maze.setLives(previousLives);
-        
+
         score_graphics = createScoreGraphics();
         life_graphics_update(maze.getLives());
 
@@ -236,6 +236,10 @@ public class PlayingState extends App implements State {
 
     public void exit() {
         gameView.stop();
+    }
+
+    public int getLevel(){
+        return level;
     }
 
     public void nextLevel(){

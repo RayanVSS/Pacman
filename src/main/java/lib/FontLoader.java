@@ -9,13 +9,6 @@ public class FontLoader {
         try {
             InputStream fontStream = FontLoader.class.getResourceAsStream("/Font/pixel_font.ttf");
             pixel_font = Font.loadFont(fontStream, 20.0);
-            if (pixel_font == null) {
-                // Pour MacOS jsp pk ça marche pas
-                pixel_font = Font.loadFont(FontLoader.class.getResourceAsStream("/Font/pixel_font.ttf"), 20);
-                if (pixel_font == null) {
-                    pixel_font = Font.font("Arial", 20); // Default font si ça marche pas
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erreur lors du chargement de la police de caractère");
